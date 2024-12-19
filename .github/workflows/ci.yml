@@ -53,30 +53,29 @@ jobs:
         pip install -r requirements-dev.txt
         pip install pytest pytest-asyncio pytest-cov pytest-env alembic psycopg2-binary
 
-    - name: Verify Database Connection
-      run: |
-        python -c "
-        import psycopg2
-        import time
-        for i in range(5):
-            try:
-                conn = psycopg2.connect('postgresql://postgres:postgres@localhost:5432/crypto_trading_test')
-                conn.close()
-                print('Database connection successful')
-                exit(0)
-            except psycopg2.OperationalError as e:
-                print(f'Attempt {i+1}: {str(e)}')
-                if i == 4:
-                    print('Failed to connect to database after 5 attempts')
-                    exit(1)
-                time.sleep(2)
-        "
-
     - name: Setup Database
       run: |
         PGPASSWORD=postgres psql -h localhost -U postgres -d crypto_trading_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
       env:
         PGPASSWORD: postgres
+
+    - name: Verify Environment and Database Connection
+      working-directory: ./trading_backend
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/crypto_trading_test
+        TESTING: "true"
+        PYTHONPATH: ${{ github.workspace }}/trading_backend
+      run: |
+        python scripts/verify_env.py
+
+    - name: Run Database Migrations
+      working-directory: ./trading_backend
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/crypto_trading_test
+        TESTING: "true"
+        PYTHONPATH: ${{ github.workspace }}/trading_backend
+      run: |
+        alembic upgrade head
 
     - name: Install Frontend dependencies
       working-directory: ./frontend/crypto-trading-pwa
@@ -91,20 +90,6 @@ jobs:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/crypto_trading_test
         TESTING: "true"
       run: |
-        python -c "
-        import alembic.config
-        import sys
-        try:
-            alembicArgs = [
-                '--raiseerr',
-                'upgrade', 'head',
-            ]
-            alembic.config.main(argv=alembicArgs)
-            print('Database migrations completed successfully')
-        except Exception as e:
-            print(f'Migration failed: {str(e)}', file=sys.stderr)
-            sys.exit(1)
-        "
         pytest tests/ --cov=app --cov-report=xml
 
     - name: Run Frontend Tests
