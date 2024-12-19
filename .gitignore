@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+.env
+.venv
+venv/
+ENV/
+.coverage
+coverage/
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+/dist
+/build
+.env.local
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# Database
+*.sqlite3
+*.db
+
+# Logs
+*.log
+.DS_Store
