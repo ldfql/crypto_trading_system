@@ -7,6 +7,9 @@ import datasets
 import jieba
 import numpy
 import sklearn
+import os
+import psycopg2
+from time import sleep
 from pathlib import Path
 
 logging.basicConfig(
@@ -70,6 +73,30 @@ def verify_directories():
     logger.info("All required directories present")
     return True
 
+def verify_database():
+    """Verify database connection."""
+    db_url = os.getenv('DATABASE_URL')
+    if not db_url:
+        logger.error("DATABASE_URL environment variable is not set")
+        return False
+
+    max_retries = 5
+    retry_count = 0
+
+    while retry_count < max_retries:
+        try:
+            conn = psycopg2.connect(db_url)
+            conn.close()
+            logger.info("Successfully connected to the database")
+            return True
+        except psycopg2.OperationalError as e:
+            retry_count += 1
+            if retry_count == max_retries:
+                logger.error(f"Failed to connect to the database after {max_retries} retries: {str(e)}")
+                return False
+            logger.warning(f"Connection attempt {retry_count} failed, retrying in 2 seconds...")
+            sleep(2)
+
 def main():
     """Run all verification checks."""
     try:
@@ -78,7 +105,8 @@ def main():
         checks = [
             ('CUDA Configuration', verify_cuda),
             ('Model Dependencies', verify_model_dependencies),
-            ('Directory Structure', verify_directories)
+            ('Directory Structure', verify_directories),
+            ('Database Connection', verify_database)
         ]
 
         all_passed = True
