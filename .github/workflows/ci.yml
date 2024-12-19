@@ -1,0 +1,130 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "devin/*" ]
+  pull_request:
+    branches: [ "devin/1734564919-enhanced-sentiment-analysis" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: crypto_trading_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+
+    - name: Install Python dependencies
+      working-directory: ./trading_backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+    - name: Install Frontend dependencies
+      working-directory: ./frontend/crypto-trading-pwa
+      run: |
+        npm install -g pnpm
+        pnpm install
+
+    - name: Run Backend Tests
+      working-directory: ./trading_backend
+      env:
+        PYTHONPATH: ${{ github.workspace }}/trading_backend
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/crypto_trading_test
+      run: |
+        pytest tests/ --cov=app --cov-report=xml
+
+    - name: Run Frontend Tests
+      working-directory: ./frontend/crypto-trading-pwa
+      run: |
+        pnpm test
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./trading_backend/coverage.xml
+        fail_ci_if_error: true
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff black mypy types-all
+
+    - name: Run Black
+      working-directory: ./trading_backend
+      run: black . --check
+
+    - name: Run Ruff
+      working-directory: ./trading_backend
+      run: ruff check .
+
+    - name: Run MyPy
+      working-directory: ./trading_backend
+      run: mypy app tests
+
+  build:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+
+    - name: Build Backend
+      working-directory: ./trading_backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install build
+        python -m build
+
+    - name: Build Frontend
+      working-directory: ./frontend/crypto-trading-pwa
+      run: |
+        npm install -g pnpm
+        pnpm install
+        pnpm build
