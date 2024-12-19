@@ -6,6 +6,7 @@ import asyncio
 import time
 from collections import deque
 
+
 class MarketDataService:
     """Service for retrieving and analyzing market data."""
 
@@ -23,7 +24,7 @@ class MarketDataService:
         timeframe: str = "1h",
         limit: int = 100,
         testing: bool = False,
-        **kwargs
+        **kwargs,
     ) -> Dict:
         """Fetch market data with rate limiting and retry logic."""
         if testing:
@@ -41,14 +42,19 @@ class MarketDataService:
                     continue
 
         # If we get here, all retries failed
-        raise Exception(f"Failed to fetch market data after {self._retry_count} attempts: {last_error}")
+        raise Exception(
+            f"Failed to fetch market data after {self._retry_count} attempts: {last_error}"
+        )
 
     async def _check_rate_limit(self):
         """Implement rate limiting logic"""
         now = time.time()
 
         # Remove timestamps older than the window
-        while self._request_timestamps and self._request_timestamps[0] < now - self._rate_limit_window:
+        while (
+            self._request_timestamps
+            and self._request_timestamps[0] < now - self._rate_limit_window
+        ):
             self._request_timestamps.popleft()
 
         # If we've hit the limit, wait until we can make another request
@@ -60,11 +66,7 @@ class MarketDataService:
         self._request_timestamps.append(now)
 
     async def _fetch_market_data(
-        self,
-        symbol: str,
-        timeframe: str,
-        limit: int,
-        **kwargs
+        self, symbol: str, timeframe: str, limit: int, **kwargs
     ) -> Dict:
         """Internal method to fetch market data"""
         async with aiohttp.ClientSession() as session:
@@ -72,7 +74,7 @@ class MarketDataService:
             params = {
                 "symbol": symbol.replace("/", ""),
                 "interval": timeframe,
-                "limit": limit
+                "limit": limit,
             }
 
             async with session.get(url, params=params) as response:
@@ -99,22 +101,16 @@ class MarketDataService:
 
         # Calculate volatility (standard deviation of price changes)
         price_changes = [
-            (prices[i] - prices[i-1]) / prices[i-1]
-            for i in range(1, len(prices))
+            (prices[i] - prices[i - 1]) / prices[i - 1] for i in range(1, len(prices))
         ]
-        volatility = (
-            sum(x*x for x in price_changes) / len(price_changes)
-        ) ** 0.5
+        volatility = (sum(x * x for x in price_changes) / len(price_changes)) ** 0.5
 
         return {
             "current_price": current_price,
             "volume_24h": volume_24h,
             "volatility": volatility,
-            "price_range": {
-                "max": max_price,
-                "min": min_price
-            },
-            "timestamp": datetime.fromtimestamp(latest[0] / 1000)
+            "price_range": {"max": max_price, "min": min_price},
+            "timestamp": datetime.fromtimestamp(latest[0] / 1000),
         }
 
     def _get_mock_market_data(self) -> Dict:
@@ -124,11 +120,8 @@ class MarketDataService:
             "current_price": 50000.0,
             "volume_24h": 1000000.0,
             "volatility": 0.02,
-            "price_range": {
-                "max": 51000.0,
-                "min": 49000.0
-            },
+            "price_range": {"max": 51000.0, "min": 49000.0},
             "timestamp": now,
             "market_cycle": "accumulation",
-            "trend": "bullish"
+            "trend": "bullish",
         }

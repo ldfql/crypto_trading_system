@@ -3,10 +3,13 @@ from typing import NamedTuple
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
+
 class SentimentResult(NamedTuple):
     """Container for sentiment analysis results."""
+
     sentiment: str
     confidence: float
+
 
 class EnglishSentimentAnalyzer:
     """Analyzer for English cryptocurrency-related text."""
@@ -22,17 +25,26 @@ class EnglishSentimentAnalyzer:
             "sentiment-analysis",
             model=self.model,
             tokenizer=self.tokenizer,
-            device=0 if self.device == "cuda" else -1
+            device=0 if self.device == "cuda" else -1,
         )
 
         # Technical analysis keywords for rule-based enhancement
         self.bullish_keywords = {
-            'breakout', 'support', 'uptrend', 'buy signal',
-            'golden cross', 'accumulation', 'higher high'
+            "breakout",
+            "support",
+            "uptrend",
+            "buy signal",
+            "golden cross",
+            "accumulation",
+            "higher high",
         }
         self.bearish_keywords = {
-            'resistance', 'downtrend', 'sell signal',
-            'death cross', 'distribution', 'lower low'
+            "resistance",
+            "downtrend",
+            "sell signal",
+            "death cross",
+            "distribution",
+            "lower low",
         }
 
     async def analyze(self, text: str) -> SentimentResult:
@@ -58,8 +70,8 @@ class EnglishSentimentAnalyzer:
         rule_confidence = self._rule_based_confidence(text.lower())
 
         # Combine model and rule-based confidence with higher weight on rules
-        base_confidence = float(result['score'])
-        enhanced_confidence = (base_confidence * 0.6 + rule_confidence * 0.4)
+        base_confidence = float(result["score"])
+        enhanced_confidence = base_confidence * 0.6 + rule_confidence * 0.4
 
         # Apply progressive improvement factor
         if enhanced_confidence >= 0.85:
@@ -72,11 +84,11 @@ class EnglishSentimentAnalyzer:
 
         # Map sentiment labels to uppercase
         sentiment_map = {
-            'positive': 'BULLISH',
-            'negative': 'BEARISH',
-            'neutral': 'NEUTRAL'
+            "positive": "BULLISH",
+            "negative": "BEARISH",
+            "neutral": "NEUTRAL",
         }
-        sentiment = sentiment_map.get(result['label'], 'NEUTRAL')
+        sentiment = sentiment_map.get(result["label"], "NEUTRAL")
 
         return sentiment, min(final_confidence, 0.92)
 

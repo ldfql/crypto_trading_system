@@ -4,19 +4,21 @@ from abc import ABC, abstractmethod
 
 logger = logging.getLogger(__name__)
 
+
 class BaseScraper(ABC):
     """Base class for all scrapers."""
 
-    def __init__(self, min_confidence: float = 0.1, config: Dict = None, sentiment_analyzer: Optional[Any] = None):
+    def __init__(
+        self,
+        min_confidence: float = 0.1,
+        config: Dict = None,
+        sentiment_analyzer: Optional[Any] = None,
+    ):
         """Initialize base scraper with configuration."""
         self.config = config or {}
         self.min_confidence = min_confidence
         self.sentiment_analyzer = sentiment_analyzer
-        self.base_weights = {
-            'bert': 0.4,
-            'technical': 0.3,
-            'context': 0.3
-        }
+        self.base_weights = {"bert": 0.4, "technical": 0.3, "context": 0.3}
 
     @abstractmethod
     async def scrape_platform(self, platform: str, keywords: List[str]) -> List[Dict]:
@@ -40,7 +42,9 @@ class BaseScraper(ABC):
             logger.error(f"Error validating config: {str(e)}")
             return False
 
-    def _get_config_value(self, key: str, default: Optional[str] = None) -> Optional[str]:
+    def _get_config_value(
+        self, key: str, default: Optional[str] = None
+    ) -> Optional[str]:
         """Get configuration value with optional default."""
         try:
             return self.config.get(key, default)

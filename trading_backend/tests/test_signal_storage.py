@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.signals import TradingSignal
 from app.repositories.signal_repository import SignalRepository
 
+
 class TestSignalStorage:
     @pytest.fixture
     async def signal_repository(self, db_session: AsyncSession):
@@ -21,7 +22,7 @@ class TestSignalStorage:
             created_at=datetime.utcnow(),
             expires_at=datetime.utcnow() + timedelta(days=30),
             market_cycle_phase="accumulation",
-            accuracy=0.88  # Above 85% accuracy requirement
+            accuracy=0.88,  # Above 85% accuracy requirement
         )
 
         stored_signal = await signal_repository.create(signal)
@@ -42,15 +43,13 @@ class TestSignalStorage:
             created_at=datetime.utcnow(),
             expires_at=datetime.utcnow() + timedelta(days=14),
             market_cycle_phase="markup",
-            accuracy=0.87
+            accuracy=0.87,
         )
         await signal_repository.create(signal)
 
         # Test entry point detection
         entry_points = await signal_repository.find_entry_points(
-            symbol="ETH/USDT",
-            min_confidence=0.85,
-            min_accuracy=0.85
+            symbol="ETH/USDT", min_confidence=0.85, min_accuracy=0.85
         )
         assert len(entry_points) > 0
         for point in entry_points:
@@ -70,7 +69,7 @@ class TestSignalStorage:
             created_at=datetime.utcnow(),
             expires_at=datetime.utcnow() + timedelta(days=7),
             market_cycle_phase="distribution",
-            accuracy=0.86
+            accuracy=0.86,
         )
         stored_signal = await signal_repository.create(signal)
 
@@ -78,7 +77,7 @@ class TestSignalStorage:
         updated_signal = await signal_repository.validate_accuracy(
             signal_id=stored_signal.id,
             current_price=47000.0,
-            market_data={"volume": 1000000, "volatility": 0.02}
+            market_data={"volume": 1000000, "volatility": 0.02},
         )
 
         assert updated_signal.accuracy >= 0.85
@@ -96,7 +95,7 @@ class TestSignalStorage:
             created_at=datetime.utcnow(),
             expires_at=datetime.utcnow() + timedelta(days=30),
             market_cycle_phase="accumulation",
-            accuracy=0.88
+            accuracy=0.88,
         )
         stored_signal = await signal_repository.create(signal)
 
@@ -106,7 +105,7 @@ class TestSignalStorage:
             updated_signal = await signal_repository.validate_accuracy(
                 signal_id=stored_signal.id,
                 current_price=price,
-                market_data={"volume": 1000000, "volatility": 0.015}
+                market_data={"volume": 1000000, "volatility": 0.015},
             )
             # Verify accuracy improves or maintains high level
             assert updated_signal.accuracy >= stored_signal.accuracy

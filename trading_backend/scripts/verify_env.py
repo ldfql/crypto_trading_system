@@ -10,10 +10,10 @@ import sklearn
 from pathlib import Path
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
 
 def verify_cuda():
     """Verify CUDA availability and configuration."""
@@ -28,16 +28,17 @@ def verify_cuda():
         logger.warning("CUDA not available, using CPU")
         return False
 
+
 def verify_model_dependencies():
     """Verify all required model dependencies are installed."""
     dependencies = {
-        'Python': sys.version,
-        'PyTorch': torch.__version__,
-        'Transformers': transformers.__version__,
-        'Datasets': datasets.__version__,
-        'Jieba': jieba.__version__,
-        'NumPy': numpy.__version__,
-        'Scikit-learn': sklearn.__version__
+        "Python": sys.version,
+        "PyTorch": torch.__version__,
+        "Transformers": transformers.__version__,
+        "Datasets": datasets.__version__,
+        "Jieba": jieba.__version__,
+        "NumPy": numpy.__version__,
+        "Scikit-learn": sklearn.__version__,
     }
 
     for name, version in dependencies.items():
@@ -45,14 +46,10 @@ def verify_model_dependencies():
 
     return True
 
+
 def verify_directories():
     """Verify required directories exist."""
-    required_dirs = [
-        'models',
-        'logs',
-        'results',
-        'app/data'
-    ]
+    required_dirs = ["models", "logs", "results", "app/data"]
 
     base_path = Path(__file__).parent.parent
     missing_dirs = []
@@ -70,15 +67,16 @@ def verify_directories():
     logger.info("All required directories present")
     return True
 
+
 def main():
     """Run all verification checks."""
     try:
         logger.info("Starting environment verification...")
 
         checks = [
-            ('CUDA Configuration', verify_cuda),
-            ('Model Dependencies', verify_model_dependencies),
-            ('Directory Structure', verify_directories)
+            ("CUDA Configuration", verify_cuda),
+            ("Model Dependencies", verify_model_dependencies),
+            ("Directory Structure", verify_directories),
         ]
 
         all_passed = True
@@ -102,6 +100,7 @@ def main():
     except Exception as e:
         logger.error(f"Unexpected error during verification: {str(e)}")
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

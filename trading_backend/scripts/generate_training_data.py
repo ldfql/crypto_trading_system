@@ -8,60 +8,155 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def generate_technical_patterns(language: str = 'english') -> List[Dict[str, str]]:
+
+def generate_technical_patterns(language: str = "english") -> List[Dict[str, str]]:
     """Generate training data for technical patterns."""
-    if language == 'english':
+    if language == "english":
         patterns = [
             # Bullish patterns with volume and price action
-            ("Strong breakout above resistance with increasing volume and institutional buying", "bullish"),
-            ("Golden cross forming on daily timeframe with volume confirmation and price follow-through", "bullish"),
-            ("Multiple bullish divergences on RSI and MACD with increasing buy pressure", "bullish"),
-            ("Accumulation phase with institutional buying pressure and decreasing selling volume", "bullish"),
-            ("Higher highs and higher lows forming clear uptrend with strong volume support", "bullish"),
-            ("Double bottom pattern confirmed with volume spike and institutional accumulation", "bullish"),
-            ("Inverse head and shoulders pattern completion with volume confirmation", "bullish"),
-            ("Strong support level holding with increasing buy orders and institutional interest", "bullish"),
-            ("Bullish engulfing pattern with volume confirmation and follow-through", "bullish"),
-            ("Moving averages showing strong upward momentum with institutional buying", "bullish"),
-            ("RSI showing oversold conditions with positive divergence and volume support", "bullish"),
-            ("Accumulation occurring at key support levels with increasing buy volume", "bullish"),
-            ("Breakout from bull flag pattern with strong volume confirmation", "bullish"),
-            ("Cup and handle formation completing with institutional buying support", "bullish"),
-            ("Ascending triangle breakout with increasing volume and momentum", "bullish"),
-
+            (
+                "Strong breakout above resistance with increasing volume and institutional buying",
+                "bullish",
+            ),
+            (
+                "Golden cross forming on daily timeframe with volume confirmation and price follow-through",
+                "bullish",
+            ),
+            (
+                "Multiple bullish divergences on RSI and MACD with increasing buy pressure",
+                "bullish",
+            ),
+            (
+                "Accumulation phase with institutional buying pressure and decreasing selling volume",
+                "bullish",
+            ),
+            (
+                "Higher highs and higher lows forming clear uptrend with strong volume support",
+                "bullish",
+            ),
+            (
+                "Double bottom pattern confirmed with volume spike and institutional accumulation",
+                "bullish",
+            ),
+            (
+                "Inverse head and shoulders pattern completion with volume confirmation",
+                "bullish",
+            ),
+            (
+                "Strong support level holding with increasing buy orders and institutional interest",
+                "bullish",
+            ),
+            (
+                "Bullish engulfing pattern with volume confirmation and follow-through",
+                "bullish",
+            ),
+            (
+                "Moving averages showing strong upward momentum with institutional buying",
+                "bullish",
+            ),
+            (
+                "RSI showing oversold conditions with positive divergence and volume support",
+                "bullish",
+            ),
+            (
+                "Accumulation occurring at key support levels with increasing buy volume",
+                "bullish",
+            ),
+            (
+                "Breakout from bull flag pattern with strong volume confirmation",
+                "bullish",
+            ),
+            (
+                "Cup and handle formation completing with institutional buying support",
+                "bullish",
+            ),
+            (
+                "Ascending triangle breakout with increasing volume and momentum",
+                "bullish",
+            ),
             # Bearish patterns with volume and price action
-            ("Death cross confirmed on daily chart with increasing selling pressure", "bearish"),
-            ("Lower lows continuing as support breaks down with heavy volume", "bearish"),
-            ("Distribution pattern emerging at resistance with institutional selling", "bearish"),
-            ("Head and shoulders pattern forming with declining volume and support break", "bearish"),
-            ("Double top pattern with heavy selling pressure and volume confirmation", "bearish"),
-            ("Bearish divergence on multiple timeframes with decreasing buy volume", "bearish"),
-            ("Breaking down below major support levels with increasing sell volume", "bearish"),
-            ("Declining volume in upward moves with institutional distribution", "bearish"),
-            ("Multiple technical indicators showing overbought with bearish divergence", "bearish"),
-            ("Moving averages crossing downward with strong selling momentum", "bearish"),
+            (
+                "Death cross confirmed on daily chart with increasing selling pressure",
+                "bearish",
+            ),
+            (
+                "Lower lows continuing as support breaks down with heavy volume",
+                "bearish",
+            ),
+            (
+                "Distribution pattern emerging at resistance with institutional selling",
+                "bearish",
+            ),
+            (
+                "Head and shoulders pattern forming with declining volume and support break",
+                "bearish",
+            ),
+            (
+                "Double top pattern with heavy selling pressure and volume confirmation",
+                "bearish",
+            ),
+            (
+                "Bearish divergence on multiple timeframes with decreasing buy volume",
+                "bearish",
+            ),
+            (
+                "Breaking down below major support levels with increasing sell volume",
+                "bearish",
+            ),
+            (
+                "Declining volume in upward moves with institutional distribution",
+                "bearish",
+            ),
+            (
+                "Multiple technical indicators showing overbought with bearish divergence",
+                "bearish",
+            ),
+            (
+                "Moving averages crossing downward with strong selling momentum",
+                "bearish",
+            ),
             ("RSI showing overbought conditions with negative divergence", "bearish"),
-            ("Distribution occurring at resistance with increasing sell orders", "bearish"),
+            (
+                "Distribution occurring at resistance with increasing sell orders",
+                "bearish",
+            ),
             ("Breakdown from bear flag pattern with volume confirmation", "bearish"),
             ("Rising wedge pattern breaking down with increasing volume", "bearish"),
             ("Descending triangle breakdown with heavy selling pressure", "bearish"),
-
             # Neutral patterns with volume analysis
             ("Price consolidating in tight range with decreasing volume", "neutral"),
             ("Sideways trading with balanced buying and selling pressure", "neutral"),
-            ("No clear trend direction on multiple timeframes with average volume", "neutral"),
+            (
+                "No clear trend direction on multiple timeframes with average volume",
+                "neutral",
+            ),
             ("Equal highs and lows in ranging market with declining volume", "neutral"),
-            ("Volume declining in consolidation phase with no clear direction", "neutral"),
-            ("Price action trapped between support and resistance with neutral volume", "neutral"),
-            ("Moving averages flattening in sideways market with average volume", "neutral"),
+            (
+                "Volume declining in consolidation phase with no clear direction",
+                "neutral",
+            ),
+            (
+                "Price action trapped between support and resistance with neutral volume",
+                "neutral",
+            ),
+            (
+                "Moving averages flattening in sideways market with average volume",
+                "neutral",
+            ),
             ("Balanced order book with no clear directional bias", "neutral"),
-            ("Technical indicators showing mixed signals with normal volume", "neutral"),
-            ("Low volatility period with no breakout signals and declining volume", "neutral"),
+            (
+                "Technical indicators showing mixed signals with normal volume",
+                "neutral",
+            ),
+            (
+                "Low volatility period with no breakout signals and declining volume",
+                "neutral",
+            ),
             ("Doji patterns forming with decreasing volume in range", "neutral"),
             ("Price hovering around major moving averages with indecision", "neutral"),
             ("Symmetrical triangle formation with declining volume", "neutral"),
             ("No clear institutional buying or selling pressure", "neutral"),
-            ("Market makers maintaining price in trading range", "neutral")
+            ("Market makers maintaining price in trading range", "neutral"),
         ]
     else:  # Chinese patterns
         patterns = [
@@ -81,7 +176,6 @@ def generate_technical_patterns(language: str = 'english') -> List[Dict[str, str
             ("牛旗形态突破，成交量确认", "bullish"),
             ("杯柄形态完成，机构支撑明显", "bullish"),
             ("上升三角突破，成交量动能增强", "bullish"),
-
             # Bearish patterns
             ("日线图死叉确认，卖压持续增加", "bearish"),
             ("持续创新低，支撑位失守，成交量放大", "bearish"),
@@ -98,7 +192,6 @@ def generate_technical_patterns(language: str = 'english') -> List[Dict[str, str
             ("空头旗形突破，成交确认", "bearish"),
             ("上升楔形下破，成交量增加", "bearish"),
             ("下降三角突破，抛压沉重", "bearish"),
-
             # Neutral patterns
             ("价格在狭窄区间整理，成交量减少", "neutral"),
             ("横盘交易，买卖压力平衡", "neutral"),
@@ -114,50 +207,100 @@ def generate_technical_patterns(language: str = 'english') -> List[Dict[str, str
             ("价格在主要均线附近徘徊，不确定", "neutral"),
             ("对称三角形态，成交量递减", "neutral"),
             ("无明显机构买卖压力", "neutral"),
-            ("做市商维持价格区间交易", "neutral")
+            ("做市商维持价格区间交易", "neutral"),
         ]
 
     return [{"text": text, "label": label} for text, label in patterns]
 
-def generate_market_context(language: str = 'english') -> List[Dict[str, str]]:
+
+def generate_market_context(language: str = "english") -> List[Dict[str, str]]:
     """Generate training data for market context."""
-    if language == 'english':
+    if language == "english":
         contexts = [
             # Bullish contexts
-            ("Institutional investors increasing Bitcoin holdings significantly with strong accumulation", "bullish"),
-            ("Strong market fundamentals with growing adoption and institutional interest", "bullish"),
-            ("Positive regulatory developments boosting market confidence and institutional participation", "bullish"),
-            ("Major companies adding crypto to balance sheets with long-term holding strategy", "bullish"),
-            ("Retail interest surging with positive sentiment and increasing wallet addresses", "bullish"),
-            ("Network metrics showing strong accumulation by long-term holders", "bullish"),
-            ("Exchange outflows increasing as investors move to cold storage", "bullish"),
-            ("Mining hash rate reaching new highs with strong network security", "bullish"),
+            (
+                "Institutional investors increasing Bitcoin holdings significantly with strong accumulation",
+                "bullish",
+            ),
+            (
+                "Strong market fundamentals with growing adoption and institutional interest",
+                "bullish",
+            ),
+            (
+                "Positive regulatory developments boosting market confidence and institutional participation",
+                "bullish",
+            ),
+            (
+                "Major companies adding crypto to balance sheets with long-term holding strategy",
+                "bullish",
+            ),
+            (
+                "Retail interest surging with positive sentiment and increasing wallet addresses",
+                "bullish",
+            ),
+            (
+                "Network metrics showing strong accumulation by long-term holders",
+                "bullish",
+            ),
+            (
+                "Exchange outflows increasing as investors move to cold storage",
+                "bullish",
+            ),
+            (
+                "Mining hash rate reaching new highs with strong network security",
+                "bullish",
+            ),
             ("Institutional derivatives showing increasing long positions", "bullish"),
-            ("Technical upgrades improving network scalability and adoption", "bullish"),
-
+            (
+                "Technical upgrades improving network scalability and adoption",
+                "bullish",
+            ),
             # Bearish contexts
-            ("Large miners selling Bitcoin holdings amid market uncertainty", "bearish"),
-            ("Regulatory crackdown causing market uncertainty and institutional exits", "bearish"),
+            (
+                "Large miners selling Bitcoin holdings amid market uncertainty",
+                "bearish",
+            ),
+            (
+                "Regulatory crackdown causing market uncertainty and institutional exits",
+                "bearish",
+            ),
             ("Institutional outflows from crypto funds accelerating", "bearish"),
-            ("Market sentiment shifts bearish on macro concerns and rate hikes", "bearish"),
-            ("Whale addresses decreasing their positions with heavy distribution", "bearish"),
-            ("Network activity declining with decreasing transaction volume", "bearish"),
+            (
+                "Market sentiment shifts bearish on macro concerns and rate hikes",
+                "bearish",
+            ),
+            (
+                "Whale addresses decreasing their positions with heavy distribution",
+                "bearish",
+            ),
+            (
+                "Network activity declining with decreasing transaction volume",
+                "bearish",
+            ),
             ("Exchange inflows increasing as holders prepare to sell", "bearish"),
             ("Mining difficulty dropping due to miner capitulation", "bearish"),
             ("Derivatives showing increasing short interest", "bearish"),
             ("Technical vulnerabilities discovered in major protocols", "bearish"),
-
             # Neutral contexts
             ("Market awaiting key economic data with balanced positions", "neutral"),
-            ("Mixed signals from different market indicators and timeframes", "neutral"),
-            ("Balanced institutional flows in crypto markets with no clear direction", "neutral"),
-            ("Regulatory landscape remains unclear with ongoing discussions", "neutral"),
+            (
+                "Mixed signals from different market indicators and timeframes",
+                "neutral",
+            ),
+            (
+                "Balanced institutional flows in crypto markets with no clear direction",
+                "neutral",
+            ),
+            (
+                "Regulatory landscape remains unclear with ongoing discussions",
+                "neutral",
+            ),
             ("Trading volume average with no clear directional bias", "neutral"),
             ("Network metrics showing stable activity levels", "neutral"),
             ("Balance between exchange inflows and outflows", "neutral"),
             ("Mining hash rate stabilizing at current levels", "neutral"),
             ("Derivatives showing balanced long-short ratio", "neutral"),
-            ("Technical development proceeding as scheduled", "neutral")
+            ("Technical development proceeding as scheduled", "neutral"),
         ]
     else:  # Chinese contexts
         contexts = [
@@ -172,7 +315,6 @@ def generate_market_context(language: str = 'english') -> List[Dict[str, str]]:
             ("挖矿算力创新高，网络安全性增强", "bullish"),
             ("机构衍生品市场看多仓位增加", "bullish"),
             ("技术升级改善网络扩展性和采用率", "bullish"),
-
             # Bearish contexts
             ("大型矿工抛售比特币持仓，市场不确定性增加", "bearish"),
             ("监管收紧引发市场不确定性，机构撤离", "bearish"),
@@ -184,7 +326,6 @@ def generate_market_context(language: str = 'english') -> List[Dict[str, str]]:
             ("矿工投降导致挖矿难度下降", "bearish"),
             ("衍生品市场空头兴趣增加", "bearish"),
             ("主要协议发现技术漏洞", "bearish"),
-
             # Neutral contexts
             ("市场等待关键经济数据，仓位平衡", "neutral"),
             ("不同市场指标和时间周期显示混合信号", "neutral"),
@@ -195,35 +336,64 @@ def generate_market_context(language: str = 'english') -> List[Dict[str, str]]:
             ("交易所流入流出量保持平衡", "neutral"),
             ("挖矿算力在当前水平稳定", "neutral"),
             ("衍生品市场多空比例平衡", "neutral"),
-            ("技术开发按计划进行中", "neutral")
+            ("技术开发按计划进行中", "neutral"),
         ]
 
     return [{"text": text, "label": label} for text, label in contexts]
 
-def generate_combined_patterns(language: str = 'english') -> List[Dict[str, str]]:
+
+def generate_combined_patterns(language: str = "english") -> List[Dict[str, str]]:
     """Generate training data combining technical and fundamental analysis."""
-    if language == 'english':
+    if language == "english":
         patterns = [
             # Complex bullish patterns
-            ("Golden cross forming with institutional buying and positive regulatory news", "bullish"),
-            ("Strong support holding with increasing network adoption and whale accumulation", "bullish"),
-            ("Multiple bullish divergences with growing institutional interest", "bullish"),
-            ("Breaking resistance with positive regulatory developments and volume", "bullish"),
-            ("Accumulation phase with improving network metrics and institutional buying", "bullish"),
-
+            (
+                "Golden cross forming with institutional buying and positive regulatory news",
+                "bullish",
+            ),
+            (
+                "Strong support holding with increasing network adoption and whale accumulation",
+                "bullish",
+            ),
+            (
+                "Multiple bullish divergences with growing institutional interest",
+                "bullish",
+            ),
+            (
+                "Breaking resistance with positive regulatory developments and volume",
+                "bullish",
+            ),
+            (
+                "Accumulation phase with improving network metrics and institutional buying",
+                "bullish",
+            ),
             # Complex bearish patterns
-            ("Death cross confirmed with regulatory uncertainty and miner selling", "bearish"),
-            ("Support breakdown with increasing exchange inflows and whale distribution", "bearish"),
+            (
+                "Death cross confirmed with regulatory uncertainty and miner selling",
+                "bearish",
+            ),
+            (
+                "Support breakdown with increasing exchange inflows and whale distribution",
+                "bearish",
+            ),
             ("Multiple bearish divergences with declining network activity", "bearish"),
-            ("Distribution pattern with regulatory concerns and institutional outflows", "bearish"),
-            ("Breaking down with technical vulnerabilities and increasing shorts", "bearish"),
-
+            (
+                "Distribution pattern with regulatory concerns and institutional outflows",
+                "bearish",
+            ),
+            (
+                "Breaking down with technical vulnerabilities and increasing shorts",
+                "bearish",
+            ),
             # Complex neutral patterns
-            ("Consolidation with mixed regulatory signals and balanced flows", "neutral"),
+            (
+                "Consolidation with mixed regulatory signals and balanced flows",
+                "neutral",
+            ),
             ("Range-bound trading with stable network metrics", "neutral"),
             ("Technical consolidation with balanced institutional activity", "neutral"),
             ("Sideways movement with unclear regulatory direction", "neutral"),
-            ("Price action trapped with mixed market signals", "neutral")
+            ("Price action trapped with mixed market signals", "neutral"),
         ]
     else:  # Chinese patterns
         patterns = [
@@ -233,23 +403,22 @@ def generate_combined_patterns(language: str = 'english') -> List[Dict[str, str]
             ("多重底背离，机构兴趣增加", "bullish"),
             ("突破阻力位，监管政策向好，成交放量", "bullish"),
             ("积累阶段，网络指标改善，机构买入", "bullish"),
-
             # Complex bearish patterns
             ("死叉确认，监管不确定，矿工抛售", "bearish"),
             ("支撑破位，交易所流入增加，大户分销", "bearish"),
             ("多重顶背离，网络活动下降", "bearish"),
             ("分销形态，监管担忧，机构流出", "bearish"),
             ("跌破支撑，技术漏洞，空单增加", "bearish"),
-
             # Complex neutral patterns
             ("盘整，监管信号混合，资金流向平衡", "neutral"),
             ("区间震荡，网络指标稳定", "neutral"),
             ("技术整理，机构活动平衡", "neutral"),
             ("横盘，监管方向不明", "neutral"),
-            ("价格受困，市场信号混合", "neutral")
+            ("价格受困，市场信号混合", "neutral"),
         ]
 
     return [{"text": text, "label": label} for text, label in patterns]
+
 
 def save_training_data(language: str):
     """Save generated training data to file."""
@@ -266,34 +435,34 @@ def save_training_data(language: str):
     training_data = all_data[validation_size:]
     validation_data = all_data[:validation_size]
 
-    data = {
-        "training_data": training_data,
-        "validation_data": validation_data
-    }
+    data = {"training_data": training_data, "validation_data": validation_data}
 
-    output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app/data')
+    output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "app/data")
     os.makedirs(output_dir, exist_ok=True)
 
-    output_file = os.path.join(output_dir, f'financial_sentiment_data_{language}.json')
-    with open(output_file, 'w', encoding='utf-8') as f:
+    output_file = os.path.join(output_dir, f"financial_sentiment_data_{language}.json")
+    with open(output_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-    logger.info(f"Generated {len(training_data)} training and {len(validation_data)} validation examples for {language}")
+    logger.info(
+        f"Generated {len(training_data)} training and {len(validation_data)} validation examples for {language}"
+    )
 
     # Log label distribution
-    label_counts = {'bullish': 0, 'bearish': 0, 'neutral': 0}
+    label_counts = {"bullish": 0, "bearish": 0, "neutral": 0}
     for item in all_data:
-        label_counts[item['label'].lower()] += 1
+        label_counts[item["label"].lower()] += 1
 
     logger.info(f"Label distribution for {language}:")
     logger.info(f"Bullish: {label_counts['bullish']}")
     logger.info(f"Bearish: {label_counts['bearish']}")
     logger.info(f"Neutral: {label_counts['neutral']}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     random.seed(42)  # For reproducibility
 
-    for language in ['english', 'chinese']:
+    for language in ["english", "chinese"]:
         logger.info(f"Generating training data for {language}...")
         save_training_data(language)
         logger.info(f"Completed generating {language} training data")

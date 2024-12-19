@@ -5,9 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class TradingSignal(Base):
     """Model for storing trading signals with comprehensive accuracy tracking."""
-    __tablename__ = 'trading_signals'
+
+    __tablename__ = "trading_signals"
 
     id = Column(Integer, primary_key=True)
     symbol = Column(String, nullable=False)
@@ -19,7 +21,9 @@ class TradingSignal(Base):
     confidence = Column(Float, nullable=False)
     accuracy = Column(Float)
     sentiment = Column(String)  # 'bullish', 'bearish', or 'neutral'
-    source = Column(String)  # Source of the trading signal (e.g., 'technical', 'sentiment', 'ensemble')
+    source = Column(
+        String
+    )  # Source of the trading signal (e.g., 'technical', 'sentiment', 'ensemble')
 
     # Market context at prediction time
     market_cycle_phase = Column(String)
@@ -43,7 +47,9 @@ class TradingSignal(Base):
     max_profit_reached = Column(Float)
     max_loss_reached = Column(Float)
     final_outcome = Column(Float)  # Actual profit/loss when signal expires
-    accuracy_improvement = Column(Float)  # How much the accuracy improved from this signal
+    accuracy_improvement = Column(
+        Float
+    )  # How much the accuracy improved from this signal
 
     # Real-time monitoring
     last_price = Column(Float)  # Last known price during monitoring
