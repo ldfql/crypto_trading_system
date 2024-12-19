@@ -1,1 +1,1 @@
-# devin
+# Cryptocurrency Trading System
