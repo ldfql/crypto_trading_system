@@ -11,11 +11,9 @@ import os
 import psycopg2
 from time import sleep
 from pathlib import Path
+from urllib.parse import urlparse
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 def verify_cuda():
@@ -80,12 +78,34 @@ def verify_database():
         logger.error("DATABASE_URL environment variable is not set")
         return False
 
+    # Handle SQLite URLs for local development
+    if db_url.startswith('sqlite:'):
+        logger.info("Using SQLite database for local development")
+        return True
+
     max_retries = 5
     retry_count = 0
 
     while retry_count < max_retries:
         try:
-            conn = psycopg2.connect(db_url)
+            # Parse database URL for PostgreSQL connections
+            if db_url.startswith('postgresql://'):
+                parsed = urlparse(db_url)
+                params = {
+                    'dbname': parsed.path[1:] or 'crypto_trading_test',
+                    'user': parsed.username or 'postgres',
+                    'password': parsed.password or 'postgres',
+                    'host': parsed.hostname or 'localhost',
+                    'port': parsed.port or 5432
+                }
+                logger.info(f"Connecting to PostgreSQL database at {params['host']}:{params['port']}")
+                conn = psycopg2.connect(**params)
+            else:
+                conn = psycopg2.connect(db_url)
+
+            # Test the connection
+            with conn.cursor() as cur:
+                cur.execute('SELECT 1')
             conn.close()
             logger.info("Successfully connected to the database")
             return True
