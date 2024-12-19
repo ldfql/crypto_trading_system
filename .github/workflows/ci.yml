@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [ "devin/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: crypto_trading_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        cd trading_backend
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+    - name: Install Node.js dependencies
+      run: |
+        cd frontend/crypto-trading-pwa
+        npm install
+
+    - name: Verify database connection
+      run: |
+        cd trading_backend
+        python scripts/verify_env.py
+
+    - name: Run database migrations
+      run: |
+        cd trading_backend
+        alembic upgrade head
+
+    - name: Run backend tests
+      run: |
+        cd trading_backend
+        pytest tests/ -v
+
+    - name: Run frontend tests
+      run: |
+        cd frontend/crypto-trading-pwa
+        npm test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install linting dependencies
+      run: |
+        python -m pip install --upgrade pip
+        cd trading_backend
+        pip install black ruff mypy
+
+    - name: Run Black
+      run: |
+        cd trading_backend
+        black . --check
+
+    - name: Run Ruff
+      run: |
+        cd trading_backend
+        ruff check .
+
+    - name: Run MyPy
+      run: |
+        cd trading_backend
+        mypy .
+
+  build:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Build backend
+      run: |
+        cd trading_backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python setup.py build
+
+    - name: Build frontend
+      run: |
+        cd frontend/crypto-trading-pwa
+        npm install
+        npm run build
