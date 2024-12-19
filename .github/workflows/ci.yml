@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "devin/*" ]
   pull_request:
-    branches: [ "devin/1734564919-enhanced-sentiment-analysis" ]
+    branches: [ "devin/*" ]
 
 jobs:
   test:
