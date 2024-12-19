@@ -17,14 +17,19 @@ class TechnicalIndicators:
                 'double_bottom': {'weight': 0.75, 'confidence': 0.8},
                 'ascending_triangle': {'weight': 0.7, 'confidence': 0.75},
                 'cup_and_handle': {'weight': 0.7, 'confidence': 0.75},
-                'bullish_engulfing': {'weight': 0.65, 'confidence': 0.7}
+                'bullish_engulfing': {'weight': 0.65, 'confidence': 0.7},
+                'pennant': {'weight': 0.65, 'confidence': 0.7},
+                'flag': {'weight': 0.65, 'confidence': 0.7},
+                'rectangle_breakout': {'weight': 0.6, 'confidence': 0.7}
             },
             'bearish': {
                 'death_cross': {'weight': 0.8, 'confidence': 0.85},
                 'double_top': {'weight': 0.75, 'confidence': 0.8},
                 'descending_triangle': {'weight': 0.7, 'confidence': 0.75},
                 'head_and_shoulders': {'weight': 0.7, 'confidence': 0.75},
-                'bearish_engulfing': {'weight': 0.65, 'confidence': 0.7}
+                'bearish_engulfing': {'weight': 0.65, 'confidence': 0.7},
+                'falling_wedge': {'weight': 0.65, 'confidence': 0.7},
+                'rectangle_breakdown': {'weight': 0.6, 'confidence': 0.7}
             }
         }
 

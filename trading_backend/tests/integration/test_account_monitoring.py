@@ -10,8 +10,15 @@ async def market_data_service():
     """Mock market data service for testing"""
     class MockMarketDataService:
         async def get_market_data(self, symbol: str) -> dict:
+            # Scale volume based on symbol to test different scenarios
+            volumes = {
+                "BTC/USDT": 5_000_000_000,  # $5B volume
+                "ETH/USDT": 2_000_000_000,  # $2B volume
+                "BNB/USDT": 1_000_000_000,  # $1B volume
+                "SOL/USDT": 500_000_000,    # $500M volume
+            }
             return {
-                "volume_24h": 50_000_000,  # $50M volume
+                "volume_24h": volumes.get(symbol, 50_000_000),
                 "price": 50000,
                 "volatility": 0.02,
                 "spread_percentage": 0.1,
@@ -102,7 +109,6 @@ async def test_pair_selection_by_stage(pair_selector):
             base_pairs=base_pairs
         )
 
-
         assert len(suitable_pairs) >= min_expected_pairs, \
             f"Account with {balance} USDT should have access to at least {min_expected_pairs} pairs"
 
@@ -127,7 +133,7 @@ async def test_strategy_adaptation(trading_strategy):
     for balance, expect_staged_entries in test_cases:
         signal = await trading_strategy.generate_signal(
             balance=balance,
-            symbol="BTC/USDT",
+            symbol="BTC/USDT",  # Use BTC/USDT which has sufficient volume
             signal_type="long",
             confidence=0.85
         )

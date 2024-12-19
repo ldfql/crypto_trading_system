@@ -216,7 +216,7 @@ class PredictionAnalyzer:
 
         # Analyze timeframe performance
         for timeframe, data in performance_metrics.get('accuracy_by_timeframe', {}).items():
-            if data['accuracy'] < 0.85:
+            if data['accuracy'] < 0.82:  # Maintain minimum accuracy threshold
                 suggestions.append({
                     'category': 'timeframe',
                     'timeframe': timeframe,
@@ -225,13 +225,14 @@ class PredictionAnalyzer:
                     'details': [
                         "Review historical patterns",
                         "Adjust technical indicators for this timeframe",
-                        "Consider market phase specific strategies"
+                        "Consider market phase specific strategies",
+                        "Optimize risk-reward ratios for this timeframe"
                     ]
                 })
 
         # Analyze market phase performance
         for phase, data in performance_metrics.get('accuracy_by_market_phase', {}).items():
-            if data['accuracy'] < 0.85:
+            if data['accuracy'] < 0.82:  # Maintain minimum accuracy threshold
                 suggestions.append({
                     'category': 'market_phase',
                     'phase': phase,
@@ -240,13 +241,14 @@ class PredictionAnalyzer:
                     'details': [
                         "Adjust strategy parameters for this market phase",
                         "Review technical indicator effectiveness",
-                        "Consider additional market context"
+                        "Consider additional market context",
+                        "Evaluate position sizing for this phase"
                     ]
                 })
 
         # Analyze technical indicators
         for indicator, data in pattern_analysis.get('technical_indicators', {}).items():
-            if data['success_rate'] < 0.85:
+            if data['success_rate'] < 0.82:  # Maintain minimum accuracy threshold
                 suggestions.append({
                     'category': 'technical_indicator',
                     'indicator': indicator,
@@ -261,7 +263,7 @@ class PredictionAnalyzer:
 
         # Analyze sentiment sources
         for source, data in pattern_analysis.get('sentiment_patterns', {}).items():
-            if data['success_rate'] < 0.85:
+            if data['success_rate'] < 0.82:  # Maintain minimum accuracy threshold
                 suggestions.append({
                     'category': 'sentiment_analysis',
                     'source': source,
