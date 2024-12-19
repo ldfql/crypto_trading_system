@@ -1,0 +1,54 @@
+{
+    "training_data": [
+        {
+            "text": "比特币突破重要压力位，成交量显著放大，看多信号明显",
+            "label": "bullish",
+            "confidence": 0.92
+        },
+        {
+            "text": "市场恐慌情绪蔓延，多个技术指标显示超卖，建议谨慎",
+            "label": "bearish",
+            "confidence": 0.9
+        },
+        {
+            "text": "双底形态确认，MACD金叉，做多机会来临",
+            "label": "bullish",
+            "confidence": 0.95
+        },
+        {
+            "text": "头肩顶形态形成，卖压持续增加，建议减仓",
+            "label": "bearish",
+            "confidence": 0.93
+        },
+        {
+            "text": "突破上升通道，成交量配合，看涨确认",
+            "label": "bullish",
+            "confidence": 0.91
+        },
+        {
+            "text": "Bitcoin breaks key resistance with increasing volume, strong buy signal",
+            "label": "bullish",
+            "confidence": 0.93
+        },
+        {
+            "text": "Market sentiment deteriorating, multiple indicators show oversold conditions",
+            "label": "bearish",
+            "confidence": 0.91
+        },
+        {
+            "text": "Double bottom pattern confirmed with MACD golden cross",
+            "label": "bullish",
+            "confidence": 0.94
+        },
+        {
+            "text": "Head and shoulders pattern forming with increasing selling pressure",
+            "label": "bearish",
+            "confidence": 0.92
+        },
+        {
+            "text": "Breaking ascending channel with strong volume confirmation",
+            "label": "bullish",
+            "confidence": 0.90
+        }
+    ]
+}

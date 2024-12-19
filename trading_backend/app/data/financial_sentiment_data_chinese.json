@@ -1,0 +1,426 @@
+{
+    "training_data": [
+        {
+            "text": "双底形态确认，成交量突破，机构参与",
+            "label": "bullish"
+        },
+        {
+            "text": "强支撑确认，网络采用率提升，大户积累",
+            "label": "bullish"
+        },
+        {
+            "text": "大型矿工抛售比特币持仓，市场不确定性增加",
+            "label": "bearish"
+        },
+        {
+            "text": "主要协议发现技术漏洞",
+            "label": "bearish"
+        },
+        {
+            "text": "双顶形态，卖压沉重，成交确认",
+            "label": "bearish"
+        },
+        {
+            "text": "价格在狭窄区间整理，成交量减少",
+            "label": "neutral"
+        },
+        {
+            "text": "阻力位出现分销，卖单增加",
+            "label": "bearish"
+        },
+        {
+            "text": "矿工投降导致挖矿难度下降",
+            "label": "bearish"
+        },
+        {
+            "text": "多个时间周期出现顶背离，买盘减少",
+            "label": "bearish"
+        },
+        {
+            "text": "买卖盘口均衡，无明显偏向",
+            "label": "neutral"
+        },
+        {
+            "text": "机构持续买入，积累阶段明显，卖盘减少",
+            "label": "bullish"
+        },
+        {
+            "text": "大型企业将加密货币纳入资产负债表，长期持有策略",
+            "label": "bullish"
+        },
+        {
+            "text": "鲸鱼地址减少持仓，大量分销迹象",
+            "label": "bearish"
+        },
+        {
+            "text": "机构资金流向趋于平衡，无明确方向",
+            "label": "neutral"
+        },
+        {
+            "text": "多个时间周期无明确趋势，成交量平均",
+            "label": "neutral"
+        },
+        {
+            "text": "散户兴趣激增，市场情绪积极，钱包地址增加",
+            "label": "bullish"
+        },
+        {
+            "text": "监管政策利好提振市场信心，机构参与度提升",
+            "label": "bullish"
+        },
+        {
+            "text": "金叉形成，机构买入，监管消息利好",
+            "label": "bullish"
+        },
+        {
+            "text": "网络活动下降，交易量减少",
+            "label": "bearish"
+        },
+        {
+            "text": "机构资金持续流出加密货币基金，速度加快",
+            "label": "bearish"
+        },
+        {
+            "text": "积累阶段，网络指标改善，机构买入",
+            "label": "bullish"
+        },
+        {
+            "text": "机构投资者大幅增持比特币，积累明显加强",
+            "label": "bullish"
+        },
+        {
+            "text": "跌破主要支撑位，成交量放大",
+            "label": "bearish"
+        },
+        {
+            "text": "价格在主要均线附近徘徊，不确定",
+            "label": "neutral"
+        },
+        {
+            "text": "技术开发按计划进行中",
+            "label": "neutral"
+        },
+        {
+            "text": "横盘，监管方向不明",
+            "label": "neutral"
+        },
+        {
+            "text": "网络指标显示活动水平稳定",
+            "label": "neutral"
+        },
+        {
+            "text": "强劲支撑位获得买单支撑，机构兴趣增加",
+            "label": "bullish"
+        },
+        {
+            "text": "死叉确认，监管不确定，矿工抛售",
+            "label": "bearish"
+        },
+        {
+            "text": "突破重要阻力位，成交量显著放大，机构持续买入",
+            "label": "bullish"
+        },
+        {
+            "text": "价格在支撑阻力间震荡，成交中性",
+            "label": "neutral"
+        },
+        {
+            "text": "持续创新低，支撑位失守，成交量放大",
+            "label": "bearish"
+        },
+        {
+            "text": "衍生品市场多空比例平衡",
+            "label": "neutral"
+        },
+        {
+            "text": "下降三角突破，抛压沉重",
+            "label": "bearish"
+        },
+        {
+            "text": "监管收紧引发市场不确定性，机构撤离",
+            "label": "bearish"
+        },
+        {
+            "text": "盘整，监管信号混合，资金流向平衡",
+            "label": "neutral"
+        },
+        {
+            "text": "均线系统下行交叉，卖盘动能强",
+            "label": "bearish"
+        },
+        {
+            "text": "持续创造更高高点和更高低点，成交量支撑",
+            "label": "bullish"
+        },
+        {
+            "text": "技术指标显示混合信号，成交正常",
+            "label": "neutral"
+        },
+        {
+            "text": "分销形态，监管担忧，机构流出",
+            "label": "bearish"
+        },
+        {
+            "text": "无明显机构买卖压力",
+            "label": "neutral"
+        },
+        {
+            "text": "支撑破位，交易所流入增加，大户分销",
+            "label": "bearish"
+        },
+        {
+            "text": "RSI超卖区域出现正背离，成交量支撑",
+            "label": "bullish"
+        },
+        {
+            "text": "跌破支撑，技术漏洞，空单增加",
+            "label": "bearish"
+        },
+        {
+            "text": "均线系统显示强劲上升动能，机构买入",
+            "label": "bullish"
+        },
+        {
+            "text": "上升三角突破，成交量动能增强",
+            "label": "bullish"
+        },
+        {
+            "text": "倒头肩形态完成确认，成交量配合",
+            "label": "bullish"
+        },
+        {
+            "text": "关键支撑位出现积累，买盘增加",
+            "label": "bullish"
+        },
+        {
+            "text": "多重顶背离，网络活动下降",
+            "label": "bearish"
+        },
+        {
+            "text": "市场等待关键经济数据，仓位平衡",
+            "label": "neutral"
+        },
+        {
+            "text": "多重底背离，机构兴趣增加",
+            "label": "bullish"
+        },
+        {
+            "text": "上升楔形下破，成交量增加",
+            "label": "bearish"
+        },
+        {
+            "text": "市场基本面强劲，采用率持续增长，机构兴趣浓厚",
+            "label": "bullish"
+        },
+        {
+            "text": "价格受困，市场信号混合",
+            "label": "neutral"
+        },
+        {
+            "text": "技术升级改善网络扩展性和采用率",
+            "label": "bullish"
+        },
+        {
+            "text": "突破阻力位，监管政策向好，成交放量",
+            "label": "bullish"
+        },
+        {
+            "text": "监管环境仍不明朗，讨论持续进行",
+            "label": "neutral"
+        },
+        {
+            "text": "交易所流入流出量保持平衡",
+            "label": "neutral"
+        },
+        {
+            "text": "横盘交易，买卖压力平衡",
+            "label": "neutral"
+        },
+        {
+            "text": "阻力位出现分销形态，机构抛售",
+            "label": "bearish"
+        },
+        {
+            "text": "区间交易高点低点相等，成交清淡",
+            "label": "neutral"
+        },
+        {
+            "text": "头肩顶形态，成交量萎缩，支撑破位",
+            "label": "bearish"
+        },
+        {
+            "text": "宏观担忧和加息导致市场情绪转向悲观",
+            "label": "bearish"
+        },
+        {
+            "text": "网络指标显示长期持有者强势积累",
+            "label": "bullish"
+        },
+        {
+            "text": "衍生品市场空头兴趣增加",
+            "label": "bearish"
+        },
+        {
+            "text": "区间震荡，网络指标稳定",
+            "label": "neutral"
+        },
+        {
+            "text": "十字星形态，成交量区间内减少",
+            "label": "neutral"
+        },
+        {
+            "text": "挖矿算力在当前水平稳定",
+            "label": "neutral"
+        },
+        {
+            "text": "空头旗形突破，成交确认",
+            "label": "bearish"
+        },
+        {
+            "text": "多方吞没形态，成交量确认，后续走强",
+            "label": "bullish"
+        },
+        {
+            "text": "盘整阶段成交量萎缩，方向不明",
+            "label": "neutral"
+        },
+        {
+            "text": "交易所流出量增加，投资者转向冷储存",
+            "label": "bullish"
+        },
+        {
+            "text": "大型机构持续增持，链上数据显示积累加速",
+            "label": "bullish"
+        },
+        {
+            "text": "突破重要阻力位后成交量持续放大，买盘强势",
+            "label": "bullish"
+        },
+        {
+            "text": "技术指标MACD金叉，RSI显示超买，趋势确立",
+            "label": "bullish"
+        },
+        {
+            "text": "链上数据显示大户地址持仓增加，看多信号明显",
+            "label": "bullish"
+        },
+        {
+            "text": "突破前期高点，量能配合，上升趋势确认",
+            "label": "bullish"
+        },
+        {
+            "text": "机构资金持续流入，场外资金跟进明显",
+            "label": "bullish"
+        },
+        {
+            "text": "多头排列完成，均线系统支撑有力",
+            "label": "bullish"
+        },
+        {
+            "text": "市场情绪转暖，衍生品市场看多情绪增强",
+            "label": "bullish"
+        },
+        {
+            "text": "大型企业增加加密货币储备，机构参与度提升",
+            "label": "bullish"
+        },
+        {
+            "text": "技术突破后量能持续放大，买盘主导",
+            "label": "bullish"
+        },
+        {
+            "text": "比特币突破新高，牛市来临，建议建仓。市场看多情绪强烈。",
+            "label": "bullish"
+        },
+        {
+            "text": "市场看空情绪浓厚，建议清仓观望。价格跌破支撑位。",
+            "label": "bearish"
+        },
+        {
+            "text": "市场情绪高涨，多头主导。突破重要阻力位，买盘强势。",
+            "label": "bullish"
+        },
+        {
+            "text": "牛市信号确认，机构持续买入，市场情绪乐观。",
+            "label": "bullish"
+        },
+        {
+            "text": "熊市趋势确立，卖压持续，建议观望。",
+            "label": "bearish"
+        }
+    ],
+    "validation_data": [
+        {
+            "text": "RSI和MACD出现多重底背离，买盘压力增加",
+            "label": "bullish"
+        },
+        {
+            "text": "不同市场指标和时间周期显示混合信号",
+            "label": "neutral"
+        },
+        {
+            "text": "牛旗形态突破，成交量确认",
+            "label": "bullish"
+        },
+        {
+            "text": "交易所流入量增加，持有者准备抛售",
+            "label": "bearish"
+        },
+        {
+            "text": "技术整理，机构活动平衡",
+            "label": "neutral"
+        },
+        {
+            "text": "均线系统趋于平缓，成交量一般",
+            "label": "neutral"
+        },
+        {
+            "text": "上涨成交量持续萎缩，机构分销",
+            "label": "bearish"
+        },
+        {
+            "text": "成交量平平，无明确方向偏好",
+            "label": "neutral"
+        },
+        {
+            "text": "机构衍生品市场看多仓位增加",
+            "label": "bullish"
+        },
+        {
+            "text": "杯柄形态完成，机构支撑明显",
+            "label": "bullish"
+        },
+        {
+            "text": "日线图形成金叉，成交量配合，价格突破确认",
+            "label": "bullish"
+        },
+        {
+            "text": "日线图死叉确认，卖压持续增加",
+            "label": "bearish"
+        },
+        {
+            "text": "低波动无突破信号，成交量递减",
+            "label": "neutral"
+        },
+        {
+            "text": "挖矿算力创新高，网络安全性增强",
+            "label": "bullish"
+        },
+        {
+            "text": "RSI超买区域出现负背离",
+            "label": "bearish"
+        },
+        {
+            "text": "做市商维持价格区间交易",
+            "label": "neutral"
+        },
+        {
+            "text": "技术指标显示超买，顶背离明显",
+            "label": "bearish"
+        },
+        {
+            "text": "对称三角形态，成交量递减",
+            "label": "neutral"
+        }
+    ]
+}
