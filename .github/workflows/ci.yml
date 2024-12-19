@@ -39,6 +39,11 @@ jobs:
         node-version: '20'
         cache: 'pnpm'
 
+    - name: Install pnpm
+      run: |
+        corepack enable
+        corepack prepare pnpm@latest --activate
+
     - name: Install Python dependencies
       working-directory: ./trading_backend
       run: |
@@ -50,7 +55,6 @@ jobs:
     - name: Install Frontend dependencies
       working-directory: ./frontend/crypto-trading-pwa
       run: |
-        npm install -g pnpm
         pnpm install
         pnpm install -D vitest jsdom @testing-library/react @testing-library/jest-dom
 
@@ -121,6 +125,11 @@ jobs:
         node-version: '20'
         cache: 'pnpm'
 
+    - name: Install pnpm
+      run: |
+        corepack enable
+        corepack prepare pnpm@latest --activate
+
     - name: Build Backend
       working-directory: ./trading_backend
       run: |
@@ -132,6 +141,5 @@ jobs:
     - name: Build Frontend
       working-directory: ./frontend/crypto-trading-pwa
       run: |
-        npm install -g pnpm
         pnpm install
         pnpm build
