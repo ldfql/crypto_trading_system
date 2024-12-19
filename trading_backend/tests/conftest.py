@@ -38,10 +38,20 @@ def mock_youtube_client():
 @pytest.fixture(scope="session")
 async def db_engine():
     """Create a test database engine."""
+    database_url = os.getenv("DATABASE_URL")
+    if database_url is None:
+        # Fallback to SQLite for local development
+        database_url = "sqlite+aiosqlite:///./test.db"
+
+    # Convert PostgreSQL URL to async format if needed
+    if database_url.startswith('postgresql://'):
+        database_url = database_url.replace('postgresql://', 'postgresql+asyncpg://')
+
     engine = create_async_engine(
-        "sqlite+aiosqlite:///./test.db",
+        database_url,
         echo=True
     )
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
