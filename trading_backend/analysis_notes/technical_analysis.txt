@@ -1,0 +1,1899 @@
+Technical Analysis of the Financial Markets
+
+Tips and Tricks to Make Good Money through Candlestick Trading, Charting, Cryptocurrency, Chinese Crypto, and Technical Analysis with the Financial Markets
+
+
+
+
+
+© Copyright 2021 - All rights reserved.
+
+This document is geared towards providing exact and reliable information in regard to the topic and issue covered. The publication is sold with the idea that the publisher is not required to render accounting, officially permitted, or otherwise, qualified services.
+
+If advice is necessary, legal, or professional, a practiced individual in the profession should be ordered from a Declaration of Principles which was accepted and approved equally by a Committee of the American Bar Association and a Committee of Publishers and Associations.
+
+In no way is it legal to reproduce, duplicate, or transmit any part of this document in either electronic means or in printed format. Recording of this publication is strictly prohibited and any storage of this document is not allowed unless with written permission from the publisher. All rights reserved.
+
+The information provided herein is stated to be truthful and consistent, in that any liability, in terms of inattention or otherwise, by any usage or abuse of any policies, processes, or directions contained within is the solitary and utter responsibility of the recipient reader. Under no circumstances will any legal responsibility or blame be held against the publisher for any reparation, damages, or monetary loss due to the information herein, either directly or indirectly.
+
+Respective authors own all copyrights not held by the publisher.
+
+The information herein is offered for informational purposes solely, and is universal as so. The presentation of the information is without contract or any type of guaranteed assurance.
+
+
+The trademarks that are used are without any consent, and the publication of the trademark is without permission or backing by the trademark owner. All trademarks and brands within this book are for clarifying purposes only and are owned by the owners themselves, not affiliated with this document.
+
+
+
+
+
+Table of Contents
+
+
+Introduction
+
+
+Chapter 1: Introducing Technical Analysis
+
+Defining Technical Analysis
+
+The Difference between Technical and Fundamentals
+
+Strategies
+
+Let's Talk About Rice…
+
+And Now the Dow…
+
+Charting
+
+Why Use Technical Analysis
+
+Present-Day Technical Analysis
+
+
+Chapter 2: Price Action Principles
+
+Core Concepts of Price Action
+
+Price Action Components
+
+On Self-Fulfilling Prophecies
+
+Bars, Candles, Lines, and More
+
+
+Chapter 3: Trends, Support, and Resistance
+
+Getting to Know the Trend
+
+Being a Trend Follower
+
+Time Frames and How They Affect the Trend
+
+Trend Channels
+
+Trend Lines
+
+Support and Resistance
+
+Support and Resistance Flip
+
+
+Chapter 4: Drawing Tools
+
+Getting Used to Drawing Tools
+
+Static Support and Resistance
+
+Dynamic Resistance and Support
+
+Horizontal Resistance and Support
+
+Back to Trend Lines
+
+
+Chapter 5: Chart Patterns
+
+What Are Chart Patterns?
+
+Continuation Bar Patterns
+
+Flags and Pennants
+
+Rectangles
+
+Wedges
+
+Volatility
+
+Reversal Patterns
+
+
+Chapter 6: Gaps and Candlestick Patterns
+
+Let's Talk Candles
+
+One-Candle Patterns
+
+Multi-Candle Patterns
+
+
+Chapter 7: Moving Averages
+
+The Moving Average
+
+Kinds of Moving Averages
+
+Moving Average Crossovers
+
+Techniques and Tips for Trading with Moving Averages
+
+Using Moving Averages as Dynamic Support and Resistance
+
+
+Chapter 8: Major Indicators and Oscillators
+
+Welcome to Oscillators and Indicators
+
+Analysis Paralysis
+
+Oscillators
+
+Major Indicators
+
+Major Oscillators
+
+Stochastics Oscillator
+
+
+Chapter 9: Trading Strategies for Crypto, Forex, and Other Markets
+
+Confluence
+
+Breakouts
+
+Trend Trading
+
+Trend Trading with Countertrend Breakouts
+
+Range Trading
+
+
+Chapter 10: Risk and Money Management
+
+Stop Losses
+
+Risk Reward Ratio
+
+Max Loss Percentage
+
+Fractional Positions
+
+Diversification
+
+
+Conclusion
+
+
+References
+
+
+
+
+
+Introduction
+
+
+
+
+Trading is a lovely way to put your money to work for you. You know that, or you wouldn't be reading this right now. However, if trading were something everyone understood, then everyone would be making money. This book will help you understand how to trade any and every market, whether it's cryptocurrency, stocks, indices, or anything else. You can apply the wisdom from within these pages to your trading because trading is all about price. If you want to understand the price and make more accurate than usual predictions about what it's going to do next, you'd be hard-pressed to find a better way to do so than technical analysis.
+
+
+The thing is that there's so much to cover when it comes to technical analysis and trading that many people take off and don't bother investing the time and money to learn it all. With this book, you'll get very easy-to-digest information that will make your life so much easier and cut your learning curve down considerably. Many turn to the internet to learn about technical analysis, but very few of those people receive the right information. You see, the internet is a cesspool of all kinds of crappy information from people who only want to make you pay for their seminar, coaching, or course. It's not easy to find what you need, so you can ditch the rest of it. Therefore, consider yourself very fortunate to have stumbled upon this book.
+
+
+Whether you're only just starting your trading journey, or you've been at this so long that it feels like you're never going to make it, this book is written with you in mind. It's nothing like the other stuff you'll find out there, written in stuffy English, barely clear about what they're saying, and clearly only meant to act as a marketing tool. This book is written by a trader for traders. When you apply what you learn with the proper risk and money management, it's only a matter of time before you make this your bread and butter.
+
+
+There are so many markets to trade in these days, and it seems as though they just keep popping up. Even in specific markets like cryptocurrencies, you'll find there's something new every day. From forex to stocks, bonds to equities and options, and more, there's always a way to make money from the markets. Technical analysis will give you very profound insights about the price, and you'll have the confidence you need to execute your trades on your own. How often have you gone into a trade because Random Trader Joe Schmoe said the price was definitely heading south? So, you get into a sell trade, but it doesn't work out for you…And yet, Joe was able to make some money? That happens more often than you think. He likely knew something you didn't know. You're about to learn exactly what that is, and once you do, you'll never rely on some talking head or wannabe guru to tell you what to do with your own money in the markets. With the right mindset and discipline, you, too, will have mastered the language of the charts.
+
+
+
+
+
+Chapter 1: Introducing Technical Analysis
+
+
+
+
+By the time you're through with this chapter, you'll have a general understanding of technical analysis. You'll be able to tell the difference between fundamental and technical analysis and recognize some of the effective methods and tools used in the latter. You'll also understand some of the concepts that we'll continue to circle back to throughout this book.
+
+
+
+
+
+Defining Technical Analysis
+
+
+
+
+Technical analysis studies price action from the past, compares it with the present, and studies how this information could affect future prices. It's nothing like a crystal ball, so don't assume that you're going to get visions or anything of the sort. As a technical analyst, your job is to work out the most likely reactions to the price action from the past and what's playing out right now, and then make estimates about what to expect later on when price hits significant levels. In other words, it's not about accurate predictions. It's about looking for setups with a high probability of playing out, which is another way of saying that it won't always work out in your favor. However, it will increase your accuracy, which means more money for you.
+
+
+The tool used by every technical analyst is the price chart, where the price of an asset is plotted over a set period. There are several kinds of charts to consider when analyzing price. Some traders prefer to work with candlesticks, others like bars, and some just use the line chart. You also have Renko charts, point-and-figure charts, range charts, tick charts, and so on.
+
+
+
+
+
+The Difference between Technical and Fundamentals
+
+
+
+
+When people in the world of trading think about technical analysis, they consider it the direct opposite to the other way of analyzing price action: Fundamental analysis, or "funny mentals," as some technical analysts call it. There's a lot of difference between these two, as you'll soon learn.
+
+
+Fundamental analysis is all about the reasons why the market is moving as it is. Say you're trading stocks. In this case, the fundamentals of the price of a stock would include all the news and financial data like earnings reports which affect that stock listed by a publicly-traded company. When you're dealing with the futures market, the fundamentals would be all information about a certain commodity (like oil, for instance) or the index or financial market (like the S&P 500). Say you're looking at the foreign exchange markets. The fundamentals are about inflation and interest rates, central bank policies, international economies, and economic news releases.
+
+
+Technical analysis doesn't concern itself with the reasons why price does what it does. It's more about the price action itself. It focuses on the way humans behave en masse and how that affects the price in turn. For the technical analyst, everything the fundamental analysts are talking about is already on the charts. This is why the purists won't even bother looking at a news calendar for any other purpose than to avoid trading the news events (or to take advantage of them). They only pay attention to the asset's price and the volume, with the former being more important to them than the latter, generally speaking. Fundamental analysis may focus on the why, but technical analysis focuses on the how.
+
+
+Technical analysts have a broad range of methods to analyze price movement and find chances to take advantage of the markets. Their methods help them figure out their entries and exits, risk management, stop-loss placement, take profit levels, position-sizing, and even more. Some investors and traders can work with both technical and fundamental analyses, so don't assume that you have to pick only one of either.
+
+
+
+
+
+Strategies
+
+
+
+
+The strategies or methods of working with technical analysis are way too many to count. You could choose to work with patterns like head and shoulders, double tops and double bottoms, support, and resistance, supply and demand zones, order blocks, moving averages, trends, mean reversals, and so on. You could also choose to work with bullish and bearish engulfing candlestick patterns, point-and-figure charts, and Elliot Wave. These are the various elements that make up technical analysis, among many others.
+
+
+This book will focus on the essential information you need to analyze any market you choose. To be very clear, there's no distinction when it comes to the markets and technical analysis. You could choose to trade forex, stocks, or whatever you like. The information in this book works regardless of the markets it's applied in. We'll go over the tools that many traders and analysts work with. Having said that, the technical analysis continues to evolve, and there's no way any single book could cover everything about the field. As such, understand that what you're getting here are the basics. You'll get useful tips on how to make the most of any market with technical analysis.
+
+
+
+
+
+Let's Talk About Rice…
+
+
+
+
+The history of technical analysis is very colorful, with many different traders coming together to influence how we see the financial markets. The earliest traders to use technical analysis in their trading decisions were the Japanese rice traders from the 18th century. They were using methods that Honma Munehisa, a rice merchant, developed. These methods are what we know as candlesticks today. Eventually, the rest of the world would come to know of Munehisa's invention thanks to Steve Nison, a technical analyst and trader.
+
+
+
+
+
+In the 18th century in Osaka's rice markets, Home had discovered success in his trading by working with the methods he had developed, founded on market psychology. At the time, it was a very novel way of looking at the markets, and it changed a lot of things. Besides writing books on how his methods worked, he also became one of history's most profitable traders.
+
+
+
+
+
+And Now the Dow…
+
+
+
+
+By the 19th century, in the United States of America, Charles Dow had created a theory called the Dow theory (by others). Born in 1851, the father of Western technical analysis was the Wall Street Journal's first editor and part of Dow Jones and Company's founders. His theory was continually refined even after he passed in 1902.
+
+
+
+
+
+There's a lot of controversy about Dow's actual concepts. Still, the principles continue to hold as the foundation for technical analysis in the West. They are practiced by many, even around the world. You need to remember that the principles were based on just two stock market mean indices: Rail (or transportation) and industrial (or manufacturing). Today, you can still apply Dow theory to all markets. The theory states that several primary principles are followed by price action. Here they are:
+
+
+Market events are priced in. All fundamentals and news are already priced into the market or viewable on a chart. As these prices are founded on human behavior, expectations, and knowledge, they are ever adjusting to account for all the important information and present and future events that are hoped for, feared or expected. It means before things happen, you can see the events set up on the charts.
+
+
+Three trends matter . You have your primary, secondary, and minor trends. A primary trend involves a major change in price movement, whether down or up, and it can last from 1 year to 3 years. A secondary trend is a countertrend mid-term swing that happens between a third of two-thirds of the main trend and can last from 3 weeks to 3 months. Then you have the minor trend. That's just a short-term movement in price that can take hours to weeks. Think of this like an onion, with the short-term trends wrapped up in the medium-term trends wrapped up in the long-term trends.
+
+
+Three phases matter . Dow theory holds that the most significant trend is the primary trend and that there are usually three phases within this trend. When the market is bullish (or in an uptrend), the phases are:
+
+
+Accumulation
+
+
+Public participation
+
+
+Excess.
+
+
+
+
+A new uptrend’s accumulation occurs at the bottom of a bearish trend when the smart money traders are ready to buy again. In the public participation part, you'll notice a lot more movement. It's where the public notices that there's a lot of movement, and they want to take advantage of the new uptrend. Then comes the excess phase, when the smart money investors distribute or sell their positions to those just entering the market at the wrong time and price. At the end of this phase, you'll see signs that there's a downtrend about to begin. Theoretically, the downtrend has the same phases as the uptrend. They are:
+
+
+Distribution
+
+
+Public participation
+
+
+Excess
+
+
+
+
+Confirmation is essential. Confirmation was a term applied to two moving average stock market indexes (rail and industrial). According to Dow, each index has to confirm the other by heading in the same direction before you can say the trend is up or down. This means that you can't say a true uptrend is in place unless and until the indices are both in uptrends. Today, confirmation is all about using various indicators and lines to confirm the trajectory of price.
+
+
+The volume always confirms the trends. While price is the most important thing, volume can work as a really great way to confirm the current price action. When the price action is moving in a trend's direction, there should be high volume. Conversely, when the price is making corrections (also called pullbacks or retracements), the volume should be lower than on the impulsive, "push" moves." If the volume confirms the trend, the trend is genuine and will hold for a while.
+
+
+The trend is correct until a reversal happens. Trends will keep going until there's very obvious proof that they have reversed. In other words, countertrend corrections and consolidating or sideways moving price action could happen, but the only thing that will point at the end of a trend is a clear reversal. One of the things technical analysis seeks to do is find the difference between actual reversals and just price corrections within a predominant trend.
+
+
+Things may have changed a lot since the days of Dow, but his theories remain very useful till now. While it's not easy to stick to every part of this theory in the trading environment of our time, the practical tools that come from his ideas have continued to prove a powerhouse for trading the markets.
+
+
+
+
+
+Charting
+
+
+
+
+One thing that changed the game for traders is the development of price charts as we know them. These are a visual representation of price action, and they are the major tools that we all use in analyzing the markets. The first chart to be developed in the US was called the point-and-figure chart, and it was being used late in the 19th century, around the time Dow came up with his theories. These charts moved from crude, handwritten forms to the form we know them with today, with columns of Os to represent downtrends and Xs to represent uptrends.
+
+
+In the 20th century, the bar chart came along. As decades passed, many fell in love with bar charts, and they were soon adopted in all markets. They ruled supreme until the 1980s, when Steve Nison, an American trader, introduced the world to Munehisa's candlesticks, which the Japanese had used for centuries. These three charts have continued to reign even now.
+
+
+
+
+
+Why Use Technical Analysis
+
+
+
+
+Technical analysis considers all information, both known and unknown, by the public and insiders. It works based on the assumption that two main factors affect price action. One of them is rationality, which would be the equivalent of price/earnings ratios for fundamental traders. The other is emotionality, which is all about factoring in people's fear and greed. You can glean all of this by looking at your charts.
+
+
+There's a Japanese proverb that goes, "Like the right hand helping the left." You could think of technical and fundamental analysis being connected this way, as they help each other out. For instance, you could have an idea of the cryptos you want to buy based on news surrounding those currencies and their management. Still, when you have a chart and analyze the technical of that price, you could learn that buying at an even lower price would be in your best interests. In other words, fundamentals can give you the big picture, while technical give you the precise timing to get in and out.
+
+
+Another great thing about technical analysis is that it makes it even easier to be more careful with money and risk management. The most amazing thing about charts is that you can spot the prices you'd have to admit being wrong about the trade. Fundamentals could never catch up as fast as the technical due to the quick price changes.
+
+
+The further point is that there's no need to get emotional about a chart. You can see what's going on objectively. If you see the market is continuing to push up and is making higher and higher closes, but it's also giving you candles with long upper wicks and shooting stars, then you know for a fact that the up move is coming to an end. You'd be able to see that clearly without being blinded by the hype of fundamentals.
+
+
+As many analysts and traders consider the technical analysis in their trades, it's clear why this method has a very strong effect on the markets. This is why it's worth being aware of the technical signals that pop up on your charts in addition to fundamentals.
+
+
+
+
+
+Present-Day Technical Analysis
+
+
+
+
+Automated systems or trading algorithms rule the present landscape of technical analysis. In other words, computer systems are running the show with no human influence beyond the programming of said systems for trading. Too many retail traders in all the markets aren't using algorithms themselves. They're too expensive to be programmed or because the traders themselves know nothing about programming. Instead, they choose to be manual traders, facing off against the bigger "sharks" with their trading systems. Technical analysis makes use of rules when coming up with their own strategies. A few decide to get their strategies coded so the computer can trade them on their behalf. Whichever route you decide to pick, you're going to need technical analysis to come up with a system that works.
+
+
+
+
+
+Chapter 2: Price Action Principles
+
+
+
+
+By the end of this chapter, you'll know how critical price action is when it comes to technical analysis, and you'll understand how psychology and human nature can propel market action. You'll also gain a healthy appreciation for the technical methods, tools, and concepts that work best with price action analysis, regardless of the market or asset.
+
+
+
+
+
+Core Concepts of Price Action
+
+
+
+
+All through time, there's one thing about technical analysis that has continued to unify all other ideas in this field of study, and that's price action. Price action is a term that means different things to different analysts. Still, in the end, the technical traders all agree that it's about the patterns and repetitive behaviors of the price, which can prove useful in predicting the future directions it takes.
+
+
+Technical purists have always held that economic conditions, news events, market emotions, and perceptions always show on the chart. This is why there is no reason to look at those external factors. It's best just to study the price alone.
+
+
+That being said, more than a few external influences can affect the price of an asset at any point in time. Figuring out exactly what blend of events will lead to a boom or bust is not the easiest thing to do. As such, technical analysts don't bother to find out why the market moves one way instead of another. For them, it's all about the how because that's where the money is.
+
+
+The study of price action is about observing how the price in a certain market or asset moves. You can characterize any financial market as no more than a crowd of people who act based on their emotions and demonstrate what they feel by their decisions to buy or sell on the charts. This may feel a bit oversimplified, but for now, it's more than sufficient to describe what it means to analyze price action.
+
+
+Many emotions drive people to buy or sell, including fear and greed. Also, the general market perceptions and sentiments like pessimism and optimism can show on the charts. The way all of this information presents itself on a chart can be analyzed with technical tools, factoring in support and resistance, chart patterns, and trends.
+
+
+
+
+
+Price Action Components
+
+
+
+
+The trend is one part of price action that no one can afford to ignore. Analysts have always believed that markets either trend down, up, or not at all. When it isn't trending, it's moving "sideways" with a range of high and low prices, ping-ponging back and forth between the top and the bottom of that range. This is also regarded as a horizontal trend.
+
+
+
+
+
+The reason the market trends is because you can't separate it from human nature. In normal situations, the trending market has no reason to change directions until some powerful catalyst shows up to end the trend, and then either cause a reversal into a different trend or a consolidation, causing the market participants to pause and figure out what to do next.
+
+
+In uptrends, the price continues to make higher lows and higher highs. In downtrends, the price makes lower highs and lower lows. The market never goes straight up or down. It moves in steps.
+
+
+Just like the trend, the principles of support and resistance are very essential to learning price action. You can think of support as the "floor" of price, while resistance is the "ceiling." These are price action concepts that come from the views held by the market participants about how high or low particular price points are. These are the considerations that show up as reactions at those levels on your chart. The reactions I'm talking about include changes in momentum, trend, and consolidations, all of which you can use to find great opportunities to trade.
+
+
+Chart patterns are just formations of price action on your charts that can come in different shapes. Good examples are flags, rectangles, triangles, double tops, double bottoms, pennants, and more. Most of the chart patterns are thought of as consolidation. They happen in areas where the mass market or price has slowed down for a period of less than normal volatility. In most of these consolidations, the best shot you have at getting into a good trade is when you get a good breakout one way or the other, out of that consolidating range of prices. Before this happens, you either have to sit out on the sidelines and wait for the market to show its hand, or you work with a strategy that handles ranges very well.
+
+
+While many tools are used for technical analysis, like moving averages, oscillators, and other indicators, they don't necessarily belong to the class of price action analysis. For the most part, these oscillators and indicators are simply different interpretations of the price itself, derived from complex mathematics. With that in mind, while indicators can be lovely for helping you make your trading decisions, studying the way they work isn't price action analysis. The difference between indicators and the price they follow is why many traders resort to "naked trading" because the price never lies. Why look at various interpretations of price when you can look at the real thing? At least, that's the way they see it.
+
+
+
+
+
+On Self-Fulfilling Prophecies
+
+
+
+
+One other thing that is vital to technical analysis is the self-fulfilling prophecies. You see, one of the main reasons that most aspects of technical analysis ) particularly important ideas like trend lines, support and resistance, chart patterns, and Fibonacci levels) work so well is because of this phenomenon. It's a situation where the prediction or forecast that becomes true is only validated because the market participants collectively reacted to the same levels.
+
+
+In technical analysis, you can watch a support or resistance level being respected by price up to a certain point just because that level is a well-known one, and so most traders will react to it. For instance, an R2 pivot point, a 61.8 Fibonacci level, and a good support level in an uptrend do not have any real magic in them. It's just that these levels are universally accepted and very well known. Many traders closely watch them for an opportunity, and the share volume of trades at these areas can lead to dramatic events.
+
+
+When you understand the purpose of the self-fulfilling prophecy as an important part of trader psychology, you have the key to grasping just how powerful and effective technical analysis is.
+
+
+The reason price action analysis is so potent is because, with just the patterns created by the price on the chart, it can describe the behaviors of the entire market. Technical and price action analyses are rooted in the idea that no matter when or what, human behavior and the actions of collective market participants will always line up with each other. This has remained true all through time. It's the reason for the quote, "History repeats itself," in this case, with how people act, react, and perceive the markets.
+
+
+With each support or resistance level, new trend, and chart pattern, you get a story as old as time, repeated again and again. If you're a technical trader who has studied the markets for years, you know what to expect because you've seen it happen again and again. This is the exact reason that seasoned technical traders who take the time to study the markets can reasonably decipher what the price is likely to do next and how best to react depending on the scenarios that play out. You'll soon realize that price action and its study can make a lovely difference to your trading results. In fact, I'd go so far as to say they can make or break your trading.
+
+
+
+
+
+Bars, Candles, Lines, and More
+
+
+
+
+By the end of this section, you'll be able to tell the differences among candlestick charts, bar charts, point-and-figure charts, and line charts. You'll also be able to spot the fundamental structure of these basic charting types and how to use them. You'll understand the peculiar point-and-figure charts and how they're vastly different from other charting methodologies.
+
+
+Candles, Bars
+
+
+The most basic technical analysis tool is the price chart, which gives you a view of the price action over whatever period you want to investigate, for whatever trading instrument you want. The history is why you can make very good predictions about the future moves price makes.
+
+
+The way the price action is shown on your charts could vary. For the most part, technical analysts and traders prefer bars and candlesticks to anything else. They have the same foundations and give the same data: the open, low, high, and close prices over a set period in security. This is also called the OHLC.
+
+
+
+
+
+On both bar and candle charts, you'll find two axes — X and Y. The horizontal x-axis marks the time and is read from left to right as the time continues to move. The vertical y-axis is the price. The lower you go, the lower the prices. The higher up along this axis, the higher the prices are. So, with this in mind, the candlestick or bar on a daily timeframe will show you the price that the market opened at that day, how low the price went, how high it went, and the price it finally closed at on that same day. When you have enough of these candles or bars on your chart, you can then get to work identifying past behaviors that could happen again.
+
+
+The elements offered by candles and bars are the same in some respects, but they don't present the same way visually. This is why some traders prefer candles to bars. The bar chart has always been a part of Western technical analysis. Think of it as a straight, vertical line. No matter what period of price action the bar represents, the open prices are to the left of the line, while the close prices are to the right. The open price on the bullish bars are close to or at the bottom, with the close price close to or at the top. The bullish candles are usually blue or lime green, while the bearish ones are red. These colors can always be adjusted to fit your preferences on your trading platform.
+
+
+When it comes to candles, the space between both the open and close prices on a bar chart is filled in with either the red or blue (lime green) color, if it's bearish or bullish, respectively. That filled-up space makes the candle look like an actual candle that may or may not have a wick on one or both sides. Candles are very easy on the eyes and can tell you a lot more than bars can about the possible steps the price will take next. So, the candle's body represents the range between the open and close prices. The tip of the top wick or shadow is the high price that the asset reached for the duration of that candle, while the tip of the bottom wick or shadow is the low price.
+
+
+Line Charts
+
+
+Some traders only care about the close price and nothing else. They use the line chart because it's nothing more than the close prices of the set periods, connected to form a line that moves up and down on the chart. Just like candles and bars, you can use line charts with whatever time frame you want, whether it's the 30-second or monthly chart. If you use a 7-minute chart, for instance, then that means the line chart will connect the closing prices of each bar over a 7-minute interval from left to right as time passes. If it's on the 8-hour chart, that means the lines are basically all the close prices of 8-hour intervals strung together.
+
+
+The line chart is effective at determiningtrend changes, regardless of the seeming lack of details. Many traders have made money from working with just that line, on the right time frame, and with the right asset. However, they usually have had a lot of trading experience before settling on the lines. If you want to learn how this works, you could practice using smoother lines like the moving average indicator. This is an indicator we'll talk about much later in the book, and it can be incredibly powerful when you add it to your strategy.
+
+
+Point-and-Figure Charts
+
+
+P&F charts are very different from other charts, and it's not unusual for traders to ignore these charts because candles and bars are a lot easier to read for them. This chart has X and O columns. When you have a column of X's, that means that the price went up in that column. When it's a column of O's, it just means that the price action was down or bearish. These columns alternate and move from left to right with time. Unlike lines, candles, and bars, there doesn't seem to be any time element. In other words, it isn't time responsible for moving the chart forward, as is the case with other charts. It's the price that moves its charts from left to right. If the price doesn't move, neither will the chart. This is why traders used to P&F charts don't look at anything else, because they represent real and precise price action.
+
+
+The point remains the same whether you use lines, candles, bars, or even the P&F chart. You want to determine the next thing the price will do by observing the picture price paints for you on these charts relative to past price action. Don't get hung up over whether another trader uses something else because the basics remain the same when analyzing price action. You want to know when you should be in, when to protect yourself, and when to get out of trades. You do this by observing what happens at price points that have had significant reactions in the past. More commonly, traders use Japanese candles because they have a very clean look and because most trading education available makes use of these candlesticks. It only makes sense to stick with them, in my personal opinion, because they're so easy to read. Right away, you can tell whether the bears (sellers) or bulls (buyers) are in charge, so you don't get into a trade and catch falling knives.
+
+
+Over the next chapters, we'll go over how to take what you've learned so far and make them work in actual market analysis. First, we need to talk about how to spot uptrends and downtrends.
+
+
+
+
+
+Chapter 3: Trends, Support, and Resistance
+
+
+
+
+In this chapter, you'll fully understand one of the most important ideas ever: The idea of the trend. You'll know how they are defined and structured in terms of technical analysis. You'll also know the difference between simple uptrend lines, downtrend lines, and parallel trend channels. You'll also know how trends can be affected by the time frames you choose to view the markets from.
+
+
+
+
+
+We'll discuss why support and resistance are vital in analyzing price action and these concepts' roles in driving the price. You'll come to deeply appreciate the fact that support can become resistance, and resistance can become support, offering you more and more opportunities to take profits from the market.
+
+
+
+
+
+Getting to Know the Trend
+
+
+
+
+The most important idea in technical analysis is the trend. A financial trend reflects what physicists call inertia. This is when "an object in motion stays in motion," as long as it has the same momentum backing it up. If the price of an asset is heading up, then it's going to keep going up until it doesn't. The same applies to the price heading south. It will keep going that way until something changes that. If it were so easy to tell where the price will go at every point in time, there'd be no reason to study price action. As it stands, though, the price doesn't move straight up or down.
+
+
+Usually, the trend moves in a jagged, irregular, zigzag manner that can be hard to even refer to as a trend. However, various principles mark a trend as a trend. We've already covered that there's either an uptrend, downtrend, or horizontal trend in the market. In an uptrend, the price should be making new higher lows and higher highs, and the push moves to the upside should cover more ground than the little retracements or pullbacks to the downside. When it's a downtrend, the price should continue making lower highs and lower lows. You should see the pushes to the downside play out stronger and longer than those to the upside, opposing the trend.
+
+
+When the trend is nonexistent, the price is moving sideways in a box or range. You'll hear traders say the market is "choppy" in this situation. According to Elliot Wave theory, the trend components are the motive wave and the corrective wave. The motive wave is the kind that moves in the direction of the main trend. The corrective one moves against the trend, and it's what's known as the pullback, correction, or retracement. It doesn't last long, and there's not much power or volume backing the move. Think of the trend as the movement of price between:
+
+
+The motive direction of the trend, and, the opposite corrective direction.
+
+
+A true trend will demonstrate more progress in its direction than the other way. The idea is similar to taking more steps forward than backward, or according to Elliot wave, three moves forward and two back.
+
+
+
+
+
+Being a Trend Follower
+
+
+
+
+It's important to ask yourself if you're a trader or an investor. Traders are better positioned to make more money than investors because they play both sides of the market rather than only buy and hold.
+
+
+Investors will pump their capital and resources into a market like cryptos or stocks because they assume that the price of their chosen asset will only ever increase with time, so it only makes sense for their investments to do the same. They don't even have a plan for when their portfolio begins to dwindle. They just hang on and hope that things will change for the better. They only do well during bull markets, and they lose hard when bear cycles hit.
+
+
+This is because investors only approach the idea of bear markets with fear and refuse to even consider a contingency plan for what to do when the trend is no longer their friend. They just hold on, no matter how low their assets drop. They are very aware that if they want to make money in bear markets, they've got to change the way they approach the markets and consider "going short," which means selling. Most investors don't bother learning the skills it takes to be a seller because they think it's too much stress. They've been indoctrinated by the mainstream media to only think of buying as good and selling or trading as a risky endeavor, and that's why they won't even think of trading or take a moment to understand it.
+
+
+On the other hand, the trader has a strategy in place to help them make a profit in the markets, whether it's up, down, or upside down. They don't care about owning things when they can just make money as the markets move. They don't invest their capital, sit around twiddling their thumbs, and hope for the best. They just use that capital to trade and end the day richer for it.
+
+
+The problem with trading fundamentals is that they don't work for many market players. You can't make any attempts to predict what the price does. This sort of analysis makes traders try to pick bottoms and hope that the market will always eventually head back up. With technical, you know that the market will show you all the factors that influence the concepts of supply and demand as they play out in that asset. Rather than look at fundamentals, it's worth looking at the price instead because, with proper analysis, you can make profits.
+
+
+One way to practice technical analysis is to read your chart prices and use indicators. This is what technical analysis is about for those who think it's in the same lane as Vodou or Tarot cards. However, there's another way to analyze your chart with technical that doesn't attempt to forecast or predict. This is all about watching the price action and reacting to what happens. The trend followers are the ones who work with reactive analysis, preferring to follow the price where it goes rather than to think about where it might be going next. When trading with the trend, you can focus on just the moves the market makes and not get distracted by trying to figure out the duration and direction of the market's next moves.
+
+
+When doing technical analysis with the trend, you never get in right at the start, and you never get out right at the end. Also, with price analysis, you might find that you don't trade each day. Instead, you'd rather wait for the proper trading conditions to present themselves before you take advantage of them. Another thing is that you have no goals in terms of performance. Some traders use strategies that mandate them to make a set amount of money per day. For the technical trend trader, they know there's a chance the market won't offer them a fixed movement for the day, if at all. They take what the market has to offer them, no more and no less. They're not worried about predicting trends and are more interested in following the current trend. They don't allow themselves to fall into the trap of thinking, "Surely this is the absolute top or bottom."
+
+
+
+
+
+Time Frames and How They Affect the Trend
+
+
+
+
+One thing that makes it hard to figure out if there's a trend is the idea of time frames. You see, depending on the time frame you look at price action with you will see different trends in play at the same time. For instance, on the daily time frame, you might notice a strong downtrend, only to jump down to the 1-hour chart and find there's a very strong uptrend in play at the same time. Hop down to the 5-minute chart and what you might be seeing is a bit of consolidation with no clear trend insight. It's like you're getting mixed signals, making it hard for you to name the trend.
+
+
+The thing to do will depend on the time frame you use to trade. It could be true that the higher time frames allow you to see the true trend directions you can depend on and that the lower time frames can be noisy or have fluctuations that don't really matter to the overall price action. However, this is all relative to what you think is a high timeframe. For you, trading the 1-minute time frame might seem ridiculous, but for another trader, that might be too "high" or "slow" for them. If you're a short-term trader, you could work well with these lower time frames. If you're the sort of trader who remains in positions for days, weeks, and months, then, of course, you don't care too much about the 5-minute charts unless you want to use that time frame for a good entry.
+
+
+The smart thing to do is to focus on the trend that's playing out on a time frame 4 to 6 times higher than the one you're basing your entries on. For instance, if you trade the 1-hour charts, you should look at the 4-hour charts and upwards. If you're used to looking at the 5-minute charts, you can take a look at the 30-minute charts to help you work out the trend. If you trade on the daily time frame, you should look at the weekly chart. This way, you won't have to deal with too much confusion by the signals you see on different time frames.
+
+
+
+
+
+Trend Channels
+
+
+
+
+Ideally, uptrends should "step up" while downtrends should "step down." However, there's nothing ideal on the charts. It's not every time you can find the market trending in a picture-perfect way, but when they do, that's when you get the parallel trend channel.
+
+
+This is a very useful chart pattern, and it's created by two parallel lines that envelop the price action, with one on top acting as resistance and the one on the bottom acting as support. The uptrend channel will slope upwards, and it will envelop the higher highs and higher lows. In the same way, a parallel downtrend channel has a downward slope that envelops lower highs and lower lows. These kinds of patterns act as dynamic support and resistance.
+
+
+When you're dealing with an established uptrend channel and the price has hit the support line at the bottom at least twice, the following bounces that the price makes off that level are opportunities for you to buy the asset or "go long," so you can take part in the uptrend. In the same way, when you're working with a parallel downtrend channel and the price has hit the resistance line at the top at least two times, the other bounces off that resistance line give you chances to "go short" or sell to be a part of the downtrend. You target the top resistance line in buy trades, and in sell trades, you target the bottom support line. For trend traders, they don't think it's worth getting into directions opposite the main trend based on the channel.
+
+
+
+
+
+Trend Lines
+
+
+
+
+It's very easy to spot price action that shows you higher lows alone in an uptrend or lower highs in a bearish trend. These trend patterns are called downtrend resistance lines and uptrend support lines.
+
+
+The trend lines are used by technical traders and analysts in all financial markets to show the trend. They are an essential part of your arsenal as a technical analyst.
+
+
+We'll talk later about the proper way to draw trend lines and channels, but for now, you just need to know that the market trends are real, important, and worth knowing before you take any other action in any other market. This is because all the markets are driven by the human psychology of the trading masses. The human influence will keep trends going even longer than you think they should have ended, and it's the same reason that support and resistance, as well as the trend, are the heart and soul of technical price action analysis.
+
+
+
+
+
+Support and Resistance
+
+
+
+
+Along with the idea of the trend, support and resistance are very much needed for properly analyzing the charts. These are like twins, very inseparable, and they make up the basic price action structure in every market. While it's easy to understand the idea of support and resistance, the importance of these concepts has a very long reach.
+
+
+Support and resistance are like two different sides to a coin, and you can also think of them as being opposites of each other. The support is the floor that price has trouble pushing past and further down. Resistance works to contain the price in a bullish trend so that the bulls can no longer push them higher than that point. When you think of support, imagine, if you will, that there are bulls at the bottom of the chart where the lowest price point was hit. Imagine that these bulls are applying a lot of upward pressure to keep the prices from plunging. As for resistance, think of the bears in that area, doing their best to keep the uptrend in check. They push down hard to keep the bulls from taking the price to higher prices.
+
+
+The pressures that come from the upside and downside have several causes you can point to, and many of these still come back to the psychology of the market. To be clear, support and resistance levels exist thanks to the market participants' human emotions and price memory. In terms of price memory, levels of support and resistance that are sustainable tend to happen because large and small traders recall these specific levels and will trade based on whether they think of these levels as highs or lows. What tends to happen is that traders will go long at price levels they consider discounted (at support) and sell at price levels they think of as being premium (resistance).
+
+
+When the bulk of the trading volume is placed in a certain trade because it's believed that a particular price point or range is very low, then there'll be buying pressure that will send prices "to the moon." the prices are also pushed up by sellers who close their trades. On the other hand, when many traders assume that a price range or point is too high, there will be selling pressure to send the price bouncing off resistance. The price is also pushed up further by buyers who have noticed that resistance zone and have decided it's best to get out of their profitable trades.
+
+
+While it's often the norm to anticipate the price turning the other way at support and resistance, there are also very important events that happen, in terms of technical analysis, when the "disrespects," "violates," or breaks through these levels. The logic that drives breakouts is that if the resistance or support level is valid, the price should respect it. However, suppose the price manages to build enough momentum to push through those areas cleanly. In that case, it could mean that the cause of that forceful movement is powerful enough to send the prices even further in the breakout's direction. This leads traders to be on the lookout for strong breakouts of these levels, so they too can be a part of the ride. As such, traders in every market watch the bounces and breaks that happen at resistance and support.
+
+
+Just knowing that support and resistance levels are meant to be respected, but price action is a phenomenon that will serve as a great tool for your trading strategies. Whenever the price comes close to a significant support or resistance level where it reacted in the past, traders wait to see if the price action will respect those levels or violate them. If a level of support is respected, for instance, then traders will buy. If it is violated, they'll look to sell. In the same way, if a resistance level is respected, traders will go short, and if the level is disrespected, they'll hop on the long train.
+
+
+When the price consolidates, it moves between a "price floor" and "price ceiling," also called the trading range. They happen across every asset, no matter the market. Most traders can take advantage of ranging markets by selling at resistance and buying at support. Other traders would rather use these consolidations as a chance to get into a breakout trade. They look for the price to break above the range to go long or below the range to go short.
+
+
+
+
+
+Support and Resistance Flip
+
+
+
+
+It's important to know that when it comes to supporting and resistance, one can become the other, over and over. This happens when these levels break and are retested by the price. For instance, say the price pushes out below a support level. Technical traders think of that broken support as a new resistance level. In the same way, when the price breaks past a resistance area, technical traders assume that broken resistance is now a support level. Of all the technical analysis tenets, this one has a lot of weight with traders and analysts because this phenomenon plays itself out on all kinds of charts, on all time frames, and across markets.
+
+
+One of the reasons the price plays out like this, in terms of trading psychology, is that when the price breaks these support and resistance levels cleanly and convincingly, the traders realize that the price is now in new territory. For instance, say a key support level has been broken to the downside, and some traders had bought in that level and hadn't closed their positions when the price broke out. What happens next is that the buyers start to panic, and when the price ascends back to the upside where the break happened, they'd be more than happy to close their trades so they can get out with a smaller loss or a scratch trade. As these traders cover their long positions by selling, there is strong pressure to the upside at the old support level, so that the level now acts as resistance instead. Also, the traders who missed the first break can get back in as sellers on the retest of the support-turned-resistance to be part of the new bearishness. All of this adds to the downward pressure that the price must conform to.
+
+
+When a significant support or resistance zone has been broken with strong, true momentum backed by volume, it's natural for the trading momentum to leave the old price zone and find balance at a new one. The border between the old zone or area and the new one is the broken resistance or support level, which will act as a barrier to price in the future.
+
+
+
+
+
+Chapter 4: Drawing Tools
+
+
+
+
+By the end of this chapter, you will understand how the major drawing tools like horizontal support and resistance lines, trend lines, and channels can be used to give you good trades. You'll understand the structure of these lines and how technical analysts use them. You'll also know how to draw them just like they do, so you can apply them to your preferred assets, whether stocks, crypto, currencies, metal or whatever you're trading.
+
+
+
+
+
+Getting Used to Drawing Tools
+
+
+
+
+Trend channels, lines, horizontal resistance, and support liens are pretty basic tools, but they are extremely important and powerful. For decades, many new strategies and techniques have been based on these, and drawing lines has always been in style. These lines are responsible for helping you understand the idea of support and resistance in their two forms: Static and dynamic.
+
+
+
+
+
+Before we get into the methods for drawing dynamic and static support and resistance lines, you need to know from the get-go that these levels don't always show up with precision or in a textbook manner. This is because support and resistance are shown on other charts by very clear, straight lines, and that has made many of those new to trading assume that the price really should turn around that precise point. Or they think that once the price breaks past these levels by only a little bit, that means the breakout is legitimate, and they can ride it. This isn't the case at all.
+
+
+It's better to consider support and resistance as areas or zones, not a single price point. It's a range of prices where the market begins to react differently. It's very rare to find the price objecting support and resistance with precision. Simultaneously, this doesn't invalidate the idea of support and resistance or mean that the concepts are useless. They are still powerful, and when you know where the market is likely to react, you can use that to your advantage if you know what to do. While this market insight isn't very precise, it can and does offer consistent profits for many traders. So when you plot your tools on your charts, you need to remember this fact.
+
+
+
+
+
+Static Support and Resistance
+
+
+
+
+Let's get back to the difference between static and dynamic versions of these phenomena. Static levels imply that the price levels remain the same and never change. That doesn't mean these levels don't become invalid or irrelevant later on. It does mean that most historical resistance and support levels become less useful over time as the price continues to play out, and traders forget these levels with time. One very good example is when you have a level where the price is reversed or turned once, or even better, repeatedly. Technical analysis tells you that the more times the price reverses at a certain level or area, the stronger that price becomes as static resistance or support. Some of the strongest levels that play out as resistance or support are the long-term lows and highs that played out historically. When it comes to price memory, the traders recall these extremes in price better than other levels that aren't as prominent. So when the price hits those levels, the market reacts in a very obvious way that's clear to read, which will be very useful for you as a technical trader.
+
+
+Other than the levels where the price did a U-turn in the past, there are other ways that static resistance and support manifest, especially when you consider tools like pivot points and Fibonacci retracements, which are excellent forecast tools. Fibonacci retracement tool can offer you a true picture of static and horizontal resistance and support levels. In the same way, the pivot points are calculated mathematically to give you static resistance and support levels you can use for any trading day. The math incorporates the previous day's HLC (High, Low, and Close) prices. Traders use pivots in many markets as reference points for where the price might react.
+
+
+To calculate the middle pivot point (PP), you need to take the average of the previous day's high, low, and close prices. Next, you have to calculate four more points called S1, S2, R1, and R2. S is the support, while R is the resistance. All of these are rooted in the central pivot point. Some traders will have more pivot points than these, going up to 3 levels for support and resistance. You don't have to worry about the math because your charting platform should have an indicator that can automatically calculate these lines and plot them out for you. The idea is that each line could be supported and resistant, and the price can react and turn around in these areas. So what you want to do at these levels is trade bounces and/or breakouts. You can also use these levels to help you figure out where to get out of your running trades or let you know whether the current price is too high or too low in the day's expected range. For instance, when the present day's price is close to the R2 level, traders could look for the chance to go short, assuming that the price could make its way to the central pivot point or equilibrium.
+
+
+Here's the formula for working out pivot points:
+
+
+Resistance 3 (R3) = Previous day's high + 2 (PP - Previous days' low)
+
+
+Resistance 2 (R2) = PP + (R1 - s1)
+
+
+Resistance 1 (R1) = 2 X PP - Previous day's low
+
+
+Pivot Point (PP) = (Previous day's high + Previous day's low + Previous day's close) / 3
+
+
+Support 1 (S1) = 2 X PP - Previous day's high
+
+
+Support 2 (S2) = PP - (R1 - S1)
+
+
+Support 3 (S3) = Previous day's low - 2(Previous day's high - PP)
+
+
+
+
+
+Dynamic Resistance and Support
+
+
+
+
+These are the levels that change as time passes. Think about trend lines. The ones that go up are uptrend lines, and you can draw them by connecting a line from the lowest low to higher lows on the chart. The higher up you go on the line, the more the piece changes, which is why it's dynamic. When the trend is up, the floor moves up, and the floor becomes steeper, meaning that the price increases faster. When the slope is flatter, that means the price is rising but not as fast.
+
+
+The lines that head down are the downtrend lines, and you can draw them by connecting the highest low with progressively lower highs. This is a dynamic resistance line because the price changes as the line move down. In a downtrend, the ceiling drops depending on the line's slope. When the slope is steep, it means that the price is falling very fast. If it's flat, the price is falling slowly.
+
+
+When you want to connect lower highs for a downtrend or higher lows for an uptrend, you need to have at least two highs or lows before creating these lines, but it's even better if you can have 3 and up. Just like with the horizontal forms of resistance and support lines, the more respect price accords an area, the more likely it will be strong, valid, and lead to a dramatic move the other way.
+
+
+The channel is also dynamic support and resistance. Both lines in the channel continue to change in price depending on where you're looking. To trade in line with the trend, you should look at uptrend channels in bullish trends and downtrend channels in bearish trends.
+
+
+Channels can be great for working out the perfect entries for trading pullbacks, breakouts, reversals, and knowing where to place your stop loss. Also, the line in the middle of the channel (the return line) is excellent for pullbacks and profit targets. For instance, when you have a bullish channel, any trader you take in the trend's direction should be executed at or around the support line for the trend, which is the bottom part of the channel. A good spot to take your profits would be at the return line, or if you want to go further, the top line of the channel.
+
+
+Let's now discuss two very important notes when it comes to trading channels. First of all, the channels make traders want to trade countertrend. For instance, traders may want to get into long trades at the bottom and short trades at the top when they're in a bullish trend. Obviously, the market isn't trending both ways at the same time. If you're in a bullish trend, the long trade is fine, but the short trade is a countertrend trade. There's nothing wrong with going against the trend if you know what you're doing, but it's probably better for new traders to focus on the direction that's more likely to work, which is in line with the trend.
+
+
+Traders who are strict followers of the trend believe that you should only ever use the top of the uptrend channel to take profits on your long trades and not get into trades against the bullish trend. When it's a bearish trend, you're only supposed to use the bottom part of the channel to take profits from your short trades and not to buy the asset.
+
+
+The other point you need to consider has to do with breakouts. Many amateur traders think about breakouts in terms of playing both sides of a channel as the same thing. This is the wrong approach. When you're working with an uptrend channel, for instance, and the price pushes down past the uptrend support, that means the trend could be about to reverse, and that's a very important event to take advantage of. However, a breakout at the top of a channel is less important and should probably be ignored, as this kind of breakout is simply the present uptrend speeding up. Sure, that's information you could use, but it's not as important as an actual reversal. The same holds for downtrend channels.
+
+
+
+
+
+Horizontal Resistance and Support
+
+
+
+
+To start off, horizontal support and resistance lines are drawn by connecting the lows and highs of the candles or bars on the chart. The trader or analyst who draws these lines doesn't have to worry about precision here. As we've mentioned before, it's not common for the price to actually respect clear resistance and support levels "to the pip." What matters is that your lines are drawn as close as you can, so you should get them to as many of the lows and highs as you can. These lines will then serve as reminders of support or resistance for you to watch out for.
+
+
+Generally speaking, the resistance and support analyst will consider a blank price chart with the intention of mapping out the relevant levels where the price appears to reverse at several points. These points could all be reversals from resistance or support or a combo of both. The combination of both happens more often than you'd think, as resistance becomes support and becomes resistance again.
+
+
+Many traders consider the blank price chart by first taking a look at the longest time frames. This way, they can plot the major resistance, support, and pivot levels relevant for a long time to come. Next, the traders drop down to smaller and smaller timeframes, mapping out and refining the more recent levels they need to work with. On the lowest time frame, they plot the most recent price points.
+
+
+All of these prices will prove important to some degree or the other for the technical trader. In general, you can expect that the all-time lows and highs are also very important levels of support and resistance that you should watch.
+
+
+All things being equal, you should know that the more recent pivots (highs and lows) will be more important as resistance and support when compared to the ones that happened much further back in time. This is because of the price memory phenomenon, where the most recent levels are easier to remember.
+
+
+When you have all the lines on your chart, you wait and watch them to see if you get any reactions at these points. You want to see if you'll get a bounce or a breakout that you can trade as a retest. If you're only taking trades in line with the trend, you will only take breaks and bounces that move in the same direction as the current trend. If you're trading ranges, you work with support and resistance boundaries at the bottom and top of these levels to find your entry opportunities. There is an endless number of ways the technical trader can interpret and work with the reactions of price to these critical levels, and we'll get to those in a matter of time.
+
+
+The general idea, though, is that you need to trade breaks or bounces on these levels and use entry filters to make sure you avoid the false moves that can play out at these levels. The filter is a way to confirm that a support or resistance break or bounce is legitimate.
+
+
+For instance, you might refuse to trade a support breakout unless the price action actually moves beyond the breaking point by a certain amount of points. You could also use this filter to confirm that you have a true bounce from the support level. Another way to trade safe is to always wait for the pullback to the area where the key levels break or wait until the price returns right to the breakout point before entering your trade. Or, you could decide to wait for the breakout candle or bar to close and then wait till you see the next candle or bar move past the absolute low or high of the breakout candle before you get in. This will at least tell you that there just might be momentum on your side to keep the price moving in the break's direction. You can use your entry filters to work with dynamic and static lines.
+
+
+Besides being very useful for entering your trades, horizontal resistance and stop levels are also the best way to work out where you should put your stop-loss order. This is an order that tells your broker that if the price goes against you by a certain amount, you should be taken out of the trade so that you can preserve your capital and live to trade another setup. Whether the price has respected or violated a certain level, there's an inbuilt and clear area for you to set your stop loss. For instance, if you have a trade that you took based on a breakout of support, your initial stop loss would go to a certain spot above the breakout point, where price returning to that level would mean your reason for being in the trade (a breakout to the downside) is now invalid. In the same way, when you enter a trade based on a bounce from the resistance line, your stop loss should go above the resistance line, where your reason for getting into the trade (a bearish resistance bounce) would now be invalid.
+
+
+
+
+
+Back to Trend Lines
+
+
+
+
+Like the horizontal S&R lines, the trend lines are drawn by connecting lows and highs, except that the lines are dynamic, with the highs and lows ever-changing. Many traders argue about the right way to draw a trend line, and this is why there are as many ways to draw them as there are traders who use them.
+
+
+When you're in a clear, bullish trend, some traders could connect the lows from the left of the chart to the right. Some connect them from right to left. Some say your trendlines should only connect closing prices, while others insist on using the candle wicks or connecting the absolute highs and lows only. There are others still that will draw every trend line on the chart they can see, and some who will only pick the most significant ones because they think that some of the price candles are anomalies that shouldn't be factored in statistically. Some people don't mind having their trend lines slightly violated and will not adjust their trend lines unless the trend has actually changed. Others will get rid of the line when the price doesn't respect it to the pip. There are so many debates around trend lines, and they don't seem to be dying down. The point is that there is a lot of subjectivity in plotting trend channels and lines.
+
+
+Another thing to consider about trend lines is that you have to erase them and draw them again when the price action renders them invalid. For instance, assume that there's a new uptrend line connecting two low price points, and the price breaks just below it, rendering it invalid. If the price creates a new low point before removing back up, you have to draw the upward trend line again with the new low point. Also, if the price continues to move with speed in the prevailing trend's direction to create a steep trend line, you might have to redraw.
+
+
+Regardless of these problems, trend lines remain the unique trading method to represent the trends. The issues with subjectivity and needing to replot the lines do not make them any less powerful and remarkable at forecasting the price. Over time, they have proven to be one of the most fundamental weapons that the technical trader could possibly work within each market.
+
+
+When you've drawn a trend line the way you want, you can use it to react to the price action and interpret it. You can use it for your entries on breaks, entries on bounces, and stop-loss placement. The trend line bounces are pretty much the same as pullbacks or valleys in an uptrend where you can get in and join the trend or add to your already profitable positions if you want to. Also, trend line bounces work as the perfect spot for countertrend retracements in the primary trend, making them very high-probability zones for getting into trends at stellar prices.
+
+
+A great way to trade the bounces is to get in on the breaks of the countertrend lines. For instance, you could be in an uptrend where the price has made three or two lows. You can connect with the uptrend support line, and each low that bounces from this line will give you the chance to get in at a good price. Yet, the question remains, where is the best spot to enter the trend once the bounce has played out so that you can feel more confident about being part of the trend? You could opt to get in at the breaks of the retracements that go against the trend. When the main trend is up and the price corrects back down to the bullish trend, the price will have formed a bit of a bearish trend, so you can draw a resistance line to delineate that by connecting two or more highs in the entire bearish correction. When the price bounces off the main trend line, you should use the breakouts above the minor resistance line as a high probability entry. While it could mean getting into the trade later than you'd like, it still is a great way to confirm that there will be follow-through from support line bounces.
+
+
+
+
+
+Chapter 5: Chart Patterns
+
+
+
+
+This chapter will talk about the basic characteristics and structures of the candlestick and bar chart patterns that matter the most. You'll know how technical analysts use these patterns to find clues about what the price might do in the future. You will also be able to apply these patterns yourself in your trading in a very practical and profitable way.
+
+
+
+
+
+What Are Chart Patterns?
+
+
+
+
+For those who aren't familiar with technical analysis, one of the first things they think about when charts are addressed is patterns. They think about things like triangles, rectangles, heads and shoulders, and more.
+
+
+Other than the regular patterns the West uses, traders who don't know much about technical analysis may also know about things like the hanging man, hammer, harami, and doji candles. These candles have cool names, but even better, they can give you very clear meanings about what price is doing. Chart patterns matter to so many investors who would probably never have gotten into trading or technical analysis if not for them.
+
+
+This chapter will talk about the Western patterns and the Japanese candlestick battens, as they're both very important for figuring out how technical analysis works. You can work with both to make your trading decisions and profit from your analysis. First, we'll begin with the bar shapes of the West.
+
+
+The only reason bar shapes are called Western is to make a clear difference between those and Japanese candle patterns. Bar chart patterns have always been used in the financial markets in the West to help analysts understand price action and predict what the price might do next. These patterns have their own probabilities, theories, and targets. Some of them are trend continuation patterns, while others are reversal patterns. That said, these generalizations aren't always useful because patterns considered as continuation signals can and do lead to reversals, and sometimes reversal patterns can lead to continuations. The one thing that is the glue for all bar chart patterns is nothing is going on until the pattern is broken. Only when they are broken do traders react.
+
+
+
+
+
+Continuation Bar Patterns
+
+
+
+
+These include patterns like pennants, flags, triangles, wedges, and rectangles. Here are other patterns that aren't as common or are more complex, but these are the major patterns you can find on any chart. To make things even simpler, you can just refer to the pennant as a sort of triangle.
+
+
+The triangle pattern is one of the most common continuation patterns. Here, the price bars are contained by lines that come closer and closer together until they converge and form the apex of a triangle. What you want is for the price to break out of this triangle way before it arrives at the apex in an ideal situation. The breakout direction is usually the same as the trend that was in place before the triangle formed, and this is why many think of this as a continuation pattern. Again, I must stress that there are times when this leads to a reversal instead. Either way, the direction that the break happens in is not as important as how the break plays out. When there's a pattern break accompanied by strong momentum, technical analysts pay attention because there's a higher chance that the price will follow through with the move in the same direction. On the flip side, the pattern breaks could lead to a bit of consolidation close to the breaking point, or it could just be a fake-out. Obviously, these kinds of breaks are very frustrating for traders who use chart patterns.
+
+
+There are three kinds of triangles to consider: Ascending, descending, and symmetrical. When it comes to symmetrical triangles, they don't have to be absolutely symmetrical. The only important thing is to make sure that the upper border of the triangle slopes downwards and the lower border slopes upward. Don't sweat it if both slopes aren't equal. The symmetrical triangle represents the market at a state of equilibrium or indecision, if you prefer, as the price continues to move into even tiger consolidation.
+
+
+Ascending and descending triangles have one horizontal or almost-horizontal border. The bottom slope needs to be angled up from left to right for ascending triangles, while the descending one has a top slope angled down from left to right.
+
+
+Like the symmetrical triangles, the ascending triangles are also a sign of equilibrium or the calm before the storm. The difference is that there is more pressure to the upside, as the consolidation happening at its bottom slopes upwards, while the top remains the same. This means the bias is to go long or be a buyer, as that should theoretically be where the breakout happens, but this isn't always how it plays out. You could have a breakout to the downside instead.
+
+
+The descending triangles have a horizontal bottom and a downward sloping upper one. They also show equilibrium but are a sign of selling pressure to come — unless the price does the complete opposite of what it should do and breaks out to the upside instead. The top border is dynamic, while the bottom is static.
+
+
+No matter the sort of triangle pattern you're working with, the consolidation should eventually end by breaking out in one direction or the other strongly. It's much better when the breakout is in the same direction as the trend before the consolidation. If the price pops out in the other direction, you can still trade it. Just be mindful of going countertrend because you may need to take profits early in case the price reverses after the breakout.
+
+
+Regardless of the triangle, you can project their take profits levels in the same way. You'd have to measure the distance of the space within the triangle from its greatest height and then project that above the breakout point (for a bullish breakout) or below the breakout point (for bearish moves).
+
+
+
+
+
+Flags and Pennants
+
+
+
+
+More than the others, these patterns are more likely to act the way they're supposed to. The previous trend before this pattern is formed part of what makes the flagpole. The idea is that with pennants and flags, the trend is more than likely to continue.
+
+
+When it comes to flags, you have the flagpole and then branching off of it are two parallel lines that form the boundaries of the consolidation. The best bullish flags will have a very strong flagpole, and then this is followed by consolidation or "flag" that slopes downwards. On the other hand, the best bearish flags have very strong flagpoles to the downside, and then they are followed by the consolidation or flag that slopes upwards.
+
+
+When the price forms a flag, there's a strong move in the direction of the trend. This is then followed by countertrend movement in the form of consolidation. The idea is that when this consolidation breaks, the price should continue rising sharply to match the flagpole. To measure your possible targets, measure from the breakout point to the vertical height of the flagpole (for bullish moves), or subtract the vertical height of the flagpole from the breakout point (for bearish moves).
+
+
+Pennants are like triangles and flags. Think of the pennant as a little wedge or triangle that's on a flagpole. It resembles an actual pennant. The triangle part is a lot smaller than the normal triangle pattern most of the time, but sometimes it's not. Bullish pennants have flagpoles with a sharp upward motion, and then this is followed by the ranging price action in the triangle. On the flip side, bearish pennants have flagpoles that move sharply down, followed by the consolidation in the triangle. Like with flags, when the price forms a pennant, it means there's a strong move in a direction that is then followed by a bit of countertrend consolidation. It is expected that when the price breaks out of the range, the sharp move in the trend's direction should continue. The targets are calculated the same way as you would the flags.
+
+
+
+
+
+Rectangles
+
+
+
+
+Just like the others, these patterns are common. They appear as horizontal ranges bordered by upper and lower limits or lines (resistance and support). The lines do not meet as triangles do. These are traded differently. For one thing, there is more room in the consolidations, which are taller or wider, if you will. Some traders just go short at the top and long at the bottom until there's a break. Others wait for the breakout to trade in the same way you'd trade the triangle.
+
+
+The rectangles are also the market at equilibrium. They demonstrate a period of rest in the middle of the trend before the winning side continues to push the price its way. However, rectangles don't always lead to continuations. Sometimes, they could lead to reversals. Whatever direction you find the breakout, you need to study how the breakout took place. If it was strong and clean, then it is probably worth trading. If it's indecisive and weak, stay away or fade the move by trading in the other direction.
+
+
+It's way easier to find the profit targets for breakouts after a rectangle than with other patterns. When there's a bullish breakout, you can get the target of the price simply by adding the rectangle's height to the breakout point. If it's a bearish breakout, all you need to do to find the target is to subtract the rectangle's height from the breakout point. When it comes to chart patterns and projected profit levels, you should think of everything I've shared here as less of a rule and more a general guideline. Personally, I like to book my profits when I'm about 70 or 80 percent of the way to my targets, assuming I'm looking at my charts when they hit those levels. I do this so that the price doesn't reverse and take all I've gained.
+
+
+
+
+
+Wedges
+
+
+
+
+These are like triangles because they have two lines that converge with each other. Unlike triangles, though, both sides of the wedge gave a slope in the exact direction. So when you have a rising wedge, it's a pattern that has both sides sloping bullish. A falling wedge has both sides sloping bearish. The wedge is also a show of equilibrium in the market, and they work really well for countertrend trading. In fact, they're better than triangles for this purpose. So, thinking about the falling wedge as one of the continuation patterns means that it happens after a bullish move and will be broken in a bullish direction. In the same way, rising wedges that act as continuations will show up after a bearish move and will be broken to the downside.
+
+
+There's really no precise way to work out the best targets for wedges, but it could lead to powerful moves when the pattern breaks. Just keep in mind that wedges demonstrate a higher chance of a countertrade pullback than a triangle.
+
+
+
+
+
+Volatility
+
+
+
+
+The idea of volatility is very important when dealing with technical analysis, especially when analyzing the trend. Many technical traders work in volatility when they want to make decisions about what to trade. The volatility changes concern them, and they're even more concerned about volatility changes from low to high, not vice versa.
+
+
+
+
+
+When the market is trending, you will notice that the price will alternate from periods of low volatility to high volatility. When there is low volatility, you'll see the market at equilibrium, in consolidation, or moving sideways. When there is high volatility, you will see strong directional movements… usually. The move from one extreme to the other plays out as an expansion of the range that tells you a new trend is starting or the prevailing one is continuing. This is why technical traders watch the volatility shift so closely.
+
+
+Every trend will have to alternate between active and passive periods. The passive periods are restful, volatility is low, and the price moves in a consolidation or short countertrend movement that isn't backed by momentum. Then the active portion of the cycle, where the price action has high volatility, will demonstrate itself with a clear and strong move in one direction. One great thing about the spots at which you can hop in on a trend is that when the rest or passive phase is suddenly over, the resumption of the push begins. Think of this as a volatility-based breakout in the direction of the main trend.
+
+
+Flags, rectangles, pennants, triangles, and other continuation patterns are nothing more than areas of reducing and/or reduced volatility, as the price waits to break out on account of increased volatility, often in the same trend direction. Other than these chart patterns, there are other ways to incorporate these volatility breakouts or shifts. You can also work with a horizontal trading range break or high or low prices over a specified period. There's also the Bollinger Bands squeeze to help you. Traders use a slew of other technical tools to measure volatility and volatility change, including the Bollinger BandWidth, Bollinger Bands, and the average true range or ATR.
+
+
+Make a point of measuring the volatility changes and factoring them into your trading decisions. They can make your entries much better and save you the hassle of waiting around in drawdown for a long time before your trade begins to see profits.
+
+
+
+
+
+Reversal Patterns
+
+
+
+
+Japanese candles are even better than Western patterns at predicting reversals. The best and strongest patterns are the ones that tell you there will be a reversal. The double top happens when the price hits the same high or an almost similar high two times in a row at the top of a serious bullish trend. It is important to note that the second hit or "top" is basically price failing to make a new higher high beyond the first hit. When the price fails like this, it could be a good sign that there's weakness in the momentum and trend and that the price may be about to reverse. A valley separates the two tops. You should sell when the price pushes down past the valley's lowest point. To figure out your target, you should measure from the highest point of the double top to the lowest point of the trough and subtract that from the breaking point, which is the trough's lowest point.
+
+
+You get a double bottom when the price hits the same low or a similar low two times in a row at the end of a serious bearish trend. The second bottom is a failure of price to make a new lower low than the first bottom. Both of these valleys are separated by a peak. You should buy when the price breaks out above the peak's highest point. To figure out your target, you need to take the measurement from the low of the double bottom to the peak's highest point and then add that to the breakout point.
+
+
+The triple bottom happens when the price hits the same point or a similar point thrice in a row at the end of a serious bullish trend. The pattern is even more powerful than the double top because the price failed to break past the highest high at the first peak, two times, rather than one. The three peaks have two valleys between them, which may not be at the same prices. You should go short when the price breaks below the lower of both valleys. To find your targets, take the vertical measurement from the highest point of the triple top to the lowest point of both valleys and subtract from the breakout point.
+
+
+A triple bottom is what you get when the price hits the same low or almost the same low prices thrice in a row at the end of a major bearish trend. The second and third bottoms result from the price failing to make a new low, which means the bears are losing steam. Three valleys are separated by two peaks, which don't have to have the same price levels. You should buy when the price breaks out above the higher of the peaks. To figure out your target, measure from the lowest point of the triple bottom to the highest point and add that to the breakout point.
+
+
+The head and shoulders pattern is almost like the triple top and triple bottom, and it's one of the more popular chart patterns out there. While it's not often this pattern plays out, this pattern is so hard to miss. The difference between the head and shoulders pattern and the triple top and bottom patterns is in the middle. For instance, when you have a head and shoulders top, the middle peak or the head is higher than the shoulders, which are the peaks on either side of the shoulder. On the other hand, an inverted head and shoulders or head and shoulders bottom pattern has the middle valley or head much lower than the valleys to its immediate right and left, which are the shoulders.
+
+
+The line you draw through the valleys in the head and shoulders top, or the peaks in a head and shoulders bottom, is aptly named the neckline. When the neckline is broken, that's your signal to get into a trade. When working out your targets, measure the distance between the head's top to the neckline, and then project that from the breakout point and downwards. When dealing with a head and shoulders bottom, calculate the distance between the head's bottom and the neckline, and then project that upwards from the breakout point.
+
+
+This pattern tells us that the price made repeated attempts to keep the trend going, but it failed in the end. The head is a false break in line with the trend, and it's then followed by price failing to keep up the move. By the third attempt (the shoulder on the right), it is obvious that the price can't even reach the second attempt, making it more obvious that the price is falling. Then you get a confirmed reversal if the neckline is broken.
+
+
+These patterns are very easy to spot, and when they show up, they are very prominent and large. If you notice there's a neckline break, know that the follow-through of a reversal is going to be amazing. Also, note that head and shoulder patterns sometimes do not complete the reversal patterns, so trade with caution.
+
+
+
+
+
+Chapter 6: Gaps and Candlestick Patterns
+
+
+
+
+Gaps are a very special chart pattern that happens in most markets when the price suddenly jumps from one level to another by skipping prices in between. The empty space between the old and new price levels means no trading in that gap.
+
+
+
+
+
+There are several reasons that gaps happen, and many of them have something to do with a market that moves faster than usual on account of news or some new information that market participants have. It could be because of an announcement, a catastrophe, or something extraordinarily good for an economy. You can usually find gaps when the market opens on the first day of the trading week. For instance, retail traders have access to the markets 24 hours a day, 5 days a week when it comes to forex trading. Just because they don't have access to the markets on the weekends doesn't mean that the prices aren't moving, as banks and institutions continue to trade, and some of that price action could result in breaks or gaps in the price action on your forex charts come Monday.
+
+
+There are different kinds of gaps in the markets, including:
+
+
+Common Gaps
+
+
+Runaway Gaps
+
+
+Breakaway Gaps
+
+
+Exhaustion Gaps
+
+
+
+
+Common gaps often happen during a regular market activity. You'll notice that they show up often and therefore have nothing to do with some information or major news that comes out. This is why these kinds of gaps don't have much importance — not like the others. They tend to get filled by the price as soon as they happen.
+
+
+Breakaway gaps are gaps that are a lot more important than the common ones. They come up after the price has been ranging or consolidating. That's when the price hasn't been moving in any definite direction, remaining in a horizontal box. Breakaway gaps can tell you that a new trend is here, and therefore, such gaps aren't likely to be filled right away. When there's a new trend, the momentum pushes in the same direction as the range break. The presence of the breakaway gap strengthens this momentum. If you want to confirm that this move can be trusted to follow through, just look at the trading volume. When the gap happens with a higher than usual volume, there's a better chance that it will work out well and be the start of a new trend in the gap's direction.
+
+
+Runaway gaps are like breakaway gaps in that they can be very important to the trend. However, unlike the latter kind responsible for starting a trend, runaway gaps tend to happen in the middle of ongoing trends. The breakaway gap often has some ranging motion before it happens, and then after the gap, you have price action that trends. When it comes to the runaway gap, though, you will find that there's trending price action before and after it happens. When this gap works out well, it acts as a continuation pattern, telling you that the trend you're looking at still has a long way to go.
+
+
+Exhaustion gaps are different from the runaway and breakaway variations in that they work as reversal patterns. You can find this gap when the momentum of the trend begins to slow out of exhaustion. As such, this kind of gap tells you that the trend is starting to lose steam and may soon reverse or at least start to consolidate. You can also use volume to confirm that the exhaustion gaps are legit, as when they happen with higher volume, there's a better chance that this gap will lead to a reversal. Since these are reversal patterns, they will always be filled when the reversal begins.
+
+
+Island reversals are made up of two gaps. This is a chart pattern that creates a ranging island between both gaps. The first gap is an exhaustion gap, while the other is a breakaway gap in the other direction. For instance, when it's an island reversal bottom pattern, the price will stop its bearish trend by bottoming out with an exhaustion gap to the downside. When this gap down plays out, the price begins to range on an "island" of sorts, disconnected from the gap. When this range ends, the price gives us a breakaway gap to the upside. After this, the price heads on up after the reversal to create a new uptrend.
+
+
+Say you have an island reversal top pattern instead. In this case, you will find that the price ends its previous uptrend, capping it off with an exhaustion gap to the upside. After the gap plays out, there will be sideways movement of the price that forms an island disconnected from the price before the gap. When the ranging motion ends, there's a breakaway gap to the downside, and then the price continues lower when the reversal is complete, creating a new trend.
+
+
+When you're working with Japanese candle patterns, the gaps are called windows . You have bearish gaps called falling windows and bullish ones called rising windows . Rather than talking about gaps getting filled, the parlance becomes "windows getting closed." When it comes to candles, windows are mostly seen as continuation patterns. Since we've talked about the idea of gaps already, we don't have to talk about windows when we begin discussing candles.
+
+
+Gaps and gap combos are very important elements to look at on your chart. Whether they are continuation or reversal patterns, depending on where they happen and how they play out, they can give the technical trader clear ideas about the market's momentum.
+
+
+
+
+
+Let's Talk Candles
+
+
+
+
+Now that we've gone over the Western bar chart patterns, it's time to turn to candlestick patterns. These patterns can tell you so much about what the price action is up to. One of the major differences between Japanese candlesticks and Western bars is the various ways you can imaginatively interpret the candle patterns. Many candle patterns can either show you that the price is about to reverse or that the market is indecisive. These candles are valuable tools that can visually show you the struggle between the bears who want to send the prices down and the bulls doing their best to drive up the prices.
+
+
+Before we get into the most common candle patterns you could work with, you need to know that these patterns were never meant to be an entire trading system on their own. Instead, you're supposed to use them as confirmation for your strategy or use some other technical studies to confirm them. If you try to trade using only candle patterns, you won't do very well. Having said that, candle patterns can give you many valuable insights when you technically analyze your chosen assets with them in mind.
+
+
+There are so many candle patterns out there, some of them rare, others are more common. However, the common ones make up the majority of price action in most of the major markets. As with other aspects of technical analysis, when you master the intricate nature of the most relevant and common candle patterns, you'll find all that knowledge properly applied will lead to a happy account balance. It's far more useful to focus on the common ones rather than waste your time with the others. Knowing how to use them will improve your trading results, and you'll always come out on top in the battle between the bears and the bulls.
+
+
+
+
+
+One-Candle Patterns
+
+
+
+
+You know now that the candle comprises two major parts: The body and the wicks (or shadows if you prefer). The body of the candle is the part between the open and close prices in a set period. If the price closes below the open price, it's a bearish candle. If the price closes above the open, then the candle is bullish. Bullish candles could be blue, green, or white depending on your charting platform, while the bearish ones are red or black. The wicks or shadows are the thin vertical lines that stick out at the top and/or bottom of the candle's real body. These wicks demonstrate the lows and highs that the price hit in a set period.
+
+
+The doji is one of the simplest candle patterns. It tells you that there is extreme indecision in the market, as neither the bears nor the bulls are in control or planning any moves yet. The doji has the candle's open and close prices close or equal to each other. When the doji candle opens, the price may push down or up a fair bit to create a long wick as it does, but it must close near or at the open price in that period. Think of it as a tug of war going on between sellers and buyers. When you have extra confirmation, the doji can work as a trend reversal signal.
+
+
+The spinning top is a candle with a small real body, but this body isn't as small as the dojis. The doji's body could literally be a horizontal line, but the spinning top has more meat between its open and close prices. The upper and lower wicks of this candle are also relatively longer than the body's vertical length. With some confirmation from other technical tools, spinning tops could mean the trend is about to head the other way.
+
+
+The idea behind the dojo and the spinning top is that the price closes out the trading period close to or right at the same price the asset opened at. The price could have made significant moves both ways, or either way, between the open and close times. What this tells you is that the market is having trouble figuring out where to go. It could also mean that the previous trend is being neutralized by countertrend traders, who might have enough trading volume to slow down the momentum of the previous trend or even bring it to a grinding stop.
+
+
+Hammers can strongly confirm a trend reversal where the bulls are in charge. The hammer shows up at the end of a downtrend. It's called a hammer because the real body is at or close to the top of the candle. It doesn't matter what color the hammer is, as long as it has a long lower wick, and the real body sits on top of that wick. The long wick happens to be the most important part of the hammer, as it tells you that the bears, who were once in charge of price action, had tried their best to push the price down, but then they failed as the price closed higher than the low, leading to the wick you see. When the price fails to push like this, you could get a reversal. To be clear, only look for reversal candle patterns at significant support and resistance areas, and use this only as a confirmation tool. Do not use this candle on its own as a reason to put on a long trade.
+
+
+The shooting star is the hammer flipped upside down, visually and conceptually. You find this pattern at the end of an uptrend. The bottom of the candle is heavy with the body, and there's a long upper wick on top. The real body's color doesn't matter either. Shooting stars need to come after bullish trends, just as hammers only come after bearish trends. They tell you that there's a chance the uptrend is about to reverse into a downtrend. The long wick of this candle is very important, as it tells you that while the bulls had been running the show, they did their best to push the price even higher, but then they failed so badly that the price had to close significantly lower than the absolute high they had just achieved. This failure could leave the bulls scared and eager to get out, which draws the bears in, ready to go in for the kill. Please only use this pattern to confirm what your strategy and other indicators tell you. Never trade it on its own, and look for it only at levels that are significant on the chart.
+
+
+Pin bars are basically the shooting stars and hammers of Japanese candlesticks. Don't let these different terms confuse you. Just know that the hammer is the same as a bullish pin bar , while the shooting star is a bearish pin bar. These can be very good at confirming a change in the trend when used with other confluence factors in your analysis, especially with support and resistance.
+
+
+The hanging man resembles a hammer. So, what's the difference? Where and when it shows up. When you get the "hammer" at the top of an uptrend, it's called a hanging man and is a bearish reversal pattern. The hanging man is called that because the body is the "head" of the hanging man. The head is on top of his body, which is the wick in this case. It doesn't matter what color the hanging man is when it happens. It just needs to come when the bullish trend is ending. Its signal isn't as powerful as a hammer or shooting star, though, so you should be absolutely sure there are other valid reasons to sell other than spotting this pattern.
+
+
+The inverted hammer looks like a shooting star. It happens at the end of a downtrend instead of the top of an uptrend. As the shooting star, the body of this candle is towards the bottom, and it has a long upper wick. The body's color also doesn't count. The inverted hammer should only show up after a bearish trend and can confirm a trend reversal about to happen. Like the hanging man, it's not as powerful a signal as the hammer and shooting star, so it's best to wait for the price action to confirm that there is indeed a reversal in the works.
+
+
+
+
+
+Multi-Candle Patterns
+
+
+
+
+Compared to the candle patterns with just a solitary candle, multi-candle patterns have two or more candles. The bullish engulfing pattern has two candles and is used to confirm reversals. The first candle has a small bearish body, while the candle that follows it has a large bullish body that completely "engulf" or "swallows" the first candle's body within the range of its open and close prices. The idea behind this pattern is that the first candle's body represents the market's hesitation to keep the downtrend going. The second candle tells you that the bulls have taken advantage of this moment of weakness to send the prices back up, and the fact that the candle engulfs the first one tells you that the bulls have taken over from the bears.
+
+
+The bearish engulfing pattern is the opposite of the bullish one. After an uptrend, the first candle shows up with a small bullish body, followed by a second candle with a large bearish body that completely encases the open and close prices of the first candle in its own open and close prices. The story behind this double-candle pattern is that the first candle represents the hesitation of the bulls to take the prices higher. Then the bears spot their weakness and take over, causing the second candle to close even lower than the open of the first one, leading to a potential reversal.
+
+
+The haram i pattern is the opposite of the engulfing one. However, in this pattern, the first candle has a large body, and the second has a smaller body of the opposite color. A bullish harami pattern has a large bullish candle followed by a little bearish one. The open and close prices of the bearish one are encased within the open and close prices of the bullish one. The bullish harami shows up at the end of a downtrend and could potentially spell a reversal. They are also another form of indecision that comes on the heels of the end of strong trends, which you can see from the small real body of the second candle.
+
+
+The bearish harami has a large bearish candle, followed by a little bullish one. The open and close prices of the first candle completely engulf the open and close prices of the second one. You want to see this pattern at the end of an uptrend before considering it worth looking at.
+
+
+Many other patterns exist, but the ones we've covered here are more than enough for you to work with. They happen repeatedly, which means you have many opportunities to exploit them for good gain, whether you're trading crypto, stocks, or anything else. When you combine these candle patterns with Western chart patterns and work with other indicators to do your analysis, you will find yourself taking high-probability trades.
+
+
+
+
+
+Chapter 7: Moving Averages
+
+
+
+
+In this chapter, you'll come to know the basic structure, definition, and math behind the moving average, as well as the differences between toe prevalent kinds of moving averages. You'll have a firm grasp on the various ways you can work with this indicator and know the pros and cons of having these dynamic lines on our charts.
+
+
+
+
+
+The Moving Average
+
+
+
+
+The first tool that most beginners lean toward is the moving average when it comes to technical analysis. It's understandable, too, because it's pretty easy to understand a line, and it's one of the best tools out there for helping you figure out the trend and creating simple but powerful strategies.
+
+
+
+
+
+The moving average is a line that is plotted on your charts. This dynamic line calculates the average prices over a set number of periods, applied to open, close, high, low, or other price derivatives. If you're working on the 5-minute chart, for instance, each period is 5 minutes, and with each 5-minute candle close, you'll get the average price shown on your chart by the moving average. The average prices are connected together to form a line that moves across your chart and changes depending on the price.
+
+
+Moving averages are great because they can help you smooth out the noise on your chart, depending on the time frame and period setting to which you apply the averages. This means you will see the true trend and not be fazed by the spikes and other noisy elements. The one variable for this indicator is the look-back period, representing the number of price periods before the present one that will be fractured into the average's calculation. For instance, if you're trading on the daily chart where each candle covers the price action for a day, and you apply the 30-period moving average, the moving average will be calculated based on the average of the closing prices (if applied to close) for the past 30 trading days. If you're trading the 15-minute chart, a 100-period moving average will be based on the past 200 15-minute candles that have closed before the present, ongoing one.
+
+
+
+
+
+Kinds of Moving Averages
+
+
+
+
+There are all sorts of moving averages you could work with. The most common ones are:
+
+
+The Simple Moving Average (SMA)
+
+
+The Exponential Moving Average (EMA)
+
+
+The Weighted Moving Average (WMA)
+
+
+
+
+The chief difference among these averages really comes down to their mathematical price weightings. Mainly though, the differences between them aren't all that dramatic. The key difference is rooted in the fact that SMAs give equal weighting to all the prices you set the look-back period to analyze, while WMAs and EMAs deem the more recent prices within the look-back period to be more important compared to the older ones. These two moving averages have different math going for them, but they have the same philosophies and concepts. Those who support using EMAs and WMAs say that there's nothing more important than the recent price action for determining the future direction of older price action. As such, they believe that the more recent price action should have much greater weighting when plotting a moving average.
+
+
+WMAs and EMAs can be more sensitive to the more recent price changes than SMAs. However, that doesn't make the SMAs useless. Investors and traders still eyeball major ones like the 50-period and 200-period SMAs as important price benchmarks. The financial media will often prominently point them out for everyone else to look at because they really are important.
+
+
+When it comes to looking at the big picture with technical analysis, the moving averages will offer you a very clear view of the direction and strength of the trend. This view is even better than what you get from just looking at the price bars on their own. You can often tell the direction of the trend by just looking at whether the moving average is heading lower or higher on the price scale. You only need to observe the moving average's relative slope to determine the trend's strength. The steeper that slope is, the more powerful the trend is. The flatter the slope gets, the weaker the trend is. When the moving average is just flat, that means you don't have a trend, and you'll notice that it's true because the price will move in a range until something changes.
+
+
+
+
+
+Moving Average Crossovers
+
+
+
+
+Other than helping traders see the true trend, moving averages are used in many trading methodologies to figure out good entries and exits, among other trading decisions. One of the most common strategies that employ these lines is the moving average crossover. There are various styles of this strategy, and we'll go over the more common ones here.
+
+
+The basic crossover strategy involves price action and just one moving average. When the price crosses above a moving average, that's a buying opportunity. When the price crosses below it, you have a chance to short the market. The limitations of this strategy may already be obvious to you, but we'll get to those later.
+
+
+The other kind of crossover strategy requires two moving averages set to different look-back periods. The shorter-term moving average crossed above the longer-term moving average signifies that you should be looking for buying opportunities. When the shorter-term moving average crosses below the long-term moving average, that means you should look for shorts only. This strategy is slightly better than the single-moving average one, but it also has problems.
+
+
+The third sort of moving average crossover makes use of three moving averages. Using three can help traders deal with the shortcomings of the other moving average strategies we just mentioned, chiefly addressing the whipsaw problem that leads to many false signals and a lot of money lost due to the absence of a trend. Trading strategies that use three moving averages will give signals when the average with the smallest look-back period crosses over the other two averages. The concept is that it's better to have two moving averages confirming that you should be in a trade rather than basing your executions on just one line. The third, longest moving average gives you solid confirmation that you're working with a valid trend.
+
+
+In general, most trading strategies requiring moving averages mean you'll always be in the market. In other words, you open a trade at a crossover, then close it and open one in the other direction when you have a new crossover. This means you'll always have a trade running in either direction, depending on whether there's a bullish or bearish crossover.
+
+
+The idea of these strategies is to help you capture as much profit as you can when the market begins to trend. You will definitely experience losses with this strategy when the market isn't trending. Still, the losses aren't a big deal if you're not overleveraged and risking more than you should because the winners will make up for the losses and put you in the profitable zone. Therefore, it becomes essential for the trader who works with moving average crossovers to take every signal they get or miss out on some really good trending action.
+
+
+There are cons to beware of when working with moving average crossover strategies, as mentioned before. One of the biggest problems lies with using these averages when the market isn't trending. If you're using just one moving average and the price, the price can whip back and forth from above the line to below it, causing you to lose money trying to figure out where it's going. The solution for this is to make sure you're not risking too much. Also, when you notice about three to five losses in a row, take a step back and see if you can mark up the consolidation being formed, and then wait for momentum to break the price out of that range before you resume your trading.
+
+
+Sideways price action with strategies that have more than one moving average will show these lines snaking around one another, and the result is it just looks like too much of a mess to make any clear or informed trading decisions. These strategies are generally great performers when the market is trending, but not when the inevitable sideways movement begins. The whipsaw can and will happen, no matter how many confirmation crosses and moving averages you use in your system. When the price doesn't trend, you get lots of crosses and absolutely no follow-through from price. These little losses could lead to a "death by a million cuts" situation. Even if your risk is small, you sustain too many losses in a row that you practically lose your account, especially if you take every signal that these crossovers give you.
+
+
+The backbone of these strategies is to be in the market when there's a trend, which makes you profitable. However, you can avoid whipsaws by only getting into trades when the market demonstrates it's moving from low volatility to high volatility. You can also get on a trend when the averages have not just crossed over but are now far apart from each other with very few crossovers. If you take advantage of these trending opportunities, you will be fine handling the whipsaws that come your way.
+
+
+
+
+
+Techniques and Tips for Trading with Moving Averages
+
+
+
+
+There are so many ways you can figure out the strength, existence, and direction of the market's trend. You can use linear regression, trend channels, trend lines, the average directional index indicator, visual estimation, moving average slopes, and more. One of the most effective ways to do this with moving averages is by working with the right order of MMAs, or Multiple Moving Averages. For instance, you could have five EMAs on your chart or even more, depending on what you're going for. The look-back periods for these moving averages will also differ. You could choose to use the 10, 30, 50, 100, and 200 EMAs, or you could decide to work with Fibonacci numbers. You will have to experiment with the look-back periods and quantities of moving averages so that you can trade the market well.
+
+
+When you've worked out the periods and quantities, you can just figure out the trend by seeing that the EMAs are in the proper order. Let's go back to our example. Imagine the 200 EMA is on top of the 100, 50, 30, and 10 EMAs stacked on top of one another in that sequence. You're definitely in a downtrend. If these EMAs' order was reversed (with the 200 EMA being the final one at the bottom), you're in an uptrend. You can then use trend-following methods to get into trades in the direction of the trend.
+
+
+When the moving averages do not show up in the right order, it could signify that there's no directional trend. This would be a good time to stay away from trading that particular asset or security if you're a trend trader.
+
+
+Other than the whipsawing, the other problem with moving averages is that they are lagging indicators. The one true leading indicator is the price itself. The averages lag in that they don't accurately depict what the price is doing on time. As a result, while moving averages are awesome for helping you figure out the present trend, they aren't the best when it comes to warning you early about imminent trend changes. This weakness keeps this indicator from being reliable as an early warning system to secure your profits or get out before the markets go against you. This is why EMAs and WMAs are used, but they can only do so much as they also lag like the simple moving average. Does this imply you cannot work with the moving average? Of course not.
+
+
+
+
+
+Using Moving Averages as Dynamic Support and Resistance
+
+
+
+
+Besides using the moving average indicator to help you with trend strength and direction, and trading strategies, you can use the moving average as a form of support and resistance. As the trend lines, they are dynamic. However, they are wavy rather than straight lines.
+
+
+Since the price of an asset tends to bounce off certain EMAs often when in a trend, some traders wait to take the bounces in the same direction of the trend when the markets are in a powerful trending move. This form of trading is similar to trading using trend lines. You can take this a step further by not just using the moving averages to get into trades when the price bounces off them, but by using them to find good exits for your trades.
+
+
+Imagine you have a 20-period EMA plotted on your chart, and it tells you that there's a strong downtrend in place. You'll notice that now and then, the price will return to that resistance line or EMA and bounce away from it even further down. When you have that bounce, you can trust that the trend will hold, at least in the interim. Suppose you had gotten into a trade with this bounce or any other entry form in the trending market. In that case, you could logically exit your trade when you notice that the price disrespects and then closes on the other side of the moving average by a bar or candle. This is known as the moving average break-and-close exit.
+
+
+The idea behind this is pretty easy to grasp. Since your moving average was acting as resistance in this case and bounces from the line represent a continuation of the trend, it makes sense to assume that when the price disrespects the moving average by closing above it, you might want to get out of your trade while you can. Scaling out of your trade or closing it entirely using MAs is advantageous for helping you get the most that you can from the trend.
+
+
+By this point, it should be pretty obvious to you that moving averages are incredibly versatile. Need to figure out whether it's a good time to look for trading opportunities? Put one on your chart and observe the slope. Has a good move started from a predetermined level, but you were late to the party? Put a short-term moving average like the 14 EMA and wait for the price to close in the direction of the trend above or below the moving average, and you have a good entry point. Need to get as much of a trending move as you can? Use the moving average bounces and breaks to enter and exit, respectively. The abilities of this indicator are very valuable to technical analysts, even despite the disadvantages of lag and whipsaw motions in sideways markets. Other than moving averages, there are other very important indicators that technical investors and traders work with. We'll get into those now.
+
+
+
+
+
+Chapter 8: Major Indicators and Oscillators
+
+
+
+
+By the end of this chapter, you'll know the main indicators that technical analysts and traders use for getting a clear picture of all kinds of markets and instruments. You'll come to see how oscillators are a truly unique class of indicators that can help you spot divergences in price and see the market momentum clearly. You'll also learn how to use the different oscillators and indicators for different market conditions.
+
+
+
+
+
+Welcome to Oscillators and Indicators
+
+
+
+
+These are an important part of technical analysis, apart from chart patterns and shapes. Moving averages are just one kind of indicator you can use to analyze price action. Still, there are so many others out there that traders use to help them make trading decisions, and they're just as important and useful as the moving average, for the most part.
+
+
+In general, indicators represent the price after certain mathematical equations have been applied to offer more information than open, high, low, and close prices. Every indicator has its own special mathematical formula that innovatively presents price action. Some are made specifically for markers like futures or equities, while others can be used across all markets. In this chapter, we're only going over the ones that apply to every market. We're picking only the most common and best ones out of the many that are out there.
+
+
+Even now, new indicators are being created. However, after much exploration of a lot of these tools, what has continued to hold true is that certain indicators have proven their worth and stood the test of time. These are the indicators we'll be looking at.
+
+
+
+
+
+Analysis Paralysis
+
+
+
+
+Analysis paralysis is the bane of the technical trader's existence, and it happens when they have too many strategies and indicators that they work with. Some refuse to act even when their setup is screaming at them because they always seek confirmation from many indicators before pulling the trigger on the trade. They are the opposite of those traders who just execute because they "feel" the market is going their way. While it may seem better to be afflicted by analysis paralysis than recklessness, these two things are equally detrimental to you as a developing trader, and your capital will eventually suffer for it.
+
+
+It's good to be cautious and careful when you're taking trades, but when that caution has you completely paralyzed because you're afraid to make the wrong decision, this can be bad for you. It may seem very impressive to new traders to see a chart laden with so many indicators, but the more experienced and profitable traders know that having a chart that looks like a unicorn threw up on it will not help you in the long run. In fact, overloading your strategies and charts with too many indicators can keep you from success in your trading.
+
+
+A good way to fix this analysis paralysis is by having a firm risk management plan in place. It also helps to understand that trading is a numbers game. When it comes to risk management, it's best not to risk more than 1 percent of your account per trade, and you should make sure you only take trades that will guarantee you double or more than what you risk. This means if you're trading the EURUSD pair in forex, for instance, and you're risking $10, you must make sure your reward for that trade will give you at least $20 after expenses like the spread and commission you have to pay for the trades. As for accepting that trading is a numbers game, it means you're at peace knowing you can lose trades, and you don't have to be right all the time, but just enough times.
+
+
+For instance, let's assume you have an account balance of $100,000, and you take 10 trades that offer you a risk-reward ratio of 1:3 (meaning you win three times more of what you risk per trade). Let's assume you lose 7 out of 10 trades, and for each trade, you risked $1,000 because you don't want to go above risking $1,000 per trade or 1 percent of your account. Your losing trades would amount to $7,000. That sounds horrible, right? Well, consider this: Your three winning trades are each worth $3,000. That means you have $9,000 in profits. Subtract your loss from that, and you've got $2,000 in net profits. Do you see what happened there? Because you had a solid risk and money management system in place, you still came out on top, despite having only a 30 percent win rate.
+
+
+Technical analysis, fortunately, can help you with your risk management to set your stop-loss orders at places that are neither too loose nor too tight. You'll also know before you even get into a trade whether or not you will get a good enough reward for what you must risk. When you understand how trading works, you won't feel too paralyzed to get into a trade. You will understand that the way to make some money is to put yours on the line, within reason, of course.
+
+
+There's never going to be a trader with a 100 percent win rate, so there's no need to aim for that. As I've just demonstrated to you, even being right just 3 times out of 10 is more than enough to proudly withdraw your funds from your broker. So don't feel like the more indicators you pile on your chart, the higher your win rate will be. It doesn't work that way. I'm also not suggesting you should only focus on managing your risk and money and forget all about technical analysis. You need to have solid reasons for entering and exiting the market where and when you do. Technical analysis will always be important. Just don't let it paralyze you, and recognize that sometimes the stars will align, and you'll still lose.
+
+
+In the same way, not everything may line up, and you could still win. So, the smart play here is to just stick with the basics and only work with the proven effective tools. When you have a good opportunity staring you in the face, just take it. If you lose, the market will still be there for another setup that could go your way. Longevity is the name of the game. Mind your risk, and everything should work out well in the long run.
+
+
+
+
+
+Oscillators
+
+
+
+
+When it comes to indicators, oscillators are a very special breed. They are meant to help you read the price momentum. This means you'll study its overbought and oversold readings. The way these indicators work is that they "oscillate" back and forth in a fixed range, and this is why investors and traders work with them to help them figure out reversals and turns in price when the market is consolidating, not trending. However, you can work with some of these oscillators even when you've got a trending market.
+
+
+Before we describe each one, I need to point out that the indicators are all price derivatives. This means they are lagging indicators just like the moving average. You may think this is bad, but some technical analysts actually like the lag because it allows you time to wait for the price to establish exactly what it's up to before you get a signal to jump in. Some traders say it's horrible that indicators lag because they have other advanced techniques of figuring out how the price will react next. Before these indicators reflect that, the move has already happened. These traders don't bother with indicators or only use them to confirm what they can see on the chart from the price alone.
+
+
+While it's true that many of these indicators are just the same price in different clothes, it's the new clothes that make it easier to see when a good opportunity for making money shows up. Some traders may not see everything they need by working with the price candles only, but throw on an indicator, and they immediately know what to do about what's going on. In the same way, many professional analysts study their charts using only a certain indicator, like the commodity channel index or the relative strength indicator. They even go so far as to ignore the price itself and only focus on the indicator. This is not a very common way to trade with "indis," to be sure, but it does tell you that indicators can be very useful for trading and technical analysis, despite what naked traders say. Even when you don't use them as the sole tool for analyzing price action, it can enhance your analysis by leaps and bounds when used correctly.
+
+
+
+
+
+Major Indicators
+
+
+
+
+The Moving Average Convergence/Divergence Indicator
+
+
+This indicator is a derivative of moving averages and is also called the MACD (Mac Dee). It was created by Gerald Appel, a technical analyst, in the 1970s. Since then, it's become one of the most commonly used oscillators ever. Many technical analysts use the MACD to confirm their biases in the market. Others will use this indicator to take buy and sell signals. The indicator has so many uses, as it can help you detect trend momentum by showing the relationship between two moving averages. You can trade with the indicator by using crossover signals from the two lines, by working with crosses from one side of the zero line to another, or by using the divergence between the oscillator and the price. There are three vital parts to the MACD indi:
+
+
+The MACD line
+
+
+The trigger line
+
+
+The histogram
+
+
+
+
+Bollinger Bands
+
+
+Eponymously named after John Bollinger, a popular portfolio manager and trader, these bands are plotted right on the price candles or bars. They have a simple moving average along with two other lines. One line is several standard deviations below the SMA, while the other is above it by the same standard deviations. The default look-back period for Bollinger Bands is 20, and the two outer lines outside of this 20 period moving average are set 2 deviations away, above and below. The main purpose of these bands is to measure the asset's volatility around the average or the mean, as presented by the simple moving average. The bands can let you know when there's an impending volatility increase when they grow tight. You can also use the bands to let you know if the market is overbought or oversold.
+
+
+One of the most popular trading methods with this indicator is the squeeze. With this method, you want to take advantage of the tendency for low volatility periods to come right after high volatility periods in the markets. When there is low volatility, you'll see the Bollinger Bands become tighter and narrower. This is called the squeeze. What comes after the squeeze is a sudden sharp move one way or the other as the price goes back into high volatility mode. As such, traders take advantage of the breakout from the squeeze by getting in once the price moves.
+
+
+Average Directional Index
+
+
+Also called the ADX, this was created by J. Welles Wilder, a very prolific man in developing indicators. The ADX is either vertically below or above the candle or bar chart. This indicator measures the absence or presence of strength in the prevailing trend and whether that strength is picking up or dwindling. When the trend is strong, the ADX reading should be high.
+
+
+Conversely, a low ADX reading means the trend is weak or losing strength and that there's a consolidation about to begin. The traders who use this indicator set a horizontal line on their chart to demarcate the trending and non-trending areas. A popular spot to plot this line is the 30 level. When the trader sets the level, they can then work with the premise that if the ADX moves above the 30 level, the trend is gaining strength. On the flip side, if it goes below 30, that could mean the market is starting to consolidate, or the trend is over. This is a very important thing to know because it can help you work out the best time to use a trend-following technique and when to use a range trading method instead. You need to keep in mind that the ADX on its own doesn't tell you the trend's direction. That is done by two other indicators that are often used along with the index: The DI+ and DI-. Di means directional indicator. These indicators can give you what the ADX won't in terms of trend direction.
+
+
+When the DI+ is going up and the DI- is going down, that means the trend is bullish. When the DI- is going up while the DI+ is going down, the trend is bearish. Some traders love to wait for these two crossovers to get a directional bias for their trading decisions. When used along with the DI+ and DI-, the ADX is a very powerful tool indeed.
+
+
+Average True Range
+
+
+J. Welles Wilder also created this indicator. It also shows up vertically, either below or above a chart. It is designed to give you a mean measurement of the recent volatility in price. It's calculated as the moving average over a set period. For instance, if you want to continue to keep track of the average daily price range of a trading instrument over the past 10 days, all you have to do is place a 10-period ATR on the daily time frame for that instrument. This would give you the average price ranges over a day for the last 10-days, each day.
+
+
+Since this indicator is meant to help you work out the recent volatility in the market, when you notice the reading is high, the volatility lately has also been high. When the volatility in recent periods has been low, the reading from the ATR will also be low. The ATR is also used to help traders set stop-losses and take profit levels that make sense when you factor in the volatile movements of price action.
+
+
+Parabolic Stop and Reverse (PSAR)
+
+
+This indicator is powerful in helping you work out a way to trail your stops and when to get out of the markets and go the other way. A useful way to manage your risk and hold on to what you've gained is to trail your stop loss. The parabolic SAR has a series of dots that trail the price in a way that if the dot is above the candle, the trade you're in should be a short one, and your stop loss should be at the dot itself. On the other hand, if the dot is below the candle, you're to take long trades only, with your stop loss right at the dot. Thus, this indicator gives you a trading system for going long or short and properly placing your stop loss. Like many indicators, this one doesn't do well when there's consolidation or the price is whipsawing about. It could lead to a string of losses if you're not careful. If there's a spike in the price of the asset you're trading, it would be best to leave that chart alone until the balance is restored.
+
+
+
+
+
+Major Oscillators
+
+
+
+
+Oscillators move within a set range, which means they can help you find reversals in consolidating markets. When there's a trend, they can still be used. These oscillators have very similar formulas, so it doesn't make sense when you have more than one on your chart. We'll go over the most common ones.
+
+
+Usually, when an oscillator is above the overbought level in a trading range, it means that the bullish trend may soon reverse. On the flip side, when the reading is below the oversold level, it means that the bearish trend is about to be replaced with a bullish one.
+
+
+You can also use these indicators to find divergence signals. Divergences can tell you what the price will do in the future. They happen when there's no balance between the movement of the oscillator and the price it's supposed to be tracking. Don't think of divergences as trading strategies that can stand alone. Instead, think of them as an alarm to let you know there might be a change in the trend's direction coming up. Use them only to confirm what your other indicators and the price action tell you.
+
+
+Oscillators used to work out divergences are many. You could use the relative strength index (RSI), stochastics, MACD, MACD histogram, commodity channel index (CCI), momentum, rate of change (ROC), Williams %R, and so on. When you've picked your oscillator, it's easy to spot divergences, of which there are two kinds:
+
+
+Regular Divergence
+
+
+Hidden Divergence
+
+
+
+
+The first is more common. It's what the traders refer to when they talk about divergence in general. It warns everyone that it's best to get out of a trade because the trend is losing momentum and could be flipping soon. In a bullish trend, you get this signal when the oscillator makes a lower high while the price makes a higher high. This is known as bearish divergence. Bullish divergence happens in a bearish trend when the oscillator makes a higher low, and the price makes a lower low instead. When you spot either of these divergences, your job is to start looking for other factors to confirm a reversal is in play before you execute your trade. You could confirm it with a break in market structure, a trend line break, a moving average violation, a reversal candle pattern, or a reversal chart pattern.
+
+
+Then you have hidden divergence, which is the polar opposite of the regular kind. This signal presents itself as a technical imbalance between the movements of the oscillator and the price. Still, instead of being a sign that a reversal is coming, it means that the trend is likely to continue as it is. There are two kinds of hidden divergence. The bearish hidden divergence is what you get in a downtrend when the oscillator makes a higher high while the price action makes a lower high. This means that the oscillator and price offer divergent signals, but you know that there's a chance for the price to continue in the same direction, which is down. Bullish hidden divergence happens in an uptrend. In this case, the price will form a higher low while the indicator will make a lower low, telling you that the price will continue to make higher lows and that the uptrend is here to stay. Again, don't trade hidden divergences on their own. Use them to confirm what you already see, or look for other confirmations that the divergence is legitimate.
+
+
+Relative Strength Index (RSI)
+
+
+This indicator was also created by Wilder and is so very common among traders today. Some traders have even begun using this tool for other purposes besides what it was designed to accomplish, and for them, it's almost as important as the price itself. Other traders work with the RSI as a way to confirm their analysis.
+
+
+The RSI is perfect for letting you know the momentum and the oversold and overbought areas of price when the market is ranging. This way, it uses the same idea of mean reversion that works with the linear regression indi. The RSI compares the recent losses to recent gains and is usually set to a look-back period of 14. However, you can tweak this period if you like. The default oversold and overbought levels are 30 and 70, respectively. When the line crosses above the 70 level, that tells you the price is overbought, and there might be a reversal soon. When you notice the price is below the 30 level, it means that the asset is oversold, and there might be a reversal to the upside.
+
+
+Some traders will use the RSI to signal entries into a trade. Long trades in a consolidating market can be taken when the RSI crosses from the oversold above the 30 line. You can take shorts in a consolidating market when the price crosses from above the 70 line downwards. When the market is trending, you can use the RSI still. Some analysts noticed that when there's a bearish trend, the RSI will fail to hit the overbought area in downtrends, and when the trend is up, it won't be able to hit the oversold area. This way, you can use the RSI to figure out if the market is trending, not ranging, and therefore only use your trending strategies until the next consolidation.
+
+
+
+
+
+Stochastics Oscillator
+
+
+
+
+George Lane created this indicator in the 1950s, and so it's also called Lane's stochastics. There are two kinds, generally: The slow and the fast. The slow stochastics are the same as the fast but smoother. No matter which kind you pick, they have the same role as other oscillators, finding the oversold and overbought market conditions and giving you clear divergence signals. This formula is based on comparing the closing price to the price range over a set look-back period. The idea is that price tends to close near high prices when the market is bullish, and when it's bearish, the price will close near the recent lows. You have two lines that are calculated for this indicator:
+
+
+%K — The Fast Line
+
+
+%D — The Slow Line
+
+
+
+
+The lines move between 0 to 100, and the default oversold and overbought levels are 20 and 80. You can tweak those numbers if you want. The slow line is a moving average of the fast one, normally set with a look-back period of 3. Since the "stocks" have two lines instead of one like the RSI, they can also give you more results when the fast line crosses the slow one, in the same way that the MACD and moving average crossovers tell you it's time to buy or sell.
+
+
+
+
+
+Chapter 9: Trading Strategies for Crypto, Forex, and Other Markets
+
+
+
+
+By the end of this chapter, you'll understand all the basic ideas behind the strategies and methods used by technical traders. You'll know why some of the most popular strategies work and how to make them work for you. You'll know how to use high-probability trading methods as well.
+
+
+
+
+
+When people talk about technical trading strategies, it's always good to distinguish between manual strategies and automated ones. The manually traded ones are discretionary and subjective. The trader is the one who decides whether or not they should pull the trigger. Automated strategies are very mechanical and objective, as they are programmed to be run by a trading robot or expert advisor on your computer. There's no human interference beyond someone programming the way the robot should take the trades.
+
+
+
+
+
+Confluence
+
+
+
+
+When it comes to trading strategies, confluence is a powerful and necessary concept, even though it means different things to different technical analysts. The core concept is that you need several technical confirmations to make your trade a more probable one. Confluence is when you have more than one technical indicator telling you that the trade will play out the way you think it will. It could be any combination of technical indicators and analysis factors that say the same thing. Among these are trend lines, resistance and support levels, volatility bands, moving averages, Japanese candle patterns, Western bar patterns, pivot points, Fibonacci levels, and so on.
+
+
+Remember that when you're looking for confluence, it doesn't mean you should or will get into analysis paralysis mode, where you won't act unless everything is perfect. It's more about looking for more confirmation that can reinforce your reason for taking a trade, leading to taking more high-probability trades for good profits.
+
+
+You need to be patient with whatever strategy you choose because confluence is a good thing. The thing is, the fewer reasons you have for taking a trade, the more likely that trade will fail or be a fluke win. The more confluence, the better the odds, and that's why traders develop strategies based on several factors to allow them to win more often than they lose. If you can be disciplined enough to wait until you have the confluence set up, while you may take fewer trades, the odds are those trades will be winners. Patience matters because the confluence of technical won't always happen at once. You may have to wait a few minutes or hours or even days for the rest of the signs that the price will go your way to show up. For instance, you could see a breakout confluence where the price action pushes below a trend line support level, confirming that the level is broken and that breakout could also line up with another break of the different horizontal line support. This confluence makes the downward movement more likely. Here are other kinds of confluence you could look out for, depending on your strategy:
+
+
+Price bounces off a bullish trend line simultaneously as it bounces off a horizontal support line.
+
+
+Price bounces from the S1 pivot level, which also aligns with the 38.2 retracement level on your Fibs.
+
+
+Price forms a head and shoulders pattern at the same time that it breaks a major support level.
+
+
+Price bouncing downwards from a long-term 79 percent Fib retracement level, which happens to match a short-term 50 percent retracement level.
+
+
+Price breaking out above a pennant at the same time it hits a significant resistance level.
+
+
+Price moves in a sideways market simultaneously as it bounces off the upper and lower levels of the Bollinger Bands.
+
+
+A breakout happens above the 50 EMA simultaneously as the price bounces off the 38.2 percent Fibonacci retracement level.
+
+
+The RSI is in the overbought territory while the price bounces off a clear resistance level and a bearish engulfing pattern forms.
+
+
+Price hits the support level at the bottom of a range while the RSI crosses above the oversold level, and the 5 and 8-period moving averages cross bullish.
+
+
+
+
+These are only a few of the many ways to work with confluence on any chart you like. If you want to do well in trading, consider confluence each time. If you have at least three factors going in your favor, don't overthink it. Just hit that buy or sell button — after working out the risk for that trade, of course.
+
+
+
+
+
+Breakouts
+
+
+
+
+Breakout trading is very popular, and it's all about trading the breaks of support and resistance, which, according to the theory, should never be broken or disrespected. The idea is that when they are broken, it means they're broken for good. This is why breakout traders wait for this event to exploit, but as we've already noted before, they can fall prey to false breakouts. It doesn't matter in the end if the trader has a solid risk management strategy.
+
+
+
+
+
+Say you have an established area of support that the price has not been able to break down and past. Each time the price gets there, the buyers drive it back up again. The traders assume that each time the price gets there, it should head back up again because that is a supply level with high buying pressure to overcome all the sellers in that area. However, when a strong enough catalyst causes the price to break past that established support level, then that catalyst just might be strong enough to drive the prices down for a good while. This is how the breakout trader can make their money.
+
+
+Now assume that you have an area of resistance that the uptrend hasn't been able to push through. The price hits this level only to be driven back down by selling pressure from the bears. The assumption would be that each time the price makes it there, it will just drop back down as there's too much selling pressure for the bulls to push through. However, if a strong enough catalyst can make the price break through that ceiling, then it just might allow the breakout traders to gain even more profits as the price may continue to push up.
+
+
+Whether you're working with static support and resistance as horizontal lines or dynamic support and resistance in the form of moving averages and trend lines, you can use this strategy.
+
+
+Other than the break of horizontal and trend lines, there is also the sort of breakout from chart patterns, also called volatility breakouts. The chart pattern's consolidation period is one of low volatility. As a breakout trader, you can just set a buy stop order above the resistance and a sell stop order below the support of the range. You could make these a "one cancels the other" order so that when the breakout triggers one of them, the other order is deleted, and you can just ride the breakout to wherever it ends.
+
+
+For most traders, it's better to trade the breakout since they can control their risk and make a lot of profit in the process. However, the key thing here is the ability to manage your risk. Be careful of assuming that a certain strategy is a holy grail.
+
+
+The idea behind your stop loss is that it needs to be at a spot where your analysis will be proven wrong by the market, and therefore the trade you're in is terminated to preserve your funds. When in a breakout trade, the market will prove you wrong when it fails to follow through on the false break and instead heads back to where the price was before the breakout happened. This should be where you accept that you're wrong about the trade. In practice, the price will often move above then below a significant level before it continues in the breakout direction. This is why your stop loss should have more than enough breathing room to allow you to see if your trade will play out. Therefore, it makes sense to place your stop loss some distance above the most recent high (in the case of a bearish breakout) or some distance below the most recent low (in a bullish breakout).
+
+
+Breakout traders also work with entry filters to help them tell if there's a trading opportunity coming up. It's the same thing as waiting for a particular amount of movement in the price of an asset before you decide to get into the trade. Before committing their capital to a trade, the breakout traders will wait for the price to move by a certain amount beyond the breakout point. If the price can move beyond the break, then the chances are higher that the breakout will continue its momentum in that direction.
+
+
+Another lovely filter that breakout traders work with comes after the close of the candle or bar that breaks the resistance or support levels. When the breakout happens, the trader waits for the bar that broke the level to close. If the close doesn't happen beyond the breakout point, the trader will wait for another bar to go past the extreme of the breakout bar (in the breakout's direction) before they get into the trade. If even that bar cannot go past the extreme, the breakout trader will just keep waiting until one does. This can keep you safe from being in too many scenarios with false breakouts.
+
+
+There's yet another form of filtering entries, known as the throwback or pullback. This is what happens when there's a breakout, but the momentum dwindles right after the break and causes an extra move that heads back to test the breakout point. The throwback is simply the price returning to retest the breakout point after a break to the upside, while the pullback is what happens when the price returns to test the breakout point after a break to the downside. Either way, if it's a true break (which means it has directional momentum), the price will hit the breakout point and bounce off of it to continue in the breakout direction. This is also called the break and retest strategy . If you like to get in on the first break but miss it, this is a good way to join the ride.
+
+
+
+
+
+Trend Trading
+
+
+
+
+There are so many ways to trade the trend, and the location and timing of your entry can give you better results if you finetune them properly. Trend trading involves getting into trends when the countertrend pullbacks stop. You want to buy based on bounces from your moving averages, trend lines, and support lines after the retracement in an uptrend. In a downtrend, you're selling the bounces from these same technical tools to the downside. Working with all forms of support and resistance, you can truly buy low and sell high or put differently, "Buy the dips and sell the rallies."
+
+
+To identify these dips and rallies in the trend, all you want the price to do is respect or bounce away from a moving average or trend line. This is different from breakouts, where you're actively looking for disrespect in a manner of speaking.
+
+
+You can wait for the price to bounce off a support line or resistance line by a certain increment in price before you hop onto the trade. In the same way, you filter your entries for breakout trades. When you wait, you get confirmation that the price really is ready to move in the trend's direction.
+
+
+Another filter trend traders use is to watch the bounce bar closely. This bar or candle bounces off the line (support or resistance) or almost touches it. When this bar closes above the support line, for instance, you won't get into a long trade until the next bar can push past the high of the bounce bar. This will give you the extra confirmation you need to know that the bounce was true and will hold.
+
+
+When you have a downtrend bounce from a resistance level, you don't get into a trade until the next bar or any other bar can push past the extremely low price of the bar that bounced.
+
+
+
+
+
+Trend Trading with Countertrend Breakouts
+
+
+
+
+This method of trading is ultra-specific and a high probability way to trade a trending market. What's the best way to be part of a trend? Get in as soon as the consolidation or retracement resumes moving in the trend direction again.
+
+
+When you're in a bullish trend, the traders who want to buy in will look for the best place to participate in the market. When they can get in on a dip, it means they buy at a cheaper rate. Also, if the trend continues to offer these dips in price, it's possible to add to your position and gain even more profits on getting in at the best spots.
+
+
+When in a bearish trend, traders who want to go short into this trend will look for the best location to get in. That place is at the end of the brief rally or pullback in the trend. You can measure the trend with a channel, trend line, or a moving average. When you have one or more of these techniques to help you measure and track the trend's strength, you can then focus on drawing counter trend lines.
+
+
+Say you have an uptrend where a support line buoys the market. When there's a dip or a retracement to the line, it will form a little bit of a downtrend, and you can connect the highs of this downtrend to create a resistance line. When you have this in place, you could then wait for the price to bounce off the support line and break past the resistance line of the minor downtrend before you go long.
+
+
+On the other hand, you have a resistance line in a downtrend that keeps the prices heading down. The price will create a mini uptrend against the main trend when there's a rally or retracement to this line. You can then draw a support line to connect the lows of this uptrend. When the price approaches the main resistance line and bounces, you can wait until the support line you've drawn is also broken before you get into a trade. This way, you can minimize your stop loss and the time spent in drawdown, which is the amount by which the trade goes against you before it goes your way.
+
+
+When it comes to stopping losses in this strategy, you should set them on the opposite side of the trend line. If it's a bullish trend, your stop loss should go below a higher low under the trend line, which is likely to be the most recent price dip. In a bearish trend, you want your stop loss to be above the trend line and above the most recent lower high formed by the mini-rally. To exit your trades, you can get out at significant price points or just keep trailing your stops to just above the most recent lower high (if you're shorting) or just below the most recent higher low (if you're buying). If you're working with an uptrend channel, take your profits when the price hits the resistance line. If it's a downtrend channel, your take profit level should be at whatever point on the bottom support line that the price hits. Don't get greedy. Just get out and be glad the market paid you for the day.
+
+
+
+
+
+Range Trading
+
+
+
+
+Some ranges are clearer than others, which means not all ranges should be traded. If the range is narrow, then you should wait for a breakout. If it's a tall or wide range, then you can practice range trading.
+
+
+To trade this way, always buy from support and sell from resistance. Support is the bottom area of demand in a range or consolidation, while resistance is the top range of supply. The profit you get out of range trading will depend on how huge the range is. As a buyer, you should take profits at or just before the resistance. If you're short, take profits at or just before the support.
+
+
+As a buyer, set your stop-loss orders just below the low of the range, allowing room so that the price doesn't wick you out only to go where you know it would. When selling, the stop loss should go above the top of the range with some room for error. You can trade ranges with other methods like Bollinger Bands, if you like, as well as oscillators and moving averages. For most technical traders, it's enough to place support and resistance lines on a chart with at least two touches, but even better when there are more touches to both lines.
+
+
+When you confirm that the market is ranging, you need to hunt for a chance to trade the range. For instance, you could use the RSI or stocks to help you confirm that you're at a good area for the price to turn. You could also observe the candles and see if you can get engulfing patterns, pin bars, and other signs that the price is turning around.
+
+
+If you choose to work with oscillators, a good way to read them is to look for long trades close to or right at the range support while looking for your oscillator to give you a cross of its line or lines above the oversold area. If you want to get into short trades, look for them at or close to the range's resistance while waiting for your oscillator to give you across its lines below the overbought area.
+
+
+Another confirmation for the range trade can be spotted in ranges with trend line breakouts. This is a combo of the trend line breakout strategy and the range trading strategy. In a range, as the price moves from resistance to support and back, you will notice that there are angled downtrend and uptrend lines that form. When these lines are broken, you can use them as a trigger for getting into your range trades.
+
+
+I should warn you, though, that waiting for a trend line to break within a range almost undoubtedly means you'll be in too late and miss the bulk of the move, but then the good thing is that the probability of your trade playing out is even higher. Another really cool thing about trading this way is that your stop loss can be placed tightly on the other side of the broken line, rather than at the bottom or top of the consolidation. This means you can manage your risk even better.
+
+
+
+
+
+Chapter 10: Risk and Money Management
+
+
+
+
+By the end of this chapter, you'll come to realize that maybe there is a holy grail of trading, after all: Managing your money and risk properly. You'll come to find that technical analysis can really help you work out a great risk management plan. You'll get the importance of your stop loss, risk-reward ratio, position size, max loss percentage, and more so that you can focus on winning and not be bothered about blowing your account.
+
+
+
+
+
+When people get into trading, the first thing they think about is their entries. They want to know the best way to get in the trade from the beginning of the trend and get out at the tail end. They don't care about money or risk management because those sound boring…but that's exactly why many traders are losers. Even traders with the worst of entries will do very well with good money and risk management.
+
+
+Many who know even a bit about the financial markets know that technical analysis is brilliant at giving you the best trade entries. For instance, if you've got a head and shoulders reversal pattern play out, you know that the entry should come right at or just a bit after the neckline is broken. In the same way, you know that in a moving average crossover strategy, the entry has to be right when or just after a shorter-term moving average crossed the longer-term moving average. When there's technical analysis in making trades, there's a chance that the entries are very well defined.
+
+
+Many may know that technical analysis is good for entries, but they don't know that the exit should be just as defined as the entry, whether the trade is in profit or loss. Also, these exits can offer you a very prudent and intelligent way to manage your risk properly.
+
+
+
+
+
+Stop Losses
+
+
+
+
+When it comes to exits, technical analysis is brilliant at helping you find the initial stop loss and even the moving or dynamic stop loss when your trade has become profitable. Also, technical analysis offers you explosive profit targets that have you leaping for joy when they are reached.
+
+
+When you're setting your stop loss, the idea is that you want to be out of the trade as soon as the market shows you that the conclusion you drew from your analysis was wrong. Say you were in a long trade right after a key resistance level was broken. There are several ways you could go about placing your initial stop loss. For instance, you could set the stop loss below the resistance zone or level so that when the price does pull back below the level, that will show you that you were wrong about that trade (but maybe not about the direction). Even more practically, you can place the stop loss below the most recent swing low you can find below the resistance line. This is because breakouts tend to have the price hovering around resistance or support before moving on to an actual breakout move or failing.
+
+
+You can also apply the idea of getting out when you're wrong about a trade to dynamic or trailing stops. The idea of trailing your stops is that you can lock in your profits while remaining in the trade-in case it goes even further than you'd anticipated, and you also reduce the risk of having the price kick you out of the trade with nothing. Believe me, this was a lesson I learned the hard way. I had gotten into a trade where I had a 1:30 risk-reward ratio, and I was so adamant about the price hitting my take-profit level. Not only did it not get there, but it also came back to my entry in a matter of seconds and took back everything I'd made.
+
+
+Trailing stop losses can be automated or manually done. For instance, when you're in an uptrend, and your buy is in profit, you need to move the stop loss higher and higher in the trend's direction. Some traders lock in the profits using the higher lows, others trail their stop loss along with an EMAs move, and others just lock in profits at specific levels they select or when the price gives them a certain amount of money. The smart play is to trail your stops using the market swing points, which are the higher lows in an uptrend and the lower highs in a downtrend. So, in an uptrend, as the price bounces back from each dip or swings low, you're supposed to move your stop loss to the most recent swing low created. This way, if the price breaks that swing low, you're out, and you can start looking for signs of a trend reversal or trend continuation. Remember that when you're in an uptrend, the higher lows should never be violated. When this happens, there might be a change coming.
+
+
+Now assume you're in a downtrend, and your sell trade is doing well. You need to move your stop loss lower and lower in line with the trend. You can lock your profits in at each new swing low (lower high) being made, trail it along with an EMA, or look for old significant levels to determine how you scale out of your position. If the price were to take you out at a swing, that means there's a chance the trend wants to change and go up.
+
+
+Exiting your trades properly is very vital when it comes to controlling your risk in technical analysis. There are two reasons you want to keep a short leash on your risk. For one thing, you don't ever want to be in a position where just one trade can take you out of the game and blow your account. When you measure your stop loss based on your strict risk and money management rules, you can be certain that any loss you make, even if it's a string of losses, will be easily absorbed without causing you too much of a headache. The other reason you want to control your risk is to help you create a situation where your overall profits are higher than your loss substantially. This is the secret to profitable trading.
+
+
+
+
+
+Risk Reward Ratio
+
+
+
+
+One of the most important aspects of a risk management strategy is very closely connected to the idea of preserving your capital. I'm talking about having a great risk-reward ratio. I talked about this briefly before, but let's really get into it now.
+
+
+You want to finetune this ratio by working with stop losses and profit targets that you've determined through technical analysis. You can focus on your risk-reward ratio when you know how to get your entries, stop loss, and take profit levels with technical analysis.
+
+
+First things first, when you hear people say they had a 5:1 or 2.5:1 ratio, they're really talking about is reward risk ratio rather than risk-reward. I just thought I'd mention that here in case you're wondering why anyone would want to lose five times more than they make.
+
+
+This ratio is vital to your net profitability as a technical trader. It can be hard to attain the same optimal ratio every trading day, yet, you should prioritize this as much as possible while being practical. Let's look at another example of why you need to have a great risk-reward ratio. Imagine that you have a ratio that is 1:2, meaning you win 2 times whatever you risk, and you risk $1,000 per trade. If out of 10 trades, you lose 7, then that means you will have a loss of $1,000. If you lose 6 out of 10 trades, then you may have lost $6,000, but your winning trades would be $8,000, which means you'd have $2,000 net as profit. What happens if you lose 8 times out of 10? You will be negative $4,000.
+
+
+Now, suppose you have a risk-reward ratio of 1:3, and you lose 7 times out of 10. You've lost $7,000, but you've won $9,000, which means your net profit is $2,000. That's way better than the other scenario. Where am I going with this? You should make sure that if you're going with a 1:2 risk-reward ratio (or less) that you have a very high win rate. Consider the risk-reward ratio your system offers you and its win rate as well. When this ratio is high, you could lose more trades and still come out on top. This is why it's important to allow your winners to run and cut your losses as short and fast as you can.
+
+
+The interesting thing about profit targets is that sometimes, they're not always as clear-cut as the stop loss, and this is because we can only try, but we'll never know just how fat the price can go. This is one of the reasons traders resort to trailing their stop losses. To keep your risk-reward ratio healthy, it would be best to use solid targets for your profits. Again, it comes down to the strategy you select. You can use that to figure out where would be a good place to take your money. For instance, chart patterns like pennants, flags, rectangles, head and shoulders, triangles, and so on have very clear targets. When you're trading a channel or a range, you also have clear targets. The targets aren't always clear when you're trading breakouts, but it's good practice to look at the closest swing available to take partials or get out of your trade. You can also use Fibonacci extension levels to work out where to end the trade.
+
+
+There are times when the risk-reward ratio requirement would keep you out of a trade if you're disciplined about your funds. For instance, if you have a huge bullish engulfing candle that is too far from the support level it formed on, it would be smart to wait for a pullback or wait for another swing to form. If you don't do this, your risk-reward ratio will be very off, and you might not get the full move you want out of the trade. It's best to stay out in times like this because you don't want your stop loss so far away that you're watching other traders make money in between it and your entry while you bite your nails and hope it goes your way. You're smarter than that, so let these kinds of entries go.
+
+
+
+
+
+Max Loss Percentage
+
+
+
+
+You need to have a fixed percentage of what you're allowed to lose for each trade. This is also known as fixed fractional money management, and it's all about having more money to come and trade another day when things don't go well.
+
+
+Most traders will set their stop loss according to the dollar value of their max loss percentage (like 2 percent, for instance). However, technical traders know that it's best to be flexible about their trade sizes, and therefore they're not too rigid about how to fix their max loss. The technical trader knows it's not about just risking 2 percent wherever and whenever, but it's more about setting your stop loss based on what the market has set up for you and not based on an arbitrary number. So, the smart thing to do is first set your stop loss based on the market structure, meaning it should be where you'd have to be wrong if the price were to hit it. Then if it turns out that the distance between your entry and this stop loss is too much, you should calculate the correct contract or lot size that matches 2 percent working with that distance. On the flip side, if the distance between your stop loss and entry is really small, then you can work with a higher position size and still not risk more than 2 percent.
+
+
+Let's discuss what this might look like in forex, for instance. Say you have $100,000 as capital, and you want to make sure you risk no more than 2 percent for every trade. 2 percent of your capital is $2,000. If the stop loss is placed according to the market structure or price action on a trade, and the position is 20 pips away from the entry, then that means your lot size has to be 10 standard lots. A standard lot in forex is worth $10 per pip, so you'd need to use 10 standard lots at $100 per pip so that by 20 pips, you're only losing $2,000. However, if it turns out that the market has given you a setup where your stop-loss is only 10 pips away from the entry, then you'd need to risk 20 standard lots to hit your 2 percent max loss percentage.
+
+
+Here's the cool thing about tight stop losses. In the first scenario, if the price moves your way by 20 pips, you have $2,000. If the price moves your way by 20 pips in the second scenario, you have $4,000. This is why it's worth understanding your trading system so well that you can have optimal entries, stop losses and exits.
+
+
+
+
+
+Fractional Positions
+
+
+
+
+This is as important as properly sizing your positions. You want to know how to enter your trades fractionally rather than using a whole position for each one. This way, you can really spread out your risk and keep it under control. Multiple fractional positions are much smaller divisions of your full-sized trades. These positions can be entered at the same price level and time, but you can stagger their exits when they're in profit. It's a way of locking in profits as the price moves your way. You can trade this way when the market you're working with gives you the option of flexible contract or lot sizes and if you have enough capital to take on multiple positions for the trade.
+
+
+For instance, rather than buy 10 whole lots of a certain forex pair at a fixed price, you can split those into five positions of 2 mini lots instead. Set the stop losses at the same price point as you would for a whole position. When the price begins to move your way, you can close one or two of these trades at a certain point based on your analysis while you allow the remaining to run. You can, at this point, move your stop losses to break even for all the trades. If they continue going your way, you can close another one at a technically determined point on the price chart, adjust the stop losses on the running ones, and continue doing this until the price reverses or you hit your take profit targets.
+
+
+This approach works so well because you get to lock in your profits easily, and allow them to run. Also, if after the first profit is taken, the trade turns against the trader, it's at least nice to know they got something for their trouble. Since we have no way of telling how far the price will go, it helps to manage your trades this way. If you don't want to do this, it's fine. If the market allows, you can close set percentages of your single trade as the price goes your way.
+
+
+
+
+
+Diversification
+
+
+
+
+This is another good way to control your risk and spread it out. When you get into positions that are too correlated with one another because they're in the same asset class, you could put yourself in trouble. It's not the same thing as putting your entire position on into the market, but it's up there. When you have negatively or positively correlated markets, it means that they move in tandem, which can be risky for you if you're trading these markets at the same time. This is why you need to know all the correlations that happen in your preferred markets.
+
+
+
+
+
+Conclusion
+
+
+
+
+The best way to make money from the markets is to blend technical analysis and money and risk management. When you can make these three things work for you, there's nothing that could hold you back from doing well. Money and risk management are necessary for building a successful career in trading and investing. When you have actual experience and a clear understanding of the basics of technical analysis, money, and risk management, then you have the keys to consistent profits in your hands. The good news is you have one of those things now. To have experience, you need to put what you've learned in this book to work. Go look at some charts and get messy.
+
+
+If you're worried about whether or not this information is true across all markets, from stocks to crypto and more: Don't be. Again, all of this is based on price action. If, at some point, it's possible to trade NFTs on your trading platform, you'll find that the principles you've learned in this book are the same and work just as well, anytime. Even if a world power like China has banned all crypto, you don't have to worry that it means none of these rules would hold true when trading your Bitcoin or Ripple. The price is the price. It either goes up or down or stays the same. Nothing is going to change that any time soon.
+
+
+Please understand that there is a very real risk of losing money when you trade the financial markets. So, before you go live with your funds, backtest your strategy on a demo account. When you think you're ready to go live, take your entire capital and split it into 10 parts. Fund your account only with a tenth at a time. I say this because trading with life funds is a different ballgame, emotionally speaking. You want to make peace with losing so that you can get on with winning. Here's to your trading success!
+
+
+Thank you for buying and reading/listening to our book. If you found this book useful/helpful please take a few minutes and leave a review on Amazon.com or Audible.com (if you bought the audio version).
+
+
+
+
+
+References
+
+
+
+
+Brooks, Al. Reading Price Charts Bar by Bar: The Technical Analysis of Price Action for the Serious Trader. Hoboken, NJ: John Wiley & Sons, 2009.
+
+
+Conover, W. J. Practical Nonparametric Statistics. New York: John Wiley & Sons, 1998.
+
+
+Crabel, Toby. Day Trading with Short Term Price Patterns and Opening Range Breakout. Greenville, SC: Trader's Press, 1990.
+
+
+DeMark, Thomas R. New Market Timing Techniques: Innovative Studies in Market Rhythm & Price Exhaustion. New York: John Wiley & Sons, 1997.
+
+
+Dimson, Elroy, Paul Marsh, and Mike Staunton. Triumph of the Optimists: 101 Years of Global Investment Returns. Princeton, NJ: Princeton University Press, 2002.
+
+
+Douglas, Mark. Trading in the Zone: Master the Market with Confidence, Discipline, and a Winning Attitude. Upper Saddle River, NJ: Prentice-Hall Press, 2001.
+
+
+Elder, Alexander. Trading for a Living: Psychology, Trading Tactics, Money Management. New York: John Wiley & Sons, 1993.
+
+
+Faith, Curtis. Way of the Turtle: The Secret Methods That Turned Ordinary People into Legendary Traders. New York: McGraw-Hill, 2007.
+
+
+Feller, William. An Introduction to Probability Theory and Its Applications. New York: John Wiley & Sons, 1951.
+
+
+Fisher, Mark B. The Logical Trader: Applying a Method to the Madness. Hoboken, NJ: John Wiley & Sons, 2002.
+
+
+Harris, Larry. Trading and Exchanges: Market Microstructure for Practitioners. New York: Oxford University Press, 2002.
+
+
+Plummer, Tony. Forecasting Financial Markets: The Psychology of Successful Investing, 6th ed. London: Kogan Page, 2010.
+
+
+Raschke, Linda Bradford, and Laurence A. Conners. Street Smarts: High Probability Short-Term Trading Strategies. Jersey City, NJ: M. Gordon Publishing Group, 1996.
+
+
+Schabacker, Richard Wallace. Technical Analysis and Stock Market Profits. New York: Forbes Publishing Co., 1932.
+
+
+Soros, George. The Alchemy of Finance: Reading the Mind of the Market. New York: John Wiley & Sons, 1994.
+
+
+Taleb, Nassim. Fooled by Randomness: The Hidden Role of Chance in Life and in the Markets. New York: Random House, 2008.
+
+
+Wilder, J. Welles, Jr. New Concepts in Technical Trading Systems. McLeansville, NC: Trend Research, 1978
+
+
+
+
+
