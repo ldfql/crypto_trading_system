@@ -16,6 +16,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: crypto_trading_test
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         options: >-
@@ -52,6 +53,12 @@ jobs:
         pip install -r requirements-dev.txt
         pip install pytest pytest-asyncio pytest-cov pytest-env
 
+    - name: Setup Database
+      run: |
+        psql -h localhost -U postgres -d crypto_trading_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+      env:
+        PGPASSWORD: postgres
+
     - name: Install Frontend dependencies
       working-directory: ./frontend/crypto-trading-pwa
       run: |
@@ -65,6 +72,7 @@ jobs:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/crypto_trading_test
         TESTING: "true"
       run: |
+        alembic upgrade head
         pytest tests/ --cov=app --cov-report=xml
 
     - name: Run Frontend Tests
