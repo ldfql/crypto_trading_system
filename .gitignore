@@ -1,0 +1,1 @@
+node_modules/\n__pycache__/\n*.pyc\nvenv/\n.env\n.coverage\n*.log\ntrading_backend/models/
