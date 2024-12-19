@@ -1,0 +1,366 @@
+{
+    "training_data": [
+        {
+            "text": "Exchange outflows increasing as investors move to cold storage",
+            "label": "bullish"
+        },
+        {
+            "text": "Regulatory crackdown causing market uncertainty and institutional exits",
+            "label": "bearish"
+        },
+        {
+            "text": "Retail interest surging with positive sentiment and increasing wallet addresses",
+            "label": "bullish"
+        },
+        {
+            "text": "Consolidation with mixed regulatory signals and balanced flows",
+            "label": "neutral"
+        },
+        {
+            "text": "Accumulation phase with improving network metrics and institutional buying",
+            "label": "bullish"
+        },
+        {
+            "text": "Derivatives showing increasing short interest",
+            "label": "bearish"
+        },
+        {
+            "text": "Equal highs and lows in ranging market with declining volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Bullish engulfing pattern with volume confirmation and follow-through",
+            "label": "bullish"
+        },
+        {
+            "text": "Balanced order book with no clear directional bias",
+            "label": "neutral"
+        },
+        {
+            "text": "Balance between exchange inflows and outflows",
+            "label": "neutral"
+        },
+        {
+            "text": "Price consolidating in tight range with decreasing volume",
+            "label": "neutral"
+        },
+        {
+            "text": "No clear institutional buying or selling pressure",
+            "label": "neutral"
+        },
+        {
+            "text": "Exchange inflows increasing as holders prepare to sell",
+            "label": "bearish"
+        },
+        {
+            "text": "Price hovering around major moving averages with indecision",
+            "label": "neutral"
+        },
+        {
+            "text": "Low volatility period with no breakout signals and declining volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Sideways movement with unclear regulatory direction",
+            "label": "neutral"
+        },
+        {
+            "text": "Strong market fundamentals with growing adoption and institutional interest",
+            "label": "bullish"
+        },
+        {
+            "text": "Multiple bullish divergences with growing institutional interest",
+            "label": "bullish"
+        },
+        {
+            "text": "Breakout from bull flag pattern with strong volume confirmation",
+            "label": "bullish"
+        },
+        {
+            "text": "Moving averages flattening in sideways market with average volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Multiple technical indicators showing overbought with bearish divergence",
+            "label": "bearish"
+        },
+        {
+            "text": "Head and shoulders pattern forming with declining volume and support break",
+            "label": "bearish"
+        },
+        {
+            "text": "Market awaiting key economic data with balanced positions",
+            "label": "neutral"
+        },
+        {
+            "text": "Regulatory landscape remains unclear with ongoing discussions",
+            "label": "neutral"
+        },
+        {
+            "text": "Mining hash rate reaching new highs with strong network security",
+            "label": "bullish"
+        },
+        {
+            "text": "Strong support level holding with increasing buy orders and institutional interest",
+            "label": "bullish"
+        },
+        {
+            "text": "Volume declining in consolidation phase with no clear direction",
+            "label": "neutral"
+        },
+        {
+            "text": "Derivatives showing balanced long-short ratio",
+            "label": "neutral"
+        },
+        {
+            "text": "Multiple bullish divergences on RSI and MACD with increasing buy pressure",
+            "label": "bullish"
+        },
+        {
+            "text": "Lower lows continuing as support breaks down with heavy volume",
+            "label": "bearish"
+        },
+        {
+            "text": "Technical indicators showing mixed signals with normal volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Network metrics showing strong accumulation by long-term holders",
+            "label": "bullish"
+        },
+        {
+            "text": "Declining volume in upward moves with institutional distribution",
+            "label": "bearish"
+        },
+        {
+            "text": "Breaking resistance with positive regulatory developments and volume",
+            "label": "bullish"
+        },
+        {
+            "text": "Moving averages crossing downward with strong selling momentum",
+            "label": "bearish"
+        },
+        {
+            "text": "Double bottom pattern confirmed with volume spike and institutional accumulation",
+            "label": "bullish"
+        },
+        {
+            "text": "Inverse head and shoulders pattern completion with volume confirmation",
+            "label": "bullish"
+        },
+        {
+            "text": "Network activity declining with decreasing transaction volume",
+            "label": "bearish"
+        },
+        {
+            "text": "Major companies adding crypto to balance sheets with long-term holding strategy",
+            "label": "bullish"
+        },
+        {
+            "text": "Multiple bearish divergences with declining network activity",
+            "label": "bearish"
+        },
+        {
+            "text": "Moving averages showing strong upward momentum with institutional buying",
+            "label": "bullish"
+        },
+        {
+            "text": "Distribution pattern with regulatory concerns and institutional outflows",
+            "label": "bearish"
+        },
+        {
+            "text": "Breaking down below major support levels with increasing sell volume",
+            "label": "bearish"
+        },
+        {
+            "text": "Technical development proceeding as scheduled",
+            "label": "neutral"
+        },
+        {
+            "text": "Market makers maintaining price in trading range",
+            "label": "neutral"
+        },
+        {
+            "text": "Bearish divergence on multiple timeframes with decreasing buy volume",
+            "label": "bearish"
+        },
+        {
+            "text": "Strong breakout above resistance with increasing volume and institutional buying",
+            "label": "bullish"
+        },
+        {
+            "text": "Range-bound trading with stable network metrics",
+            "label": "neutral"
+        },
+        {
+            "text": "Institutional outflows from crypto funds accelerating",
+            "label": "bearish"
+        },
+        {
+            "text": "Breaking down with technical vulnerabilities and increasing shorts",
+            "label": "bearish"
+        },
+        {
+            "text": "Institutional derivatives showing increasing long positions",
+            "label": "bullish"
+        },
+        {
+            "text": "Price action trapped with mixed market signals",
+            "label": "neutral"
+        },
+        {
+            "text": "RSI showing overbought conditions with negative divergence",
+            "label": "bearish"
+        },
+        {
+            "text": "Strong support holding with increasing network adoption and whale accumulation",
+            "label": "bullish"
+        },
+        {
+            "text": "Technical vulnerabilities discovered in major protocols",
+            "label": "bearish"
+        },
+        {
+            "text": "Descending triangle breakdown with heavy selling pressure",
+            "label": "bearish"
+        },
+        {
+            "text": "Breakdown from bear flag pattern with volume confirmation",
+            "label": "bearish"
+        },
+        {
+            "text": "Death cross confirmed with regulatory uncertainty and miner selling",
+            "label": "bearish"
+        },
+        {
+            "text": "Technical consolidation with balanced institutional activity",
+            "label": "neutral"
+        },
+        {
+            "text": "Higher highs and higher lows forming clear uptrend with strong volume support",
+            "label": "bullish"
+        },
+        {
+            "text": "Technical upgrades improving network scalability and adoption",
+            "label": "bullish"
+        },
+        {
+            "text": "Golden cross forming with institutional buying and positive regulatory news",
+            "label": "bullish"
+        },
+        {
+            "text": "Accumulation occurring at key support levels with increasing buy volume",
+            "label": "bullish"
+        },
+        {
+            "text": "Trading volume average with no clear directional bias",
+            "label": "neutral"
+        },
+        {
+            "text": "Cup and handle formation completing with institutional buying support",
+            "label": "bullish"
+        },
+        {
+            "text": "Distribution pattern emerging at resistance with institutional selling",
+            "label": "bearish"
+        },
+        {
+            "text": "Rising wedge pattern breaking down with increasing volume",
+            "label": "bearish"
+        },
+        {
+            "text": "Sideways trading with balanced buying and selling pressure",
+            "label": "neutral"
+        },
+        {
+            "text": "Price action trapped between support and resistance with neutral volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Accumulation phase with institutional buying pressure and decreasing selling volume",
+            "label": "bullish"
+        },
+        {
+            "text": "Ascending triangle breakout with increasing volume and momentum",
+            "label": "bullish"
+        },
+        {
+            "text": "Support breakdown with increasing exchange inflows and whale distribution",
+            "label": "bearish"
+        }
+    ],
+    "validation_data": [
+        {
+            "text": "Market sentiment shifts bearish on macro concerns and rate hikes",
+            "label": "bearish"
+        },
+        {
+            "text": "RSI showing oversold conditions with positive divergence and volume support",
+            "label": "bullish"
+        },
+        {
+            "text": "Symmetrical triangle formation with declining volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Golden cross forming on daily timeframe with volume confirmation and price follow-through",
+            "label": "bullish"
+        },
+        {
+            "text": "Mining hash rate stabilizing at current levels",
+            "label": "neutral"
+        },
+        {
+            "text": "Mixed signals from different market indicators and timeframes",
+            "label": "neutral"
+        },
+        {
+            "text": "Death cross confirmed on daily chart with increasing selling pressure",
+            "label": "bearish"
+        },
+        {
+            "text": "Distribution occurring at resistance with increasing sell orders",
+            "label": "bearish"
+        },
+        {
+            "text": "Doji patterns forming with decreasing volume in range",
+            "label": "neutral"
+        },
+        {
+            "text": "No clear trend direction on multiple timeframes with average volume",
+            "label": "neutral"
+        },
+        {
+            "text": "Institutional investors increasing Bitcoin holdings significantly with strong accumulation",
+            "label": "bullish"
+        },
+        {
+            "text": "Positive regulatory developments boosting market confidence and institutional participation",
+            "label": "bullish"
+        },
+        {
+            "text": "Balanced institutional flows in crypto markets with no clear direction",
+            "label": "neutral"
+        },
+        {
+            "text": "Double top pattern with heavy selling pressure and volume confirmation",
+            "label": "bearish"
+        },
+        {
+            "text": "Whale addresses decreasing their positions with heavy distribution",
+            "label": "bearish"
+        },
+        {
+            "text": "Large miners selling Bitcoin holdings amid market uncertainty",
+            "label": "bearish"
+        },
+        {
+            "text": "Mining difficulty dropping due to miner capitulation",
+            "label": "bearish"
+        },
+        {
+            "text": "Network metrics showing stable activity levels",
+            "label": "neutral"
+        }
+    ]
+}
