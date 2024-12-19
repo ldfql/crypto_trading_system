@@ -10,42 +10,47 @@ from transformers import (
     TrainingArguments,
     Trainer,
     DataCollatorWithPadding,
-    EarlyStoppingCallback
+    EarlyStoppingCallback,
 )
 from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 from torch.nn.utils import clip_grad_norm_
 from app.data.financial_terms_dict import FINANCIAL_TERMS_DICT
 
+
 class FinancialDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_length=128):
-        self.encodings = tokenizer(texts, truncation=True, padding=True, max_length=max_length)
+        self.encodings = tokenizer(
+            texts, truncation=True, padding=True, max_length=max_length
+        )
         self.labels = labels
 
     def __getitem__(self, idx):
         item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
-        item['labels'] = torch.tensor(self.labels[idx])
+        item["labels"] = torch.tensor(self.labels[idx])
         return item
 
     def __len__(self):
         return len(self.labels)
 
+
 def load_financial_data(data_path):
     """Load financial sentiment data."""
-    with open(data_path, 'r', encoding='utf-8') as f:
+    with open(data_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     texts = []
     labels = []
 
     # Process both training and validation data
-    for dataset in ['training_data', 'validation_data']:
+    for dataset in ["training_data", "validation_data"]:
         for item in data[dataset]:
-            texts.append(item['text'])
-            sentiment_map = {'bearish': 0, 'bullish': 1, 'neutral': 2}
-            labels.append(sentiment_map[item['label'].lower()])
+            texts.append(item["text"])
+            sentiment_map = {"bearish": 0, "bullish": 1, "neutral": 2}
+            labels.append(sentiment_map[item["label"].lower()])
 
     return texts, labels
+
 
 def augment_text(text, num_augmentations=7):
     """Enhanced text augmentation with more sophisticated techniques."""
@@ -64,13 +69,13 @@ def augment_text(text, num_augmentations=7):
                 if words[i] in FINANCIAL_TERMS_DICT:
                     if random.random() < 0.3:
                         words[i] = random.choice(FINANCIAL_TERMS_DICT[words[i]])
-            augmented = ' '.join(words)
+            augmented = " ".join(words)
 
         # Back translation augmentation simulation
         if random.random() < 0.5:
             words = augmented.split()
             random.shuffle(words)
-            augmented = ' '.join(words)
+            augmented = " ".join(words)
 
         # Add noise
         if random.random() < 0.3:
@@ -78,11 +83,12 @@ def augment_text(text, num_augmentations=7):
             for i in range(len(chars)):
                 if random.random() < 0.1:
                     chars[i] = random.choice(chars)
-            augmented = ''.join(chars)
+            augmented = "".join(chars)
 
         augmented_texts.append(augmented)
 
     return list(set(augmented_texts))  # Remove duplicates
+
 
 def compute_metrics(eval_pred):
     """Compute metrics for evaluation."""
@@ -91,8 +97,8 @@ def compute_metrics(eval_pred):
     accuracy = np.mean(predictions == labels)
 
     # Calculate per-class metrics
-    class_names = ['bearish', 'bullish', 'neutral']
-    metrics = {'accuracy': accuracy}
+    class_names = ["bearish", "bullish", "neutral"]
+    metrics = {"accuracy": accuracy}
 
     for i, class_name in enumerate(class_names):
         class_pred = predictions == i
@@ -101,9 +107,10 @@ def compute_metrics(eval_pred):
         class_total = class_true.sum()
         if class_total > 0:
             class_accuracy = class_correct / class_total
-            metrics[f'{class_name}_accuracy'] = class_accuracy
+            metrics[f"{class_name}_accuracy"] = class_accuracy
 
     return metrics
+
 
 class WeightedTrainer(Trainer):
     """Custom trainer with weighted loss and gradient clipping."""
@@ -112,7 +119,9 @@ class WeightedTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self.max_grad_norm = 1.0
 
-    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+    def compute_loss(
+        self, model, inputs, return_outputs=False, num_items_in_batch=None
+    ):
         """
         Custom loss computation with class weights.
         """
@@ -136,7 +145,9 @@ class WeightedTrainer(Trainer):
         inputs = self._prepare_inputs(inputs)
 
         with self.compute_loss_context_manager():
-            loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+            loss = self.compute_loss(
+                model, inputs, num_items_in_batch=num_items_in_batch
+            )
 
         loss.backward()
 
@@ -145,11 +156,11 @@ class WeightedTrainer(Trainer):
 
         return loss.detach()
 
+
 def main():
     """Main training function with enhanced configuration."""
     logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s'
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
     )
     logger = logging.getLogger(__name__)
 
@@ -171,7 +182,9 @@ def main():
     train_texts, eval_texts, train_labels, eval_labels = train_test_split(
         texts, labels, test_size=0.2, random_state=42, stratify=labels
     )
-    logger.info(f"Training samples: {len(train_texts)}, Evaluation samples: {len(eval_texts)}")
+    logger.info(
+        f"Training samples: {len(train_texts)}, Evaluation samples: {len(eval_texts)}"
+    )
 
     # Data augmentation for training set
     augmented_texts = []
@@ -186,16 +199,16 @@ def main():
     class_counts = np.bincount(augmented_labels)
     total_samples = len(augmented_labels)
     global class_weights
-    class_weights = torch.FloatTensor([total_samples / (len(class_counts) * count) for count in class_counts])
+    class_weights = torch.FloatTensor(
+        [total_samples / (len(class_counts) * count) for count in class_counts]
+    )
     class_weights = class_weights.to(device)
     logger.info(f"Class weights: {class_weights}")
 
     # Load tokenizer and model
     tokenizer = BertTokenizer.from_pretrained("bert-base-chinese")
     model = BertForSequenceClassification.from_pretrained(
-        "bert-base-chinese",
-        num_labels=3,
-        problem_type="single_label_classification"
+        "bert-base-chinese", num_labels=3, problem_type="single_label_classification"
     )
     model = model.to(device)
 
@@ -224,7 +237,7 @@ def main():
         seed=42,
         fp16=torch.cuda.is_available(),
         gradient_accumulation_steps=4,
-        gradient_checkpointing=True
+        gradient_checkpointing=True,
     )
 
     # Initialize trainer with improved early stopping
@@ -237,10 +250,9 @@ def main():
         data_collator=DataCollatorWithPadding(tokenizer=tokenizer),
         callbacks=[
             EarlyStoppingCallback(
-                early_stopping_patience=5,
-                early_stopping_threshold=0.01
+                early_stopping_patience=5, early_stopping_threshold=0.01
             )
-        ]
+        ],
     )
 
     try:
@@ -260,6 +272,7 @@ def main():
     except Exception as e:
         logger.error(f"Error in fine-tuning: {str(e)}")
         raise
+
 
 if __name__ == "__main__":
     main()

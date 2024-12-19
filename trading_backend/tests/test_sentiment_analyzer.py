@@ -4,9 +4,11 @@ import torch
 from unittest.mock import Mock, patch
 from app.services.web_scraping.sentiment_analyzer import SentimentAnalyzer
 
+
 @pytest.fixture
 def analyzer():
     return SentimentAnalyzer()
+
 
 @pytest.mark.asyncio
 async def test_analyze_content_high_confidence(analyzer):
@@ -19,6 +21,7 @@ async def test_analyze_content_high_confidence(analyzer):
     assert sentiment > 0.5  # Should be strongly bullish
     assert confidence > 0.85  # Should have high confidence
 
+
 @pytest.mark.asyncio
 async def test_analyze_content_low_confidence(analyzer):
     text = "Bitcoin price moved today."
@@ -26,6 +29,7 @@ async def test_analyze_content_low_confidence(analyzer):
     sentiment, confidence = await analyzer.analyze_content(text)
 
     assert confidence < 0.5  # Should have low confidence due to lack of analysis
+
 
 @pytest.mark.asyncio
 async def test_technical_pattern_detection(analyzer):
@@ -38,6 +42,7 @@ async def test_technical_pattern_detection(analyzer):
     assert bullish_score > 0.7  # Should be strongly bullish
     assert bearish_score < -0.7  # Should be strongly bearish
 
+
 @pytest.mark.asyncio
 async def test_trading_rules_analysis(analyzer):
     bullish_text = "Strong buy signal with uptrend confirmation and higher highs"
@@ -48,6 +53,7 @@ async def test_trading_rules_analysis(analyzer):
 
     assert bullish_score > 0.6  # Should be bullish
     assert bearish_score < -0.6  # Should be bearish
+
 
 @pytest.mark.asyncio
 async def test_confidence_calculation(analyzer):
@@ -64,16 +70,18 @@ async def test_confidence_calculation(analyzer):
     _, low_conf = await analyzer.analyze_content(low_quality_text)
 
     assert high_conf > 0.85  # Should have very high confidence
-    assert low_conf < 0.5   # Should have low confidence
+    assert low_conf < 0.5  # Should have low confidence
+
 
 @pytest.mark.asyncio
 async def test_bert_sentiment(analyzer):
-    with patch('torch.nn.functional.softmax') as mock_softmax:
+    with patch("torch.nn.functional.softmax") as mock_softmax:
         # Mock BERT output probabilities [negative, neutral, positive]
         mock_softmax.return_value = torch.tensor([[0.1, 0.2, 0.7]])
 
         score = await analyzer._get_bert_sentiment("Test text")
         assert score == pytest.approx(0.6, abs=0.01)  # 0.7 - 0.1 = 0.6
+
 
 @pytest.mark.asyncio
 async def test_accuracy_tracking(analyzer):
@@ -83,10 +91,11 @@ async def test_accuracy_tracking(analyzer):
     assert len(analyzer.accuracy_history) > 0
     entry = analyzer.accuracy_history[-1]
 
-    assert 'timestamp' in entry
-    assert 'sentiment' in entry
-    assert 'confidence' in entry
-    assert isinstance(entry['timestamp'], datetime)
+    assert "timestamp" in entry
+    assert "sentiment" in entry
+    assert "confidence" in entry
+    assert isinstance(entry["timestamp"], datetime)
+
 
 @pytest.mark.asyncio
 async def test_error_handling(analyzer):

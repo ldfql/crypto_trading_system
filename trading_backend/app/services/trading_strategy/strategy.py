@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class TradingStrategy:
     """
     Enhanced trading strategy that adapts based on account size and market conditions.
@@ -20,7 +21,7 @@ class TradingStrategy:
         account_monitor: AccountMonitor,
         pair_selector: PairSelector,
         market_data_service: MarketDataService,
-        min_accuracy_threshold: float = 0.82
+        min_accuracy_threshold: float = 0.82,
     ):
         self.account_monitor = account_monitor
         self.pair_selector = pair_selector
@@ -33,7 +34,7 @@ class TradingStrategy:
         symbol: str,
         signal_type: str,
         confidence: float,
-        **kwargs
+        **kwargs,
     ) -> Dict[str, Any]:
         """
         Generate a trading signal with position sizing adapted to account balance
@@ -51,7 +52,9 @@ class TradingStrategy:
         """
         # Skip signals below minimum accuracy threshold
         if confidence < self.min_accuracy_threshold:
-            logger.info(f"Signal confidence {confidence} below minimum threshold {self.min_accuracy_threshold}")
+            logger.info(
+                f"Signal confidence {confidence} below minimum threshold {self.min_accuracy_threshold}"
+            )
             return None
 
         # Validate trading pair for current account stage
@@ -62,9 +65,7 @@ class TradingStrategy:
 
         # Get position sizing recommendation
         position_data = await self.account_monitor.calculate_position_size(
-            balance=balance,
-            symbol=symbol,
-            volatility_adjustment=True
+            balance=balance, symbol=symbol, volatility_adjustment=True
         )
 
         # Get market conditions for strategy adaptation
@@ -72,7 +73,9 @@ class TradingStrategy:
 
         # Adjust position size based on signal confidence
         confidence_multiplier = self._calculate_confidence_multiplier(confidence)
-        adjusted_size = Decimal(str(position_data["recommended_size"])) * Decimal(str(confidence_multiplier))
+        adjusted_size = Decimal(str(position_data["recommended_size"])) * Decimal(
+            str(confidence_multiplier)
+        )
 
         # Build signal response
         signal = {
@@ -85,9 +88,9 @@ class TradingStrategy:
             "market_conditions": {
                 "volume_24h": market_data.get("volume_24h"),
                 "volatility": market_data.get("volatility"),
-                "trend": market_data.get("trend")
+                "trend": market_data.get("trend"),
             },
-            **kwargs
+            **kwargs,
         }
 
         # Add staged entry points for medium and large accounts
@@ -95,21 +98,16 @@ class TradingStrategy:
             signal["entry_stages"] = [
                 float(adjusted_size * Decimal("0.3")),  # First entry 30%
                 float(adjusted_size * Decimal("0.3")),  # Second entry 30%
-                float(adjusted_size * Decimal("0.4"))   # Final entry 40%
+                float(adjusted_size * Decimal("0.4")),  # Final entry 40%
             ]
             signal["entry_conditions"] = self._generate_entry_conditions(
-                symbol,
-                signal_type,
-                market_data
+                symbol, signal_type, market_data
             )
 
         return signal
 
     async def select_trading_pairs(
-        self,
-        balance: Decimal,
-        base_pairs: List[str],
-        min_confidence: float = 0.85
+        self, balance: Decimal, base_pairs: List[str], min_confidence: float = 0.85
     ) -> List[Dict[str, Any]]:
         """
         Select suitable trading pairs based on account balance and market conditions.
@@ -124,8 +122,7 @@ class TradingStrategy:
         """
         # Get recommended pairs from pair selector
         suitable_pairs = await self.pair_selector.get_recommended_pairs(
-            balance=balance,
-            base_pairs=base_pairs
+            balance=balance, base_pairs=base_pairs
         )
 
         # Filter pairs based on minimum confidence requirement
@@ -163,19 +160,12 @@ class TradingStrategy:
         liquidity_score = min(1.0, float(market_data.get("liquidity_score", 0)))
 
         # Weight the scores
-        confidence = (
-            volume_score * 0.4 +
-            volatility_score * 0.3 +
-            liquidity_score * 0.3
-        )
+        confidence = volume_score * 0.4 + volatility_score * 0.3 + liquidity_score * 0.3
 
         return round(confidence, 2)
 
     def _generate_entry_conditions(
-        self,
-        symbol: str,
-        signal_type: str,
-        market_data: Dict[str, Any]
+        self, symbol: str, signal_type: str, market_data: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
         """
         Generate conditions for staged entries based on market data.
@@ -189,20 +179,20 @@ class TradingStrategy:
                     "stage": 1,
                     "price": current_price,
                     "type": "market",
-                    "description": "Initial entry"
+                    "description": "Initial entry",
                 },
                 {
                     "stage": 2,
                     "price": current_price * (1 - volatility * 0.5),
                     "type": "limit",
-                    "description": "First dip buy"
+                    "description": "First dip buy",
                 },
                 {
                     "stage": 3,
                     "price": current_price * (1 - volatility),
                     "type": "limit",
-                    "description": "Second dip buy"
-                }
+                    "description": "Second dip buy",
+                },
             ]
         else:  # short
             return [
@@ -210,18 +200,18 @@ class TradingStrategy:
                     "stage": 1,
                     "price": current_price,
                     "type": "market",
-                    "description": "Initial entry"
+                    "description": "Initial entry",
                 },
                 {
                     "stage": 2,
                     "price": current_price * (1 + volatility * 0.5),
                     "type": "limit",
-                    "description": "First bounce sell"
+                    "description": "First bounce sell",
                 },
                 {
                     "stage": 3,
                     "price": current_price * (1 + volatility),
                     "type": "limit",
-                    "description": "Second bounce sell"
-                }
+                    "description": "Second bounce sell",
+                },
             ]

@@ -5,6 +5,7 @@ from datetime import datetime
 from unittest.mock import patch, MagicMock, AsyncMock
 from app.services.web_scraping.content_extractor import ContentExtractor, RateLimiter
 
+
 @pytest.fixture
 def mock_response():
     response = AsyncMock()
@@ -13,6 +14,7 @@ def mock_response():
     response.text.return_value = "Test content"
     return response
 
+
 @pytest.fixture
 def mock_session(mock_response):
     session = AsyncMock()
@@ -20,6 +22,7 @@ def mock_session(mock_response):
     context_manager.__aenter__.return_value = mock_response
     session.get.return_value = context_manager
     return session
+
 
 @pytest.mark.asyncio
 async def test_rate_limiter():
@@ -34,6 +37,7 @@ async def test_rate_limiter():
     await limiter.acquire()
     elapsed = (datetime.now() - start_time).total_seconds()
     assert elapsed >= 1.0
+
 
 @pytest.mark.asyncio
 async def test_content_extractor_jina_success():
@@ -50,9 +54,9 @@ async def test_content_extractor_jina_success():
 
     async with ContentExtractor() as extractor:
         extractor.session = mock_session
-        with patch('trafilatura.fetch_url') as mock_fetch, \
-             patch('trafilatura.extract') as mock_extract:
-
+        with patch("trafilatura.fetch_url") as mock_fetch, patch(
+            "trafilatura.extract"
+        ) as mock_extract:
             mock_fetch.return_value = "downloaded_content"
             mock_extract.return_value = "extracted_content"
 
@@ -61,6 +65,7 @@ async def test_content_extractor_jina_success():
             assert result["success"] is True
             assert result["source"] == "trafilatura"
             assert result["content"] == "extracted_content"
+
 
 @pytest.mark.asyncio
 async def test_content_extractor_fallback():
@@ -77,10 +82,9 @@ async def test_content_extractor_fallback():
 
     async with ContentExtractor() as extractor:
         extractor.session = mock_session
-        with patch('trafilatura.fetch_url') as mock_fetch, \
-             patch('trafilatura.extract') as mock_extract, \
-             patch('trafilatura.extract_metadata') as mock_metadata:
-
+        with patch("trafilatura.fetch_url") as mock_fetch, patch(
+            "trafilatura.extract"
+        ) as mock_extract, patch("trafilatura.extract_metadata") as mock_metadata:
             mock_fetch.return_value = "downloaded_content"
             mock_extract.return_value = "extracted_content"
             mock_metadata.return_value = {"title": "Test"}
@@ -93,14 +97,17 @@ async def test_content_extractor_fallback():
             assert "metadata" in result
             assert result["metadata"]["title"] == "Test"
 
+
 @pytest.mark.asyncio
 async def test_content_extractor_batch():
     async with ContentExtractor() as extractor:
-        with patch.object(extractor, 'extract_content', new_callable=AsyncMock) as mock_extract:
+        with patch.object(
+            extractor, "extract_content", new_callable=AsyncMock
+        ) as mock_extract:
             mock_extract.return_value = {
                 "content": "test",
                 "success": True,
-                "source": "test"
+                "source": "test",
             }
 
             urls = [f"https://example.com/{i}" for i in range(3)]
