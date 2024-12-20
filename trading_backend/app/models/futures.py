@@ -64,7 +64,7 @@ class FuturesConfig(BaseModel):
         }
         if v > max_leverage[stage]:
             raise ValueError(
-                f"Maximum leverage for {stage} accounts is {max_leverage[stage]}x"
+                f"Maximum leverage for {stage.value} accounts is {max_leverage[stage]}x"
             )
         return v
 
@@ -89,7 +89,7 @@ class FuturesConfig(BaseModel):
         }
         if v < min_sizes[stage]:
             raise ValueError(
-                f"Minimum position size for {stage} accounts is {min_sizes[stage]} USDT"
+                f"Minimum position size for {stage.value} accounts is {min_sizes[stage]} USDT"
             )
         return v
 
