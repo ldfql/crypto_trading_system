@@ -102,5 +102,7 @@ def test_expert_stage_progress():
     expert_monitor = AccountMonitor(Decimal("2000000"))
     progress, remaining = expert_monitor.get_stage_progress()
 
-    assert progress == Decimal("100")  # Expert stage has no upper limit
-    assert remaining == Decimal("0")  # No remaining progress needed
+    # Expert stage progress should be calculated against target of 100M USDT
+    expected_progress = ((Decimal("2000000") - Decimal("1000000")) / (Decimal("100000000") - Decimal("1000000"))) * Decimal("100")
+    assert abs(progress - expected_progress) < Decimal("0.000001")
+    assert remaining == Decimal("98000000")  # 100M - 2M USDT
