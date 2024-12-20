@@ -2,7 +2,7 @@
 from decimal import Decimal
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel, Field, field_validator, ValidationInfo
+from pydantic import BaseModel, Field, field_validator, ValidationInfo, model_validator
 
 
 class MarginType(str, Enum):
@@ -50,11 +50,10 @@ class FuturesConfig(BaseModel):
         description="Account stage based on balance"
     )
 
-    @field_validator("leverage")
-    @classmethod
-    def validate_leverage(cls, v: int, info: ValidationInfo) -> int:
-        """Validate leverage based on account stage."""
-        stage = info.data.get("account_stage", AccountStage.MICRO)
+    @model_validator(mode='after')
+    def validate_config(self) -> 'FuturesConfig':
+        """Validate the entire configuration after all fields are set."""
+        # Validate leverage based on account stage
         max_leverage = {
             AccountStage.MICRO: 20,   # Conservative for small accounts
             AccountStage.SMALL: 50,   # Moderate for growing accounts
@@ -62,24 +61,18 @@ class FuturesConfig(BaseModel):
             AccountStage.LARGE: 100,  # Advanced for large accounts
             AccountStage.MEGA: 125,   # Maximum for mega accounts
         }
-        if v > max_leverage[stage]:
+        if self.leverage > max_leverage[self.account_stage]:
             raise ValueError(
-                f"Maximum leverage for {stage.value} accounts is {max_leverage[stage]}x"
+                f"Maximum leverage for {self.account_stage.value} accounts is {max_leverage[self.account_stage]}x"
             )
-        return v
 
-    @field_validator("position_size")
-    @classmethod
-    def validate_position_size(cls, v: Decimal, info: ValidationInfo) -> Decimal:
-        """Validate position size against max position size if set."""
-        max_size = info.data.get("max_position_size")
-        if max_size is not None and v > max_size:
+        # Validate position size
+        if self.max_position_size is not None and self.position_size > self.max_position_size:
             raise ValueError(
-                f"Position size {v} exceeds maximum allowed size {max_size}"
+                f"Position size {self.position_size} exceeds maximum allowed size {self.max_position_size}"
             )
 
         # Validate minimum position size based on account stage
-        stage = info.data.get("account_stage", AccountStage.MICRO)
         min_sizes = {
             AccountStage.MICRO: Decimal("10"),    # Minimum 10 USDT for micro
             AccountStage.SMALL: Decimal("100"),   # Minimum 100 USDT for small
@@ -87,11 +80,12 @@ class FuturesConfig(BaseModel):
             AccountStage.LARGE: Decimal("10000"), # Minimum 10000 USDT for large
             AccountStage.MEGA: Decimal("100000"), # Minimum 100000 USDT for mega
         }
-        if v < min_sizes[stage]:
+        if self.position_size < min_sizes[self.account_stage]:
             raise ValueError(
-                f"Minimum position size for {stage.value} accounts is {min_sizes[stage]} USDT"
+                f"Minimum position size for {self.account_stage.value} accounts is {min_sizes[self.account_stage]} USDT"
             )
-        return v
+
+        return self
 
 
 class FuturesPosition(BaseModel):
