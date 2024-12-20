@@ -2,7 +2,7 @@
 from decimal import Decimal
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ValidationInfo
 
 
 class MarginType(str, Enum):
@@ -52,9 +52,9 @@ class FuturesConfig(BaseModel):
 
     @field_validator("leverage")
     @classmethod
-    def validate_leverage(cls, v: int, values: dict) -> int:
+    def validate_leverage(cls, v: int, info: ValidationInfo) -> int:
         """Validate leverage based on account stage."""
-        stage = values.get("account_stage", AccountStage.MICRO)
+        stage = info.data.get("account_stage", AccountStage.MICRO)
         max_leverage = {
             AccountStage.MICRO: 20,   # Conservative for small accounts
             AccountStage.SMALL: 50,   # Moderate for growing accounts
@@ -70,16 +70,16 @@ class FuturesConfig(BaseModel):
 
     @field_validator("position_size")
     @classmethod
-    def validate_position_size(cls, v: Decimal, values: dict) -> Decimal:
+    def validate_position_size(cls, v: Decimal, info: ValidationInfo) -> Decimal:
         """Validate position size against max position size if set."""
-        max_size = values.get("max_position_size")
+        max_size = info.data.get("max_position_size")
         if max_size is not None and v > max_size:
             raise ValueError(
                 f"Position size {v} exceeds maximum allowed size {max_size}"
             )
 
         # Validate minimum position size based on account stage
-        stage = values.get("account_stage", AccountStage.MICRO)
+        stage = info.data.get("account_stage", AccountStage.MICRO)
         min_sizes = {
             AccountStage.MICRO: Decimal("10"),    # Minimum 10 USDT for micro
             AccountStage.SMALL: Decimal("100"),   # Minimum 100 USDT for small
@@ -104,9 +104,9 @@ class FuturesPosition(BaseModel):
 
     @field_validator("take_profit")
     @classmethod
-    def validate_take_profit(cls, v: Decimal, values: dict) -> Decimal:
+    def validate_take_profit(cls, v: Decimal, info: ValidationInfo) -> Decimal:
         """Validate take profit price against entry price."""
-        entry = values.get("entry_price")
+        entry = info.data.get("entry_price")
         if entry is not None:
             if v <= entry:
                 raise ValueError("Take profit must be higher than entry price")
@@ -114,9 +114,9 @@ class FuturesPosition(BaseModel):
 
     @field_validator("stop_loss")
     @classmethod
-    def validate_stop_loss(cls, v: Decimal, values: dict) -> Decimal:
+    def validate_stop_loss(cls, v: Decimal, info: ValidationInfo) -> Decimal:
         """Validate stop loss price against entry price."""
-        entry = values.get("entry_price")
+        entry = info.data.get("entry_price")
         if entry is not None:
             if v >= entry:
                 raise ValueError("Stop loss must be lower than entry price")
