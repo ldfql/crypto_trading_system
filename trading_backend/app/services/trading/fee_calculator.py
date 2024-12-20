@@ -47,3 +47,20 @@ class FeeCalculator:
         )
 
         return gross_profit - total_fees
+
+def calculate_trading_fees(
+    position_size: Decimal,
+    leverage: int,
+    entry_price: Decimal,
+    exit_price: Optional[Decimal] = None,
+    margin_type: MarginType = MarginType.CROSS
+) -> Decimal:
+    """Calculate total fees for a futures trade including entry and exit."""
+    calculator = FeeCalculator()
+    return calculator.calculate_fees(
+        position_size,
+        leverage,
+        entry_price,
+        exit_price,
+        margin_type
+    )

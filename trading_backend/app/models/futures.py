@@ -8,10 +8,11 @@ class MarginType(str, Enum):
     ISOLATED = "isolated"
 
 class AccountStage(str, Enum):
-    INITIAL = "initial"  # 100U - 1000U
-    GROWTH = "growth"    # 1000U - 10000U
-    SCALING = "scaling"  # 10000U - 100000U
-    MATURE = "mature"    # 100000U+
+    INITIAL = "initial"      # 100U - 1000U
+    GROWTH = "growth"        # 1000U - 10000U
+    ADVANCED = "advanced"    # 10000U - 100000U
+    PROFESSIONAL = "professional"  # 100000U - 1000000U
+    EXPERT = "expert"        # 1000000U+ (1亿U target)
 
 class FuturesConfig(BaseModel):
     leverage: int = Field(..., ge=1, le=125)
@@ -36,9 +37,21 @@ class FuturesConfig(BaseModel):
             if leverage > 20:
                 raise ValueError("Initial stage (100U-1000U) max leverage is 20x")
         # Growth stage: 1000U-10000U
-        elif Decimal('1000') <= position_size <= Decimal('10000'):
+        elif Decimal('1000') <= position_size < Decimal('10000'):
             if leverage > 50:
                 raise ValueError("Growth stage (1000U-10000U) max leverage is 50x")
+        # Advanced stage: 10000U-100000U
+        elif Decimal('10000') <= position_size < Decimal('100000'):
+            if leverage > 75:
+                raise ValueError("Advanced stage (10000U-100000U) max leverage is 75x")
+        # Professional stage: 100000U-1000000U
+        elif Decimal('100000') <= position_size < Decimal('1000000'):
+            if leverage > 100:
+                raise ValueError("Professional stage (100000U-1000000U) max leverage is 100x")
+        # Expert stage: 1000000U+
+        else:
+            if leverage > 125:
+                raise ValueError("Expert stage (1000000U+) max leverage is 125x")
 
         return self
 

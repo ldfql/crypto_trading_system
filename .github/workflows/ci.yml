@@ -30,7 +30,11 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest tests/ --cov=app --cov-report=xml --cov-report=html
+        pytest tests/ --cov=app --cov-report=xml --cov-report=html --cov-fail-under=75
+      env:
+        FUTURES_TRADING_ENABLED: "true"
+        MAX_LEVERAGE: "125"
+        TEST_MODE: "true"
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
@@ -121,17 +125,21 @@ jobs:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
         BINANCE_API_SECRET: ${{ secrets.BINANCE_API_SECRET }}
+        FUTURES_TRADING_ENABLED: ${{ secrets.FUTURES_TRADING_ENABLED }}
+        MAX_LEVERAGE: ${{ secrets.MAX_LEVERAGE }}
 
     - name: Deploy backend
       run: |
         cd trading_backend
         python -m pip install -e .
-        # Add your deployment commands here (e.g., using Docker, serverless, or your preferred deployment method)
+        python scripts/verify_ci_config.py
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
         BINANCE_API_SECRET: ${{ secrets.BINANCE_API_SECRET }}
+        FUTURES_TRADING_ENABLED: ${{ secrets.FUTURES_TRADING_ENABLED }}
+        MAX_LEVERAGE: ${{ secrets.MAX_LEVERAGE }}
 
     - name: Deploy frontend
       run: |

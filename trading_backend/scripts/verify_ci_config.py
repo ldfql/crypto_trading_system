@@ -72,6 +72,40 @@ def check_github_workflow():
         print(f"Error checking GitHub workflow: {e}")
         return False
 
+def check_futures_trading_config():
+    """Verify futures trading configuration."""
+    try:
+        required_vars = [
+            'FUTURES_TRADING_ENABLED',
+            'MAX_LEVERAGE',
+        ]
+
+        missing_vars = [var for var in required_vars if not os.getenv(var)]
+        if missing_vars:
+            print(f"Error: Missing required futures trading variables: {', '.join(missing_vars)}")
+            return False
+
+        max_leverage = os.getenv('MAX_LEVERAGE')
+        if max_leverage:
+            try:
+                max_leverage_int = int(max_leverage)
+                if max_leverage_int < 1 or max_leverage_int > 125:
+                    print("Error: MAX_LEVERAGE must be between 1 and 125")
+                    return False
+            except ValueError:
+                print("Error: MAX_LEVERAGE must be a valid integer")
+                return False
+
+        futures_enabled = os.getenv('FUTURES_TRADING_ENABLED', '').lower()
+        if futures_enabled not in ('true', 'false'):
+            print("Error: FUTURES_TRADING_ENABLED must be 'true' or 'false'")
+            return False
+
+        return True
+    except Exception as e:
+        print(f"Error checking futures trading configuration: {e}")
+        return False
+
 def main():
     """Run all configuration checks."""
     success = True
@@ -86,6 +120,10 @@ def main():
 
     print("\nChecking GitHub Actions workflow...")
     if not check_github_workflow():
+        success = False
+
+    print("\nChecking futures trading configuration...")
+    if not check_futures_trading_config():
         success = False
 
     if not success:
