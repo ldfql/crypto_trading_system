@@ -64,10 +64,13 @@ class AccountMonitor:
         self.previous_stage = old_stage
         self.current_stage = new_stage
 
-        # Compare stage values using their numeric string values for proper ordering
-        if int(new_stage.value) > int(old_stage.value):
+        # Compare stage values using stage boundaries for proper ordering
+        current_min = self.STAGE_BOUNDARIES[new_stage][0]
+        previous_min = self.STAGE_BOUNDARIES[old_stage][0]
+
+        if current_min > previous_min:
             return AccountStageTransition.UPGRADE
-        elif int(new_stage.value) < int(old_stage.value):
+        elif current_min < previous_min:
             return AccountStageTransition.DOWNGRADE
         return AccountStageTransition.NO_CHANGE
 
@@ -124,8 +127,11 @@ class AccountMonitor:
             if config.leverage > max_leverage:
                 raise ValueError(f"{self.current_stage.name.title()} stage max leverage is {max_leverage}x")
 
-            # Validate position size against account balance
-            max_position = self.current_balance * Decimal("0.2")  # Max 20% of balance
+            # Validate position size against account balance and stage limits
+            max_position = min(
+                self.current_balance * Decimal("0.2"),  # Max 20% of balance
+                self.STAGE_BOUNDARIES[self.current_stage][1] or Decimal("inf")  # Stage upper limit
+            )
             if config.position_size > max_position:
                 raise ValueError("Position size exceeds maximum allowed")
 
@@ -157,5 +163,6 @@ class AccountMonitor:
 
         min_balance, max_balance = stage_ranges[self.current_stage]
         progress = ((self.current_balance - min_balance) / (max_balance - min_balance)) * Decimal('100')
+        progress = max(Decimal('0'), min(progress, Decimal('100')))  # Clamp between 0-100
         remaining = max_balance - self.current_balance
         return progress, remaining

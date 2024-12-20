@@ -8,11 +8,11 @@ class MarginType(str, Enum):
     ISOLATED = "isolated"
 
 class AccountStage(str, Enum):
-    INITIAL = "0"        # 100U - 1000U
-    GROWTH = "1"         # 1000U - 10000U
-    ADVANCED = "2"       # 10000U - 100000U
-    PROFESSIONAL = "3"   # 100000U - 1000000U
-    EXPERT = "4"         # 1000000U+ (1亿U target)
+    INITIAL = "initial"        # 100U - 1000U
+    GROWTH = "growth"         # 1000U - 10000U
+    ADVANCED = "advanced"       # 10000U - 100000U
+    PROFESSIONAL = "professional"   # 100000U - 1000000U
+    EXPERT = "expert"         # 1000000U+ (1亿U target)
 
 class AccountStageTransition(str, Enum):
     UPGRADE = "upgrade"
