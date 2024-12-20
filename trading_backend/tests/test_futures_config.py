@@ -19,7 +19,7 @@ def test_leverage_limits_by_account_stage():
         FuturesConfig(
             leverage=25,
             margin_type=MarginType.CROSS,
-            position_size=Decimal("50"),
+            position_size=Decimal("200"),
             max_position_size=Decimal("1000"),
             risk_level=0.1
         )
@@ -29,7 +29,7 @@ def test_leverage_limits_by_account_stage():
         FuturesConfig(
             leverage=60,
             margin_type=MarginType.CROSS,
-            position_size=Decimal("200"),
+            position_size=Decimal("2000"),
             max_position_size=Decimal("10000"),
             risk_level=0.1
         )

@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from decimal import Decimal
 from typing import Optional
 
@@ -20,19 +20,27 @@ class FuturesConfig(BaseModel):
     max_position_size: Decimal = Field(..., gt=0)
     risk_level: float = Field(..., ge=0.01, le=1.0)
 
-    @validator('leverage')
-    def validate_leverage_by_account_stage(cls, v, values):
-        account_balance = values.get('position_size', 0) * v
-        if account_balance <= 1000:
-            if v > 20:
+    @model_validator(mode='after')
+    def validate_all(self) -> 'FuturesConfig':
+        position_size = self.position_size
+        leverage = self.leverage
+
+        # First validate position size range
+        if position_size < Decimal('100'):
+            raise ValueError("Position size must be at least 100U")
+        if position_size > Decimal('10000'):
+            raise ValueError("Position size must not exceed 10000U")
+
+        # Initial stage: 100U-1000U
+        if Decimal('100') <= position_size < Decimal('1000'):
+            if leverage > 20:
                 raise ValueError("Initial stage (100U-1000U) max leverage is 20x")
-        elif account_balance <= 10000:
-            if v > 50:
+        # Growth stage: 1000U-10000U
+        elif Decimal('1000') <= position_size <= Decimal('10000'):
+            if leverage > 50:
                 raise ValueError("Growth stage (1000U-10000U) max leverage is 50x")
-        elif account_balance <= 100000:
-            if v > 75:
-                raise ValueError("Scaling stage (10000U-100000U) max leverage is 75x")
-        return v
+
+        return self
 
 class FuturesPosition(BaseModel):
     symbol: str
@@ -40,7 +48,8 @@ class FuturesPosition(BaseModel):
     take_profit: Optional[Decimal] = None
     stop_loss: Optional[Decimal] = None
 
-    @validator('take_profit')
+    @field_validator('take_profit')
+    @classmethod
     def validate_take_profit(cls, v, values):
         if v is not None:
             entry = values.get('entry_price')
@@ -48,7 +57,8 @@ class FuturesPosition(BaseModel):
                 raise ValueError("Take profit must be higher than entry price")
         return v
 
-    @validator('stop_loss')
+    @field_validator('stop_loss')
+    @classmethod
     def validate_stop_loss(cls, v, values):
         if v is not None:
             entry = values.get('entry_price')
