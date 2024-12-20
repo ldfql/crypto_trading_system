@@ -4,6 +4,7 @@ from app.services.monitoring.account_monitor import AccountMonitor
 from app.services.trading.pair_selector import PairSelector
 from app.services.trading_strategy.strategy import TradingStrategy
 from app.services.market_analysis.market_data_service import MarketDataService
+from app.services.trading.fee_calculator import FeeCalculator
 
 
 @pytest.fixture
@@ -11,20 +12,20 @@ async def market_data_service():
     """Mock market data service for testing"""
 
     class MockMarketDataService:
-        async def get_market_data(self, symbol: str) -> dict:
+        async def get_market_data(self, symbol: str, testing: bool = False) -> dict:
             # Scale volume based on symbol to test different scenarios
             volumes = {
-                "BTC/USDT": 5_000_000_000,  # $5B volume
-                "ETH/USDT": 2_000_000_000,  # $2B volume
-                "BNB/USDT": 1_000_000_000,  # $1B volume
-                "SOL/USDT": 500_000_000,  # $500M volume
+                "BTC/USDT": Decimal("5000000000"),  # $5B volume
+                "ETH/USDT": Decimal("2000000000"),  # $2B volume
+                "BNB/USDT": Decimal("1000000000"),  # $1B volume
+                "SOL/USDT": Decimal("500000000"),  # $500M volume
             }
             return {
-                "volume_24h": volumes.get(symbol, 50_000_000),
-                "price": 50000,
-                "volatility": 0.02,
-                "spread_percentage": 0.1,
-                "liquidity_score": 1.5,
+                "volume_24h": volumes.get(symbol, Decimal("50000000")),
+                "price": Decimal("50000"),
+                "volatility": Decimal("0.02"),
+                "spread_percentage": Decimal("0.1"),
+                "liquidity_score": Decimal("1.5"),
                 "trend": "neutral",
             }
 
@@ -44,9 +45,20 @@ async def pair_selector(market_data_service, account_monitor):
 
 
 @pytest.fixture
-async def trading_strategy(account_monitor, pair_selector, market_data_service):
+async def fee_calculator():
+    """Initialize FeeCalculator for testing"""
+    return FeeCalculator()
+
+
+@pytest.fixture
+async def trading_strategy(account_monitor, pair_selector, market_data_service, fee_calculator):
     """Initialize TradingStrategy with mock services"""
-    return TradingStrategy(account_monitor, pair_selector, market_data_service)
+    return TradingStrategy(
+        account_monitor=account_monitor,
+        pair_selector=pair_selector,
+        market_data_service=market_data_service,
+        fee_calculator=fee_calculator
+    )
 
 
 @pytest.mark.asyncio
@@ -149,21 +161,21 @@ async def test_strategy_adaptation(trading_strategy):
             symbol="BTC/USDT",  # Use BTC/USDT which has sufficient volume
             signal_type="long",
             confidence=0.85,
+            testing=True  # Enable testing mode
         )
 
-        assert signal is not None, "Signal should be generated"
+        assert signal is not None, f"Signal should be generated for balance {balance}"
 
-        # Verify staged entries presence matches account stage
-        has_staged_entries = "entry_stages" in signal
-        assert (
-            has_staged_entries == expect_staged_entries
-        ), f"Account with {balance} USDT should {'have' if expect_staged_entries else 'not have'} staged entries"
+        # Verify entry conditions presence matches account stage
+        has_staged_entries = len(signal.get("entry_conditions", {}).get("stages", [])) > 0
+        assert has_staged_entries == expect_staged_entries, \
+            f"Account with {balance} USDT should {'have' if expect_staged_entries else 'not have'} staged entries"
 
         if has_staged_entries:
-            assert (
-                len(signal["entry_stages"]) == 3
-            ), "Should have 3 entry stages for medium/large accounts"
-            total_size = sum(signal["entry_stages"])
-            assert (
-                abs(total_size - signal["position_size"]) < 0.0001
-            ), "Sum of staged entries should equal total position size"
+            stages = signal["entry_conditions"]["stages"]
+            assert len(stages) == 3, "Should have 3 entry stages for medium/large accounts"
+
+            # Calculate total position size from stages
+            total_staged_size = sum(stage.get("size", 0) for stage in stages)
+            assert abs(total_staged_size - signal["position_size"]) < 0.0001, \
+                "Sum of staged entries should equal total position size"

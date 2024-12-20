@@ -372,3 +372,93 @@ class PredictionAnalyzer:
                 )
 
         return adjustments
+
+    async def find_best_opportunities(self) -> List[Dict[str, Any]]:
+        """Find the best trading opportunities based on recent signals."""
+        # Get recent signals with high confidence
+        recent_signals = await self.signal_repository.get_recent_signals(
+            hours=24, min_confidence=0.85
+        )
+
+        if not recent_signals:
+            return []
+
+        # Filter and sort opportunities
+        opportunities = []
+        for signal in recent_signals:
+            # Validate signal data
+            if not self._is_valid_opportunity(signal):
+                continue
+
+            # Analyze market conditions
+            market_conditions = await self._analyze_market_conditions(signal)
+
+            # Convert SQLAlchemy model to dict and add metadata
+            signal_dict = {
+                "id": signal.id,
+                "symbol": signal.symbol,
+                "type": signal.signal_type,
+                "entry_price": signal.entry_price,
+                "take_profit": signal.target_price,
+                "stop_loss": signal.stop_loss,
+                "position_size": signal.position_size,
+                "leverage": signal.leverage,
+                "margin_type": signal.margin_type,
+                "confidence": signal.confidence,
+                "fees": signal.total_fee,
+                "expected_profit": signal.expected_profit,
+                "entry_conditions": {
+                    "stages": [],
+                    "technical_indicators": signal.technical_indicators or {},
+                    "market_conditions": {
+                        "volume_24h": signal.market_volume,
+                        "volatility": market_conditions["volatility"],
+                        "trend": market_conditions["trend"]
+                    }
+                },
+                "ranking_factors": {
+                    "historical_accuracy": signal.accuracy,
+                    "market_volatility_score": market_conditions["volatility"],
+                    "volume_factor": signal.market_volume,
+                    "market_phase_multiplier": 1.1,
+                    "technical_indicators": signal.technical_indicators or {},
+                    "sentiment_analysis": signal.sentiment
+                }
+            }
+
+            # Add metadata and performance metrics
+            performance_metrics = await self._calculate_performance_metrics([signal])
+
+            opportunity = {
+                **signal_dict,
+                "performance_metrics": performance_metrics,
+                "market_analysis": market_conditions,
+            }
+            opportunities.append(opportunity)
+
+        # Sort by confidence and expected profit
+        sorted_opportunities = sorted(
+            opportunities,
+            key=lambda x: (x.get("confidence", 0), x.get("expected_profit", 0)),
+            reverse=True,
+        )
+        return sorted_opportunities
+
+    def _is_valid_opportunity(self, signal: Any) -> bool:
+        """Check if a signal represents a valid trading opportunity."""
+        required_fields = ["symbol", "signal_type", "confidence", "technical_indicators"]
+
+        # Handle both SQLAlchemy models and dictionaries
+        if hasattr(signal, '__dict__'):  # SQLAlchemy model
+            return all(hasattr(signal, field) for field in required_fields)
+        else:  # Dictionary
+            return all(field in signal for field in required_fields)
+
+    async def _analyze_market_conditions(self, signal: Any) -> Dict[str, Any]:
+        """Analyze current market conditions for a trading signal."""
+        symbol = signal.symbol if hasattr(signal, 'symbol') else signal['symbol']
+        return {
+            "volatility": await self.signal_monitor.get_volatility(symbol),
+            "trend": await self.signal_monitor.get_market_trend(symbol),
+            "liquidity": await self.signal_monitor.get_liquidity_score(symbol),
+        }

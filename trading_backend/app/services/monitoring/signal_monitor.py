@@ -1,10 +1,44 @@
 """Service for monitoring trading signals and tracking accuracy in real-time."""
+# Standard library imports
+import asyncio
+from collections import defaultdict
 from datetime import datetime, timedelta
-from typing import List, Dict, Any, Optional
 from decimal import Decimal
+from typing import Any, Dict, List, Optional, Set, TypedDict, Union
+
+# Local application imports
+from app.models.signals import TradingSignal
 from app.repositories.signal_repository import SignalRepository
 from app.services.market_analysis.market_data_service import MarketDataService
 from app.services.monitoring.account_monitor import AccountMonitor
+
+
+class MarketData(TypedDict):
+    """Type definition for market data."""
+    current_price: float
+    volume: float
+    volatility: float
+    market_sentiment: str
+    market_cycle_phase: str
+    cached_at: datetime
+
+
+class ValidationEntry(TypedDict):
+    """Type definition for validation history entry."""
+    timestamp: str
+    price: float
+    accuracy: float
+    account_stage: Optional[str]
+    account_balance: Optional[float]
+    market_volatility: Optional[float]
+    market_volume: Optional[float]
+    market_phase: Optional[str]
+
+
+class PriceEntry(TypedDict):
+    """Type definition for price update entry."""
+    timestamp: str
+    price: float
 
 
 class SignalMonitor:
@@ -21,131 +55,183 @@ class SignalMonitor:
         self.market_data_service = market_data_service
         self.account_monitor = account_monitor
         self.testing = testing
+        self.min_accuracy_threshold = 0.82  # Set minimum accuracy threshold
+        self._market_data_cache: Dict[str, MarketData] = {}
+        self.max_history_entries = 100  # Limit history entries
+        self.cache_ttl = 300  # Cache TTL in seconds
 
     async def monitor_active_signals(
         self, account_balance: Optional[Decimal] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> List[Dict[str, Union[str, float, int, None]]]:
         """Monitor all active signals and update their accuracy."""
         active_signals = await self.signal_repository.get_active_signals()
         monitoring_results = []
 
+        # Group signals by symbol for batch processing
+        signals_by_symbol: Dict[str, List[TradingSignal]] = defaultdict(list)
         for signal in active_signals:
-            # Get current market data
-            market_data = await self.market_data_service.get_market_data(
-                symbol=signal.symbol, timeframe=signal.timeframe, testing=self.testing
-            )
+            signals_by_symbol[signal.symbol].append(signal)
 
-            # Get account stage if balance provided
-            account_stage = None
-            if account_balance:
-                account_stage = await self.account_monitor.get_account_stage(
-                    account_balance
-                )
-                # Validate position size for current account stage
-                is_valid, _ = await self.account_monitor.validate_position_size(
-                    symbol=signal.symbol,
-                    position_size=Decimal(str(signal.position_size))
-                    if signal.position_size
-                    else Decimal("0"),
-                    balance=account_balance,
-                )
-                if not is_valid:
-                    continue  # Skip signals with invalid position sizes for current balance
+        # Fetch market data in parallel for all unique symbols
+        unique_symbols: Set[str] = set(signals_by_symbol.keys())
+        market_data_tasks = []
+        for symbol in unique_symbols:
+            if not self._is_cached_data_valid(symbol):
+                task = self._fetch_and_cache_market_data(symbol)
+                market_data_tasks.append(task)
 
-            # Calculate current accuracy
-            accuracy = await self._calculate_signal_accuracy(
-                signal, market_data, account_balance
-            )
+        if market_data_tasks:
+            await asyncio.gather(*market_data_tasks)
 
-            # Update signal with new data
-            validation_data = {
-                "market_volatility": market_data.get("volatility"),
-                "market_volume": market_data.get("volume"),
-                "market_phase": market_data.get("market_cycle_phase"),
-                "account_stage": account_stage,
-                "account_balance": float(account_balance) if account_balance else None,
-            }
+        # Process signals in batches by symbol
+        update_tasks = []
+        for symbol, signals in signals_by_symbol.items():
+            market_data = self._market_data_cache.get(symbol, {})
 
-            update_data = {
-                "accuracy": accuracy,
-                "last_price": market_data["current_price"],
-                "last_validated_at": datetime.utcnow(),
-                "validation_count": (signal.validation_count or 0) + 1,
-                "market_volatility": market_data.get("volatility"),
-                "market_volume": market_data.get("volume"),
-                "market_sentiment": market_data.get("market_sentiment"),
-            }
+            for signal in signals:
+                # Get account stage if balance provided
+                account_stage = None
+                if account_balance:
+                    account_stage = await self.account_monitor.get_account_stage(
+                        account_balance
+                    )
+                    # Validate position size for current account stage
+                    is_valid, _ = await self.account_monitor.validate_position_size(
+                        symbol=signal.symbol,
+                        position_size=Decimal(str(signal.position_size))
+                        if signal.position_size
+                        else Decimal("0"),
+                        balance=account_balance,
+                    )
+                    if not is_valid:
+                        continue
 
-            # Update performance tracking
-            if signal.entry_price:
-                price_change = (
-                    market_data["current_price"] - signal.entry_price
-                ) / signal.entry_price
-                if signal.signal_type == "long":
-                    profit_loss = price_change
-                else:
-                    profit_loss = -price_change
-
-                update_data["max_profit_reached"] = max(
-                    signal.max_profit_reached or -float("inf"), profit_loss
-                )
-                update_data["max_loss_reached"] = min(
-                    signal.max_loss_reached or float("inf"), profit_loss
+                # Calculate current accuracy
+                accuracy = await self._calculate_signal_accuracy(
+                    signal, market_data, account_balance
                 )
 
-            # Update validation history with account metrics
-            validation_entry = {
-                "timestamp": datetime.utcnow().isoformat(),
-                "price": market_data["current_price"],
-                "accuracy": accuracy,
-                "account_stage": account_stage,
-                "account_balance": float(account_balance) if account_balance else None,
-                **validation_data,
-            }
+                # Prepare update data
+                update_data = self._prepare_update_data(
+                    signal, market_data, accuracy, account_stage, account_balance
+                )
 
-            if signal.validation_history:
-                update_data["validation_history"] = signal.validation_history + [
-                    validation_entry
-                ]
-            else:
-                update_data["validation_history"] = [validation_entry]
+                # Add update task
+                update_tasks.append(
+                    self.signal_repository.update_signal(
+                        signal_id=signal.id, update_data=update_data
+                    )
+                )
 
-            # Update price history
-            price_entry = {
-                "timestamp": datetime.utcnow().isoformat(),
-                "price": market_data["current_price"],
-            }
+                monitoring_results.append(
+                    {
+                        "signal_id": signal.id,
+                        "symbol": signal.symbol,
+                        "timeframe": signal.timeframe,
+                        "current_accuracy": accuracy,
+                        "market_data": market_data,
+                        "validation_count": update_data["validation_count"],
+                        "account_stage": account_stage,
+                        "account_balance": float(account_balance)
+                        if account_balance
+                        else None,
+                    }
+                )
 
-            if signal.price_updates:
-                update_data["price_updates"] = signal.price_updates + [price_entry]
-            else:
-                update_data["price_updates"] = [price_entry]
-
-            updated_signal = await self.signal_repository.update_signal(
-                signal_id=signal.id, update_data=update_data
-            )
-
-            monitoring_results.append(
-                {
-                    "signal_id": signal.id,
-                    "symbol": signal.symbol,
-                    "timeframe": signal.timeframe,
-                    "current_accuracy": accuracy,
-                    "market_data": market_data,
-                    "validation_count": updated_signal.validation_count,
-                    "account_stage": account_stage,
-                    "account_balance": float(account_balance)
-                    if account_balance
-                    else None,
-                }
-            )
+        # Execute all updates in parallel
+        if update_tasks:
+            await asyncio.gather(*update_tasks)
 
         return monitoring_results
 
+    def _is_cached_data_valid(self, symbol: str) -> bool:
+        """Check if cached market data is still valid."""
+        if symbol not in self._market_data_cache:
+            return False
+        cache_entry = self._market_data_cache[symbol]
+        cache_time = cache_entry.get("cached_at", datetime.min)
+        return (datetime.utcnow() - cache_time).total_seconds() < self.cache_ttl
+
+    async def _fetch_and_cache_market_data(self, symbol: str) -> None:
+        """Fetch and cache market data for a symbol."""
+        market_data = await self.market_data_service.get_market_data(
+            symbol=symbol, timeframe="1h", testing=self.testing
+        )
+        market_data["cached_at"] = datetime.utcnow()
+        self._market_data_cache[symbol] = market_data
+
+    def _prepare_update_data(
+        self,
+        signal: TradingSignal,
+        market_data: MarketData,
+        accuracy: float,
+        account_stage: Optional[str],
+        account_balance: Optional[Decimal],
+    ) -> Dict[str, Union[float, str, List[Union[ValidationEntry, PriceEntry]], None]]:
+        """Prepare signal update data with limited history."""
+        update_data = {
+            "accuracy": accuracy,
+            "last_price": market_data["current_price"],
+            "last_validated_at": datetime.utcnow(),
+            "validation_count": (signal.validation_count or 0) + 1,
+            "market_volatility": market_data.get("volatility"),
+            "market_volume": market_data.get("volume"),
+            "market_sentiment": market_data.get("market_sentiment"),
+        }
+
+        # Update performance tracking
+        if signal.entry_price:
+            price_change = (
+                market_data["current_price"] - signal.entry_price
+            ) / signal.entry_price
+            if signal.signal_type == "long":
+                profit_loss = price_change
+            else:
+                profit_loss = -price_change
+
+            update_data["max_profit_reached"] = max(
+                signal.max_profit_reached or -float("inf"), profit_loss
+            )
+            update_data["max_loss_reached"] = min(
+                signal.max_loss_reached or float("inf"), profit_loss
+            )
+
+        # Limit validation history entries
+        validation_entry: ValidationEntry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "price": market_data["current_price"],
+            "accuracy": accuracy,
+            "account_stage": account_stage,
+            "account_balance": float(account_balance) if account_balance else None,
+            "market_volatility": market_data.get("volatility"),
+            "market_volume": market_data.get("volume"),
+            "market_phase": market_data.get("market_cycle_phase"),
+        }
+
+        if signal.validation_history:
+            history = signal.validation_history[-(self.max_history_entries - 1):]
+            update_data["validation_history"] = history + [validation_entry]
+        else:
+            update_data["validation_history"] = [validation_entry]
+
+        # Limit price history entries
+        price_entry: PriceEntry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "price": market_data["current_price"],
+        }
+
+        if signal.price_updates:
+            price_history = signal.price_updates[-(self.max_history_entries - 1):]
+            update_data["price_updates"] = price_history + [price_entry]
+        else:
+            update_data["price_updates"] = [price_entry]
+
+        return update_data
+
     async def _calculate_signal_accuracy(
         self,
-        signal: Any,
-        market_data: Dict[str, Any],
+        signal: TradingSignal,
+        market_data: MarketData,
         account_balance: Optional[Decimal] = None,
     ) -> float:
         """Calculate current accuracy of a signal based on market data, risk-reward ratio, and account size."""
@@ -229,7 +315,7 @@ class SignalMonitor:
 
     async def get_accuracy_trend(
         self, days: int = 30, timeframe: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> List[Dict[str, Union[str, float, int]]]:
         """Get accuracy trend over time."""
         signals = await self.signal_repository.get_historical_predictions(
             timeframe=timeframe, days=days
@@ -265,7 +351,7 @@ class SignalMonitor:
 
     async def analyze_signal_performance(
         self, timeframe: Optional[str] = None, min_confidence: float = 0.85
-    ) -> Dict[str, Any]:
+    ) -> Dict[str, Union[float, int, List[Dict[str, Union[str, float, int]]]]]:
         """Analyze overall signal performance and accuracy."""
         stats = await self.signal_repository.get_accuracy_statistics(
             timeframe=timeframe
@@ -278,4 +364,36 @@ class SignalMonitor:
             "min_accuracy": stats["min_accuracy"],
             "total_signals": stats["total_signals"],
             "recent_trend": trend,
+        }
+
+    async def get_system_metrics(self) -> Dict[str, Union[float, int, str]]:
+        """Get current system metrics including accuracy and signal counts."""
+        # Get signals from the last 24 hours
+        cutoff = datetime.utcnow() - timedelta(hours=24)
+        recent_signals = await self.signal_repository.get_signals_since(cutoff)
+
+        # Calculate average accuracy
+        accuracies = [s.accuracy for s in recent_signals if s.accuracy is not None]
+        avg_accuracy = sum(accuracies) / len(accuracies) if accuracies else 0.0
+
+        # Calculate average confidence
+        confidences = [s.confidence for s in recent_signals if s.confidence is not None]
+        avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
+
+        # Get market sentiment
+        active_signals = await self.signal_repository.get_active_signals()
+        bullish_count = sum(1 for s in active_signals if s.market_sentiment == "bullish")
+        bearish_count = sum(1 for s in active_signals if s.market_sentiment == "bearish")
+
+        sentiment = (
+            "bullish" if bullish_count > bearish_count
+            else "bearish" if bearish_count > bullish_count
+            else "neutral"
+        )
+
+        return {
+            "accuracy": avg_accuracy,
+            "average_confidence": avg_confidence,
+            "signals_today": len(recent_signals),
+            "market_sentiment": sentiment,
         }
