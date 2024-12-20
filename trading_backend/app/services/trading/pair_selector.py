@@ -42,17 +42,27 @@ class PairSelector:
         current_price: Decimal
     ) -> FuturesConfig:
         """Calculate optimal trading configuration based on account balance."""
-        if account_balance <= 1000:
+        # Reduce leverage as account size grows to manage risk
+        if account_balance <= Decimal("100"):  # Minimum account size
             leverage = 20
             risk_level = Decimal("0.1")
-        elif account_balance <= 10000:
-            leverage = 50
+        elif account_balance <= Decimal("1000"):  # Small account
+            leverage = 15
+            risk_level = Decimal("0.1")
+        elif account_balance <= Decimal("10000"):  # Medium account
+            leverage = 10
             risk_level = Decimal("0.15")
-        elif account_balance <= 100000:
-            leverage = 75
+        elif account_balance <= Decimal("100000"):  # Large account
+            leverage = 5
             risk_level = Decimal("0.2")
-        else:
-            leverage = 100
+        elif account_balance <= Decimal("1000000"):  # Very large account
+            leverage = 3
+            risk_level = Decimal("0.25")
+        elif account_balance <= Decimal("10000000"):  # Huge account
+            leverage = 2
+            risk_level = Decimal("0.25")
+        else:  # Maximum account size (1亿U and above)
+            leverage = 1
             risk_level = Decimal("0.25")
 
         position_size = account_balance * risk_level
@@ -136,9 +146,9 @@ class PairSelector:
         trend = await self.market_data_service.get_trend_strength(pair)
         volume_score = await self._calculate_volume_score(pair)
 
-        # Risk-reward ratio
-        risk = abs(entry_price - stop_loss)
-        reward = abs(take_profit - entry_price)
+        # Risk-reward ratio (convert to float for calculations)
+        risk = float(abs(entry_price - stop_loss))
+        reward = float(abs(take_profit - entry_price))
         rr_ratio = reward / risk if risk > 0 else 0
 
         # Weight factors

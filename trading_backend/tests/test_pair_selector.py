@@ -7,7 +7,17 @@ from app.models.futures import FuturesConfig, MarginType
 
 @pytest.fixture
 def market_data_service():
-    return AsyncMock(spec=MarketDataService)
+    mock = AsyncMock(spec=MarketDataService)
+    # Setup required mock methods
+    mock.get_24h_volume = AsyncMock()
+    mock.get_current_price = AsyncMock()
+    mock.get_volatility = AsyncMock()
+    mock.get_support_level = AsyncMock()
+    mock.get_resistance_level = AsyncMock()
+    mock.get_trend_strength = AsyncMock()
+    mock.get_average_volume = AsyncMock()
+    mock.get_all_trading_pairs = AsyncMock()
+    return mock
 
 @pytest.fixture
 def pair_selector(market_data_service):
@@ -26,10 +36,13 @@ async def test_meets_volume_requirements(pair_selector, market_data_service):
 async def test_calculate_trading_config(pair_selector):
     """Test trading configuration calculation for different account sizes."""
     test_cases = [
-        (Decimal("500"), 20, Decimal("0.1")),
-        (Decimal("5000"), 50, Decimal("0.15")),
-        (Decimal("50000"), 75, Decimal("0.2")),
-        (Decimal("200000"), 100, Decimal("0.25")),
+        (Decimal("100"), 20, Decimal("0.1")),    # Minimum account size
+        (Decimal("500"), 15, Decimal("0.1")),    # Small account
+        (Decimal("5000"), 10, Decimal("0.15")),  # Medium account
+        (Decimal("50000"), 5, Decimal("0.2")),   # Large account
+        (Decimal("500000"), 3, Decimal("0.25")), # Very large account
+        (Decimal("5000000"), 2, Decimal("0.25")),# Huge account
+        (Decimal("100000000"), 1, Decimal("0.25")) # Maximum target (1亿U)
     ]
 
     for balance, expected_leverage, expected_risk in test_cases:
@@ -89,10 +102,12 @@ async def test_select_trading_pairs(pair_selector, market_data_service):
     market_data_service.get_trend_strength.return_value = 0.9
     market_data_service.get_average_volume.return_value = Decimal("2500000")
 
-    signals = await pair_selector.select_trading_pairs(Decimal("10000"), max_pairs=2)
+    # Test with different account sizes
+    for balance in [Decimal("100"), Decimal("5000"), Decimal("50000"), Decimal("1000000"), Decimal("100000000")]:
+        signals = await pair_selector.select_trading_pairs(balance, max_pairs=2)
 
-    assert len(signals) <= 2
-    assert all(0.82 <= signal["confidence"] <= 1.0 for signal in signals)
-    assert all(isinstance(signal["entry_price"], Decimal) for signal in signals)
-    assert all(isinstance(signal["take_profit"], Decimal) for signal in signals)
-    assert all(isinstance(signal["stop_loss"], Decimal) for signal in signals)
+        assert len(signals) <= 2
+        assert all(0.82 <= signal["confidence"] <= 1.0 for signal in signals)
+        assert all(isinstance(signal["entry_price"], Decimal) for signal in signals)
+        assert all(isinstance(signal["take_profit"], Decimal) for signal in signals)
+        assert all(isinstance(signal["stop_loss"], Decimal) for signal in signals)
