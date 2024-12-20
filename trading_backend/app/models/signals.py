@@ -36,3 +36,10 @@ class TradingSignal(Base):
         self.created_at = created_at or datetime.utcnow()
         if futures_config:
             self.futures_config = futures_config.dict()
+
+    @property
+    def futures_configuration(self) -> Optional[FuturesConfig]:
+        """Get futures configuration as FuturesConfig object."""
+        if self.futures_config:
+            return FuturesConfig(**self.futures_config)
+        return None

@@ -8,8 +8,13 @@ from .services.trading.fee_calculator import FeeCalculator
 from .repositories.signal_repository import SignalRepository
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with get_session() as session:
-        yield session
+    """Get database session."""
+    async_session = get_session()
+    try:
+        async with async_session.begin() as session:
+            yield session
+    finally:
+        await async_session.close()
 
 async def get_market_data_service() -> MarketDataService:
     """Dependency for market data service."""

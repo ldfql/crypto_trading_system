@@ -30,7 +30,11 @@ class SignalRepository:
         """Update trading signal with futures configuration."""
         signal = self.get_signal(signal_id)
         if signal:
-            signal.futures_config = futures_config
+            # Convert Decimal values to strings for JSON serialization
+            config_dict = futures_config.model_dump()
+            config_dict["position_size"] = str(config_dict["position_size"])
+            config_dict["max_position_size"] = str(config_dict["max_position_size"])
+            signal.futures_config = config_dict
             self.session.commit()
             self.session.refresh(signal)
         return signal

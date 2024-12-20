@@ -50,13 +50,15 @@ def test_update_signal(db_session):
     futures_config = FuturesConfig(
         leverage=20,
         margin_type=MarginType.CROSS,
-        position_size=Decimal("100")
+        position_size=Decimal("100"),
+        max_position_size=Decimal("1000"),
+        risk_level=0.5
     )
 
     updated = repo.update_signal(created.id, futures_config)
     assert updated is not None
-    assert updated.futures_config.leverage == 20
-    assert updated.futures_config.margin_type == MarginType.CROSS
+    assert updated.futures_configuration.leverage == 20
+    assert updated.futures_configuration.margin_type == MarginType.CROSS
 
 def test_delete_signal(db_session):
     """Test deleting a trading signal."""

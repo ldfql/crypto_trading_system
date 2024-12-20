@@ -8,15 +8,20 @@ class MarginType(str, Enum):
     ISOLATED = "isolated"
 
 class AccountStage(str, Enum):
-    INITIAL = "initial"      # 100U - 1000U
-    GROWTH = "growth"        # 1000U - 10000U
-    ADVANCED = "advanced"    # 10000U - 100000U
-    PROFESSIONAL = "professional"  # 100000U - 1000000U
-    EXPERT = "expert"        # 1000000U+ (1亿U target)
+    INITIAL = "0"        # 100U - 1000U
+    GROWTH = "1"         # 1000U - 10000U
+    ADVANCED = "2"       # 10000U - 100000U
+    PROFESSIONAL = "3"   # 100000U - 1000000U
+    EXPERT = "4"         # 1000000U+ (1亿U target)
+
+class AccountStageTransition(str, Enum):
+    UPGRADE = "upgrade"
+    DOWNGRADE = "downgrade"
+    NO_CHANGE = "no_change"
 
 class FuturesConfig(BaseModel):
     leverage: int = Field(..., ge=1, le=125)
-    margin_type: MarginType
+    margin_type: MarginType = Field(default=MarginType.CROSS)
     position_size: Decimal = Field(..., gt=0)
     max_position_size: Decimal = Field(..., gt=0)
     risk_level: float = Field(..., ge=0.01, le=1.0)
@@ -24,34 +29,15 @@ class FuturesConfig(BaseModel):
     @model_validator(mode='after')
     def validate_all(self) -> 'FuturesConfig':
         position_size = self.position_size
-        leverage = self.leverage
+        max_position_size = self.max_position_size
 
-        # First validate position size range
-        if position_size < Decimal('100'):
-            raise ValueError("Position size must be at least 100U")
-        if position_size > Decimal('10000'):
-            raise ValueError("Position size must not exceed 10000U")
+        # Validate position size against max position size
+        if position_size > max_position_size:
+            raise ValueError("Position size cannot exceed max position size")
 
-        # Initial stage: 100U-1000U
-        if Decimal('100') <= position_size < Decimal('1000'):
-            if leverage > 20:
-                raise ValueError("Initial stage (100U-1000U) max leverage is 20x")
-        # Growth stage: 1000U-10000U
-        elif Decimal('1000') <= position_size < Decimal('10000'):
-            if leverage > 50:
-                raise ValueError("Growth stage (1000U-10000U) max leverage is 50x")
-        # Advanced stage: 10000U-100000U
-        elif Decimal('10000') <= position_size < Decimal('100000'):
-            if leverage > 75:
-                raise ValueError("Advanced stage (10000U-100000U) max leverage is 75x")
-        # Professional stage: 100000U-1000000U
-        elif Decimal('100000') <= position_size < Decimal('1000000'):
-            if leverage > 100:
-                raise ValueError("Professional stage (100000U-1000000U) max leverage is 100x")
-        # Expert stage: 1000000U+
-        else:
-            if leverage > 125:
-                raise ValueError("Expert stage (1000000U+) max leverage is 125x")
+        # Validate minimum position size
+        if position_size < Decimal('10'):
+            raise ValueError("Position size must be at least 10U")
 
         return self
 
