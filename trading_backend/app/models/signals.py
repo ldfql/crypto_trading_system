@@ -2,12 +2,15 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime, Enum, JSON, Text
 from sqlalchemy.ext.declarative import declarative_base
+from .futures import MarginType
 
 Base = declarative_base()
 
+
 class TradingSignal(Base):
     """Model for storing trading signals with comprehensive accuracy tracking."""
-    __tablename__ = 'trading_signals'
+
+    __tablename__ = "trading_signals"
 
     id = Column(Integer, primary_key=True)
     symbol = Column(String, nullable=False)
@@ -19,7 +22,9 @@ class TradingSignal(Base):
     confidence = Column(Float, nullable=False)
     accuracy = Column(Float)
     sentiment = Column(String)  # 'bullish', 'bearish', or 'neutral'
-    source = Column(String)  # Source of the trading signal (e.g., 'technical', 'sentiment', 'ensemble')
+    source = Column(
+        String
+    )  # Source of the trading signal (e.g., 'technical', 'sentiment', 'ensemble')
 
     # Market context at prediction time
     market_cycle_phase = Column(String)
@@ -33,6 +38,17 @@ class TradingSignal(Base):
     technical_indicators = Column(JSON)  # Key technical indicators at entry
     sentiment_sources = Column(JSON)  # Sources contributing to sentiment analysis
 
+    # Futures trading parameters
+    leverage = Column(Integer)  # Leverage multiplier (1-125x)
+    margin_type = Column(Enum(MarginType))  # ISOLATED or CROSS margin
+    trading_fee = Column(Float)  # Real-time calculated trading fee
+    expected_profit = Column(Float)  # Projected profit including fees
+    liquidation_price = Column(Float)  # Calculated liquidation price
+    funding_rate = Column(Float)  # Current funding rate for the position
+    entry_fee = Column(Float)  # Entry fee for the position
+    exit_fee = Column(Float)  # Estimated exit fee
+    total_fee = Column(Float)  # Total fees (entry + exit + funding)
+
     # Temporal tracking
     created_at = Column(DateTime, default=datetime.utcnow)
     expires_at = Column(DateTime)
@@ -43,7 +59,9 @@ class TradingSignal(Base):
     max_profit_reached = Column(Float)
     max_loss_reached = Column(Float)
     final_outcome = Column(Float)  # Actual profit/loss when signal expires
-    accuracy_improvement = Column(Float)  # How much the accuracy improved from this signal
+    accuracy_improvement = Column(
+        Float
+    )  # How much the accuracy improved from this signal
 
     # Real-time monitoring
     last_price = Column(Float)  # Last known price during monitoring

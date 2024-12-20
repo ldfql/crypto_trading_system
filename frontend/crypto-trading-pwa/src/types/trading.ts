@@ -11,6 +11,18 @@ export interface TradingSignal {
   created_at: string;
   market_phase: string;
   validation_count: number;
+  // Futures trading specific fields
+  leverage?: number;
+  margin_type?: 'ISOLATED' | 'CROSS';
+  position_size?: number;
+  trading_fee?: number;
+  entry_fee?: number;
+  exit_fee?: number;
+  total_fee?: number;
+  expected_profit?: number;
+  liquidation_price?: number;
+  funding_rate?: number;
+  last_price?: number;
 }
 
 export interface SystemMetrics {

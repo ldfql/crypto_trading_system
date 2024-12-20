@@ -4,13 +4,16 @@ from typing import Dict, List
 import numpy as np
 from datetime import datetime
 
+
 @dataclass
 class MarketPrediction:
     """Container for market predictions."""
+
     price: float
     volatility: float
     confidence: float
     timestamp: datetime
+
 
 class MarketCycleAnalyzer:
     """Analyzer for market cycles and predictions."""
@@ -20,8 +23,8 @@ class MarketCycleAnalyzer:
 
     def predict_next_movement(self, market_data: Dict) -> MarketPrediction:
         """Predict next market movement based on historical data."""
-        prices = np.array(market_data['prices'])
-        volumes = np.array(market_data['volumes'])
+        prices = np.array(market_data["prices"])
+        volumes = np.array(market_data["volumes"])
 
         # Calculate technical indicators
         sma_20 = self._calculate_sma(prices, 20)
@@ -37,15 +40,13 @@ class MarketCycleAnalyzer:
         predicted_price = last_price * (1 + predicted_change)
 
         # Calculate confidence based on indicators
-        confidence = self._calculate_confidence(
-            prices, volumes, volatility, sma_20
-        )
+        confidence = self._calculate_confidence(prices, volumes, volatility, sma_20)
 
         return MarketPrediction(
             price=predicted_price,
             volatility=volatility,
             confidence=max(confidence, self.min_confidence),
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
     def _calculate_sma(self, data: np.ndarray, period: int) -> float:
@@ -68,11 +69,7 @@ class MarketCycleAnalyzer:
         return float((volumes[-1] / np.mean(volumes)) - 1)
 
     def _calculate_confidence(
-        self,
-        prices: np.ndarray,
-        volumes: np.ndarray,
-        volatility: float,
-        sma: float
+        self, prices: np.ndarray, volumes: np.ndarray, volatility: float, sma: float
     ) -> float:
         """Calculate prediction confidence."""
         # Base confidence starts at minimum required

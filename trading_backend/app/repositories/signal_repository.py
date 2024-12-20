@@ -5,13 +5,16 @@ from sqlalchemy import select, desc, and_, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.signals import TradingSignal
 
+
 class SignalRepository:
     """Repository for managing trading signals with real-time accuracy monitoring."""
 
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create(self, signal_data: Union[Dict[str, Any], TradingSignal]) -> TradingSignal:
+    async def create(
+        self, signal_data: Union[Dict[str, Any], TradingSignal]
+    ) -> TradingSignal:
         """Create a new trading signal with comprehensive data."""
         if isinstance(signal_data, TradingSignal):
             signal = signal_data
@@ -25,14 +28,14 @@ class SignalRepository:
         self,
         timeframe: Optional[str] = None,
         symbol: Optional[str] = None,
-        min_confidence: float = 0.0
+        min_confidence: float = 0.0,
     ) -> List[TradingSignal]:
         """Get active signals with optional filtering."""
         current_time = datetime.now(timezone.utc)
         conditions = [
             or_(
                 TradingSignal.expires_at.is_(None),
-                TradingSignal.expires_at > current_time
+                TradingSignal.expires_at > current_time,
             )
         ]
 
@@ -43,7 +46,11 @@ class SignalRepository:
         if min_confidence > 0:
             conditions.append(TradingSignal.confidence >= min_confidence)
 
-        query = select(TradingSignal).where(and_(*conditions)).order_by(desc(TradingSignal.created_at))
+        query = (
+            select(TradingSignal)
+            .where(and_(*conditions))
+            .order_by(desc(TradingSignal.created_at))
+        )
         result = await self.session.execute(query)
         return result.scalars().all()
 
@@ -53,7 +60,7 @@ class SignalRepository:
         symbol: Optional[str] = None,
         min_accuracy: Optional[float] = None,
         days: Optional[int] = None,
-        limit: int = 100
+        limit: int = 100,
     ) -> List[TradingSignal]:
         """Get historical predictions with enhanced filtering."""
         conditions = []
@@ -81,7 +88,7 @@ class SignalRepository:
         symbol: str,
         min_confidence: float = 0.85,
         min_accuracy: float = 0.85,
-        timeframe: Optional[str] = None
+        timeframe: Optional[str] = None,
     ) -> List[TradingSignal]:
         """Find valid entry points with enhanced criteria."""
         current_time = datetime.now(timezone.utc)
@@ -89,26 +96,27 @@ class SignalRepository:
             TradingSignal.symbol == symbol,
             TradingSignal.confidence >= min_confidence,
             or_(
-                TradingSignal.accuracy.is_(None),
-                TradingSignal.accuracy >= min_accuracy
+                TradingSignal.accuracy.is_(None), TradingSignal.accuracy >= min_accuracy
             ),
             or_(
                 TradingSignal.expires_at.is_(None),
-                TradingSignal.expires_at > current_time
-            )
+                TradingSignal.expires_at > current_time,
+            ),
         ]
 
         if timeframe:
             conditions.append(TradingSignal.timeframe == timeframe)
 
-        query = select(TradingSignal).where(and_(*conditions)).order_by(desc(TradingSignal.created_at))
+        query = (
+            select(TradingSignal)
+            .where(and_(*conditions))
+            .order_by(desc(TradingSignal.created_at))
+        )
         result = await self.session.execute(query)
         return result.scalars().all()
 
     async def update_signal(
-        self,
-        signal_id: int,
-        update_data: Dict[str, Any]
+        self, signal_id: int, update_data: Dict[str, Any]
     ) -> Optional[TradingSignal]:
         """Update signal with new data and validation results."""
         query = select(TradingSignal).where(TradingSignal.id == signal_id)
@@ -126,9 +134,7 @@ class SignalRepository:
         return signal
 
     async def get_accuracy_statistics(
-        self,
-        timeframe: Optional[str] = None,
-        days: Optional[int] = None
+        self, timeframe: Optional[str] = None, days: Optional[int] = None
     ) -> Dict[str, float]:
         """Get accuracy statistics for signals."""
         conditions = [TradingSignal.accuracy.isnot(None)]
@@ -145,23 +151,22 @@ class SignalRepository:
 
         if not signals:
             return {
-                'average_accuracy': 0.0,
-                'max_accuracy': 0.0,
-                'min_accuracy': 0.0,
-                'total_signals': 0
+                "average_accuracy": 0.0,
+                "max_accuracy": 0.0,
+                "min_accuracy": 0.0,
+                "total_signals": 0,
             }
 
         accuracies = [s.accuracy for s in signals if s.accuracy is not None]
         return {
-            'average_accuracy': sum(accuracies) / len(accuracies),
-            'max_accuracy': max(accuracies),
-            'min_accuracy': min(accuracies),
-            'total_signals': len(signals)
+            "average_accuracy": sum(accuracies) / len(accuracies),
+            "max_accuracy": max(accuracies),
+            "min_accuracy": min(accuracies),
+            "total_signals": len(signals),
         }
 
     async def get_validation_history(
-        self,
-        signal_id: int
+        self, signal_id: int
     ) -> Optional[List[Dict[str, Any]]]:
         """Get validation history for a specific signal."""
         signal = await self.get_signal(signal_id)
@@ -175,10 +180,7 @@ class SignalRepository:
         return result.scalar_one_or_none()
 
     async def validate_accuracy(
-        self,
-        signal_id: int,
-        current_price: float,
-        market_data: Dict[str, Any]
+        self, signal_id: int, current_price: float, market_data: Dict[str, Any]
     ) -> TradingSignal:
         """Validate signal accuracy and update metrics."""
         signal = await self.get_signal(signal_id)
@@ -191,8 +193,9 @@ class SignalRepository:
 
         if signal.validation_count > 0:
             # Improve accuracy if prediction was correct
-            if (current_price > signal.entry_price and signal.sentiment == "bullish") or \
-               (current_price < signal.entry_price and signal.sentiment == "bearish"):
+            if (
+                current_price > signal.entry_price and signal.sentiment == "bullish"
+            ) or (current_price < signal.entry_price and signal.sentiment == "bearish"):
                 accuracy_improvement = min(0.05, price_diff)  # Cap improvement at 5%
 
         # Update signal metrics
@@ -200,8 +203,33 @@ class SignalRepository:
         signal.last_validated_at = datetime.utcnow()
         signal.validation_count += 1
         signal.accuracy = min(0.95, signal.accuracy + accuracy_improvement)
-        signal.market_volume = market_data.get('volume')
-        signal.market_volatility = market_data.get('volatility')
+        signal.market_volume = market_data.get("volume")
+        signal.market_volatility = market_data.get("volatility")
 
         await self.session.commit()
         return signal
+
+    async def get_recent_signals(
+        self,
+        hours: int = 24,
+        min_confidence: float = 0.85,
+        limit: int = 10
+    ) -> List[TradingSignal]:
+        """Get the most recent trading signals from the last N hours with minimum confidence threshold."""
+        current_time = datetime.now(timezone.utc)
+        cutoff_time = current_time - timedelta(hours=hours)
+
+        query = (
+            select(TradingSignal)
+            .where(
+                and_(
+                    TradingSignal.created_at >= cutoff_time,
+                    TradingSignal.confidence >= min_confidence
+                )
+            )
+            .order_by(desc(TradingSignal.created_at))
+            .limit(limit)
+        )
+
+        result = await self.session.execute(query)
+        return list(result.scalars())

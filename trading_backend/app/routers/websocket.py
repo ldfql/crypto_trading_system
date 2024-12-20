@@ -1,102 +1,77 @@
-"""WebSocket router for real-time monitoring."""
-from typing import List
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from app.services.monitoring.signal_monitor import SignalMonitor
-from app.repositories.signal_repository import SignalRepository
-from app.services.market_analysis.market_data_service import MarketDataService
+from fastapi import APIRouter, WebSocket, Depends, WebSocketDisconnect
+from app.services.analysis.prediction_analyzer import PredictionAnalyzer
+from app.dependencies import get_prediction_analyzer
+from datetime import datetime
+from typing import Dict, Any, List
+import asyncio
 
 router = APIRouter()
 
-class ConnectionManager:
-    """Manage WebSocket connections."""
-
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        """Connect a new WebSocket client."""
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        """Disconnect a WebSocket client."""
-        self.active_connections.remove(websocket)
-
-    async def broadcast(self, message: dict):
-        """Broadcast message to all connected clients."""
-        for connection in self.active_connections:
-            try:
-                await connection.send_json(message)
-            except WebSocketDisconnect:
-                self.disconnect(connection)
-
-manager = ConnectionManager()
-
-@router.websocket("/ws/monitor")
+@router.websocket("/ws/opportunities")
 async def websocket_endpoint(
     websocket: WebSocket,
-    signal_monitor: SignalMonitor,
-    signal_repository: SignalRepository,
-    market_data_service: MarketDataService
+    analyzer: PredictionAnalyzer = Depends(get_prediction_analyzer)
 ):
-    """WebSocket endpoint for real-time monitoring."""
-    await manager.connect(websocket)
+    """WebSocket endpoint for real-time trading opportunities."""
+    await websocket.accept()
+
     try:
+        # Send initial opportunities
+        try:
+            opportunities = await analyzer.find_best_opportunities()
+            if not isinstance(opportunities, list):
+                opportunities = []
+
+            message = {
+                "type": "opportunities",
+                "timestamp": datetime.utcnow().isoformat(),
+                "data": opportunities
+            }
+            await websocket.send_json(message)
+        except Exception as e:
+            error_message = {
+                "type": "error",
+                "message": str(e)
+            }
+            await websocket.send_json(error_message)
+            await websocket.close(code=1000, reason=str(e))
+            return
+
+        # Handle client messages
         while True:
-            # Monitor active signals
-            monitoring_results = await signal_monitor.monitor_active_signals()
+            try:
+                data = await websocket.receive_text()
+                if data == "ping":
+                    await websocket.send_text("pong")
+                    continue
 
-            # Get active signals
-            active_signals = []
-            for result in monitoring_results:
-                signal = await signal_repository.get_signal(result['signal_id'])
-                if signal:
-                    active_signals.append({
-                        'id': signal.id,
-                        'symbol': signal.symbol,
-                        'signal_type': signal.signal_type,
-                        'entry_price': signal.entry_price,
-                        'current_price': result['market_data']['current_price'],
-                        'accuracy': result['current_accuracy'],
-                        'confidence': signal.confidence,
-                        'created_at': signal.created_at.isoformat(),
-                        'market_phase': signal.market_cycle_phase,
-                        'validation_count': signal.validation_count
-                    })
+                # Send updated opportunities
+                opportunities = await analyzer.find_best_opportunities()
+                if not isinstance(opportunities, list):
+                    opportunities = []
 
-            # Get market data for each symbol
-            market_data = {}
-            for signal in active_signals:
-                market_data[signal['symbol']] = await market_data_service.get_market_data(
-                    symbol=signal['symbol']
-                )
-
-            # Get overall statistics
-            stats = await signal_repository.get_accuracy_statistics()
-
-            # Send updates
-            await websocket.send_json({
-                'type': 'signals_update',
-                'signals': active_signals
-            })
-
-            await websocket.send_json({
-                'type': 'market_data',
-                'data': market_data
-            })
-
-            await websocket.send_json({
-                'type': 'stats_update',
-                'stats': {
-                    'average_accuracy': stats['average_accuracy'],
-                    'total_signals': stats['total_signals'],
-                    'active_signals': len(active_signals),
-                    'successful_predictions': sum(1 for s in active_signals if s['accuracy'] >= 0.85)
+                message = {
+                    "type": "opportunities",
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "data": opportunities
                 }
-            })
+                await websocket.send_json(message)
 
-            # Wait for 5 seconds before next update
-            await websocket.receive_text()
+            except WebSocketDisconnect:
+                break
+            except Exception as e:
+                error_message = {
+                    "type": "error",
+                    "message": str(e)
+                }
+                await websocket.send_json(error_message)
+                await websocket.close(code=1000, reason=str(e))
+                return
 
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        pass
+    finally:
+        try:
+            await websocket.close()
+        except:
+            pass

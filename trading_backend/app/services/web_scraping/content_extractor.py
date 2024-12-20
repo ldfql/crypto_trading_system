@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
+
 class RateLimiter:
     def __init__(self, calls: int, period: int):
         self.calls = calls
@@ -16,16 +17,21 @@ class RateLimiter:
     async def acquire(self):
         now = datetime.now()
         # Remove timestamps older than the period
-        self.timestamps = [ts for ts in self.timestamps if now - ts < timedelta(seconds=self.period)]
+        self.timestamps = [
+            ts for ts in self.timestamps if now - ts < timedelta(seconds=self.period)
+        ]
 
         if len(self.timestamps) >= self.calls:
             # Wait until the oldest timestamp is outside the period
-            wait_time = (self.timestamps[0] + timedelta(seconds=self.period) - now).total_seconds()
+            wait_time = (
+                self.timestamps[0] + timedelta(seconds=self.period) - now
+            ).total_seconds()
             if wait_time > 0:
                 await asyncio.sleep(wait_time)
             self.timestamps.pop(0)
 
         self.timestamps.append(now)
+
 
 class ContentExtractor:
     def __init__(self):
@@ -56,7 +62,7 @@ class ContentExtractor:
             "metadata": {},
             "source": "",
             "success": False,
-            "error": None
+            "error": None,
         }
 
         # Ensure session is initialized
@@ -72,7 +78,9 @@ class ContentExtractor:
                     result["source"] = "jina_reader"
                     result["success"] = True
                     return result
-                logger.warning(f"Jina Reader failed with status {response.status} for {url}")
+                logger.warning(
+                    f"Jina Reader failed with status {response.status} for {url}"
+                )
         except Exception as e:
             logger.error(f"Error using Jina Reader: {str(e)}")
             result["error"] = str(e)
@@ -96,17 +104,20 @@ class ContentExtractor:
 
         return result
 
-    async def extract_batch(self, urls: list[str], concurrency: int = 5) -> list[Dict[str, Any]]:
+    async def extract_batch(
+        self, urls: list[str], concurrency: int = 5
+    ) -> list[Dict[str, Any]]:
         """
         Extract content from multiple URLs concurrently.
         """
+
         async def process_url(url: str) -> Dict[str, Any]:
             return await self.extract_content(url)
 
         # Process URLs in batches to control concurrency
         results = []
         for i in range(0, len(urls), concurrency):
-            batch = urls[i:i + concurrency]
+            batch = urls[i : i + concurrency]
             batch_results = await asyncio.gather(*[process_url(url) for url in batch])
             results.extend(batch_results)
 
