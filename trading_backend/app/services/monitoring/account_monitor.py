@@ -125,35 +125,37 @@ class AccountMonitor:
                 raise ValueError(f"{self.current_stage.name.title()} stage max leverage is {max_leverage}x")
 
             # Validate position size against account balance
-            max_position = self.current_balance * Decimal("2")  # Allow up to 2x balance for testing
+            max_position = self.current_balance * Decimal("0.2")  # Max 20% of balance
             if config.position_size > max_position:
-                raise ValueError("Position size exceeds maximum allowed for current balance")
+                raise ValueError("Position size exceeds maximum allowed")
 
             # Additional validations can be added here
             return True
         except ValueError as e:
-            raise  # Re-raise ValueError with specific message
+            raise ValueError(str(e))  # Re-raise with the same message
         except Exception as e:
             raise ValueError(f"Invalid futures configuration: {str(e)}")
 
     def get_stage_progress(self) -> Tuple[Decimal, Decimal]:
         """Calculate progress within current stage."""
-        min_balance, max_balance = self.STAGE_BOUNDARIES[self.current_stage]
-
         if self.current_stage == AccountStage.EXPERT:
-            # Expert stage progress is based on growth from min balance
-            progress = ((self.current_balance - min_balance) / min_balance) * Decimal("1")
-            # Cap progress at 100%
-            progress = min(Decimal("100"), progress)
-            remaining = Decimal("0")  # No remaining amount in expert stage
+            # Expert stage progress calculation (target: 100M USDT)
+            min_balance = Decimal('1000000')  # 1M USDT
+            target_balance = Decimal('100000000')  # 100M USDT (1亿U)
+            progress = ((self.current_balance - min_balance) / (target_balance - min_balance)) * Decimal('100')
+            progress = min(progress, Decimal('100'))  # Cap at 100%
+            remaining = max(Decimal('0'), target_balance - self.current_balance)
             return progress, remaining
 
-        total_range = max_balance - min_balance
-        # Calculate progress with higher precision
-        current_progress = ((self.current_balance - min_balance) / total_range) * Decimal("100")
-        # Round to 6 decimal places for precise comparison
-        progress = current_progress.quantize(Decimal("0.000001"))
-        # Ensure progress is between 0 and 100
-        progress = min(Decimal("100"), max(Decimal("0"), progress))
+        # Calculate progress for other stages
+        stage_ranges = {
+            AccountStage.INITIAL: (Decimal('100'), Decimal('1000')),
+            AccountStage.GROWTH: (Decimal('1000'), Decimal('10000')),
+            AccountStage.ADVANCED: (Decimal('10000'), Decimal('100000')),
+            AccountStage.PROFESSIONAL: (Decimal('100000'), Decimal('1000000'))
+        }
+
+        min_balance, max_balance = stage_ranges[self.current_stage]
+        progress = ((self.current_balance - min_balance) / (max_balance - min_balance)) * Decimal('100')
         remaining = max_balance - self.current_balance
         return progress, remaining
