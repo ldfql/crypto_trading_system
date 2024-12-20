@@ -30,7 +30,20 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest tests/ --cov=app --cov-report=xml
+        pytest tests/ --cov=app --cov-report=xml --cov-report=html
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        fail_ci_if_error: true
+
+    - name: Store coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: htmlcov/
+        retention-days: 14
 
     - name: Run linting
       run: |
@@ -57,18 +70,38 @@ jobs:
       run: npm ci
 
     - name: Run tests
-      run: npm test
+      run: npm test -- --coverage
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage/coverage-final.json
+        fail_ci_if_error: true
 
     - name: Build
       run: npm run build
+
+    - name: Store build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: frontend-build
+        path: dist/
+        retention-days: 14
 
   deploy:
     needs: [backend-test, frontend-test]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Download frontend build
+      uses: actions/download-artifact@v3
+      with:
+        name: frontend-build
+        path: frontend-dist
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -80,24 +113,29 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r trading_backend/requirements.txt
 
+    - name: Validate environment variables
+      run: |
+        python trading_backend/scripts/verify_env.py
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
+        BINANCE_API_SECRET: ${{ secrets.BINANCE_API_SECRET }}
+
     - name: Deploy backend
       run: |
         cd trading_backend
         python -m pip install -e .
-        uvicorn app.main:app --host 0.0.0.0 --port 8000
+        # Add your deployment commands here (e.g., using Docker, serverless, or your preferred deployment method)
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
+        BINANCE_API_SECRET: ${{ secrets.BINANCE_API_SECRET }}
 
     - name: Deploy frontend
       run: |
-        cd frontend/crypto-trading-pwa
-        npm ci
-        npm run build
-        # Add deployment commands here
+        # Add your frontend deployment commands here (e.g., using AWS S3, Netlify, or your preferred static hosting)
+        echo "Deploying frontend from frontend-dist/"
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
