@@ -25,6 +25,14 @@ class AccountMonitor:
             "large": (Decimal("1000000"), None),  # 1M+ U
         }
 
+        # Maximum leverage by account stage
+        self.max_leverage = {
+            "micro": 20,   # Max 20x for micro accounts
+            "small": 50,   # Max 50x for small accounts
+            "medium": 75,  # Max 75x for medium accounts
+            "large": 125   # Max 125x for large accounts
+        }
+
         # Risk multipliers decrease as account size increases
         self.stage_risk_multipliers = {
             "micro": Decimal("1.0"),  # Full risk for small accounts
@@ -159,6 +167,32 @@ class AccountMonitor:
             )
 
         return True, "Position size is valid"
+
+    async def validate_leverage_and_margin(
+        self, balance: Decimal, leverage: int, margin_type: str
+    ) -> Tuple[bool, str]:
+        """
+        Validate if leverage and margin type are appropriate for account stage.
+
+        Args:
+            balance: Current account balance in USDT
+            leverage: Requested leverage multiplier
+            margin_type: 'ISOLATED' or 'CROSS'
+
+        Returns:
+            Tuple of (is_valid: bool, reason: str)
+        """
+        stage = await self.get_account_stage(balance)
+        max_allowed = self.max_leverage[stage]
+
+        if leverage > max_allowed:
+            return False, f"Leverage {leverage}x exceeds maximum {max_allowed}x for {stage} account"
+
+        # Cross margin restrictions
+        if margin_type == "CROSS" and stage == "micro":
+            return False, "Cross margin not allowed for micro accounts"
+
+        return True, "Leverage and margin type validated successfully"
 
     async def log_balance_change(
         self, old_balance: Decimal, new_balance: Decimal, timestamp: datetime = None

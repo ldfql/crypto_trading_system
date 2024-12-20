@@ -2,6 +2,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime, Enum, JSON, Text
 from sqlalchemy.ext.declarative import declarative_base
+from .futures import MarginType
 
 Base = declarative_base()
 
@@ -36,6 +37,17 @@ class TradingSignal(Base):
     entry_reason = Column(Text)  # Detailed reasoning for entry
     technical_indicators = Column(JSON)  # Key technical indicators at entry
     sentiment_sources = Column(JSON)  # Sources contributing to sentiment analysis
+
+    # Futures trading parameters
+    leverage = Column(Integer)  # Leverage multiplier (1-125x)
+    margin_type = Column(Enum(MarginType))  # ISOLATED or CROSS margin
+    trading_fee = Column(Float)  # Real-time calculated trading fee
+    expected_profit = Column(Float)  # Projected profit including fees
+    liquidation_price = Column(Float)  # Calculated liquidation price
+    funding_rate = Column(Float)  # Current funding rate for the position
+    entry_fee = Column(Float)  # Entry fee for the position
+    exit_fee = Column(Float)  # Estimated exit fee
+    total_fee = Column(Float)  # Total fees (entry + exit + funding)
 
     # Temporal tracking
     created_at = Column(DateTime, default=datetime.utcnow)

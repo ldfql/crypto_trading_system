@@ -96,7 +96,11 @@ class PairSelector:
         return sorted(suitable_pairs, key=lambda x: x["liquidity_score"], reverse=True)
 
     async def validate_pair(
-        self, symbol: str, balance: Decimal, position_size: Optional[Decimal] = None
+        self,
+        symbol: str,
+        balance: Decimal,
+        position_size: Optional[Decimal] = None,
+        testing: bool = False
     ) -> Tuple[bool, str]:
         """
         Validate if a specific trading pair is suitable for the current account balance
@@ -106,12 +110,15 @@ class PairSelector:
             symbol: Trading pair symbol
             balance: Current account balance in USDT
             position_size: Optional position size to validate
+            testing: Whether to use testing mode
 
         Returns:
             Tuple of (is_valid: bool, reason: str)
         """
         stage = await self.account_monitor.get_account_stage(balance)
-        market_data = await self.market_data_service.get_market_data(symbol)
+        market_data = await self.market_data_service.get_market_data(
+            symbol, testing=testing
+        )
 
         volume_24h = Decimal(str(market_data.get("volume_24h", 0)))
         spread = Decimal(str(market_data.get("spread_percentage", 100)))

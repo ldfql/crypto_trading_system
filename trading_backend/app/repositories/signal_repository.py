@@ -208,3 +208,28 @@ class SignalRepository:
 
         await self.session.commit()
         return signal
+
+    async def get_recent_signals(
+        self,
+        hours: int = 24,
+        min_confidence: float = 0.85,
+        limit: int = 10
+    ) -> List[TradingSignal]:
+        """Get the most recent trading signals from the last N hours with minimum confidence threshold."""
+        current_time = datetime.now(timezone.utc)
+        cutoff_time = current_time - timedelta(hours=hours)
+
+        query = (
+            select(TradingSignal)
+            .where(
+                and_(
+                    TradingSignal.created_at >= cutoff_time,
+                    TradingSignal.confidence >= min_confidence
+                )
+            )
+            .order_by(desc(TradingSignal.created_at))
+            .limit(limit)
+        )
+
+        result = await self.session.execute(query)
+        return list(result.scalars())
