@@ -69,8 +69,18 @@ async def websocket_endpoint(
 
     try:
         # Send initial account status
-        initial_status = await account_monitor.get_account_status()
-        await websocket.send_json(initial_status)
+        progress, remaining = account_monitor.get_stage_progress()
+        await websocket.send_json({
+            "type": "account_status",
+            "data": {
+                "current_balance": str(account_monitor.current_balance),
+                "current_stage": account_monitor.current_stage.value,
+                "stage_progress": float(progress),
+                "remaining_to_next_stage": str(remaining) if remaining > 0 else None,
+                "max_leverage": account_monitor.get_max_leverage(),
+                "stage_transition": account_monitor.stage_transition.value
+            }
+        })
 
         while True:
             try:

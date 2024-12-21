@@ -82,46 +82,50 @@ class AccountMonitor:
         """Check if running in test mode."""
         return 'pytest' in sys.modules
 
-    def validate_futures_config(self, config: FuturesConfig) -> bool:
+    async def validate_futures_config(self, config: FuturesConfig) -> bool:
         """Validate futures configuration based on current account stage."""
         if config.leverage > self.MAX_LEVERAGE[self.current_stage]:
             stage_name = self.current_stage.value.lower()
             max_leverage = self.MAX_LEVERAGE[self.current_stage]
-            raise ValueError(f"Maximum leverage for {stage_name} stage is {max_leverage}x")
+            raise ValueError(f"{stage_name.capitalize()} stage max leverage is {max_leverage}x")
 
-        # PLACEHOLDER: Other validation checks for margin type, position size, etc.
+        # Stage-specific validations
+        if self.current_stage == AccountStage.INITIAL:
+            if config.margin_type != MarginType.CROSS:
+                raise ValueError("Initial stage only supports cross margin")
+        elif self.current_stage == AccountStage.GROWTH:
+            if config.margin_type != MarginType.CROSS:
+                raise ValueError("Growth stage only supports cross margin")
+
+        # Common validations
+        if config.position_size <= 0:
+            raise ValueError("Position size must be positive")
+        if config.max_position_size <= 0:
+            raise ValueError("Max position size must be positive")
+        if config.risk_level < 0 or config.risk_level > 1:
+            raise ValueError("Risk level must be between 0 and 1")
 
         return True
 
     async def update_balance(self, new_balance: Decimal) -> None:
-        """Update account balance and determine stage."""
+        """Update account balance and determine stage transition."""
         if new_balance <= 0:
-            raise AccountMonitoringError("Balance must be positive")
+            raise AccountMonitoringError("Balance cannot be negative or zero")
 
-        # Store previous state before any updates
-        self.previous_balance = self.current_balance
-        self.previous_stage = self.current_stage
-
-        # Update current balance and determine new stage
+        old_stage = self.current_stage
         self.current_balance = self._quantize_decimal(new_balance)
-        new_stage = self._determine_stage(new_balance)
+        self._determine_stage()
 
-        # Compare stage values for transition type
-        if new_stage != self.current_stage:
-            # Compare enum values directly for stage transition
-            # Use previous_stage for comparison to ensure correct transition
-            if new_stage.value > self.previous_stage.value:
-                self.stage_transition = AccountStageTransition.UPGRADE
-            else:
-                self.stage_transition = AccountStageTransition.DOWNGRADE
+        # Determine stage transition type
+        if self.current_stage.value > old_stage.value:
+            self.stage_transition = AccountStageTransition.UPGRADE
+        elif self.current_stage.value < old_stage.value:
+            self.stage_transition = AccountStageTransition.DOWNGRADE
         else:
             self.stage_transition = AccountStageTransition.NO_CHANGE
 
-        # Update current stage after determining transition
-        self.current_stage = new_stage
-
-        # Send WebSocket update if available
-        if hasattr(self, 'websocket') and self.websocket:
+        # Send WebSocket update if connected
+        if self.websocket and not self.websocket.client_state.DISCONNECTED:
             await self.send_balance_update(self.websocket)
 
     def _calculate_raw_position_size(self, risk_percentage: Decimal) -> Decimal:
@@ -145,7 +149,7 @@ class AccountMonitor:
         """Get maximum allowed leverage for current stage."""
         return self.MAX_LEVERAGE[self.current_stage]
 
-    def get_trading_parameters(self, risk_percentage: Decimal) -> Dict:
+    async def get_trading_parameters(self, risk_percentage: Decimal) -> Dict:
         """Get recommended trading parameters based on current account state."""
         if not (Decimal("0.1") <= risk_percentage <= Decimal("5")):
             raise AccountMonitoringError("Risk percentage must be between 0.1% and 5%")
@@ -162,51 +166,20 @@ class AccountMonitor:
         )
 
         return {
-            "account_stage": self.current_stage,
-            "current_balance": self._quantize_decimal(self.current_balance),
-            "position_size": position_size,
-            "leverage": leverage,
-            "margin_type": margin_type,
-            "max_leverage": self.get_max_leverage(),
-            "estimated_fees": self._quantize_decimal(fees),
-            "risk_percentage": self._quantize_decimal(risk_percentage)
+            "type": "trading_parameters",
+            "data": {
+                "account_stage": self.current_stage.value,
+                "current_balance": str(self._quantize_decimal(self.current_balance)),
+                "position_size": str(position_size),
+                "leverage": leverage,
+                "margin_type": margin_type.value,
+                "max_leverage": self.get_max_leverage(),
+                "estimated_fees": str(self._quantize_decimal(fees)),
+                "risk_percentage": str(self._quantize_decimal(risk_percentage))
+            }
         }
 
-    def validate_futures_config(self, config: FuturesConfig) -> bool:
-        """Validate futures configuration based on current account stage."""
-        if config.leverage < 0:
-            raise ValueError("Leverage cannot be negative")
 
-        # Stage-specific validations
-        if self.current_stage == AccountStage.INITIAL:
-            if config.leverage > 20:
-                raise ValueError("Initial stage max leverage is 20x")
-            if config.margin_type != MarginType.CROSS:
-                raise ValueError("Initial stage only supports cross margin")
-        elif self.current_stage == AccountStage.GROWTH:
-            if config.leverage > 50:
-                raise ValueError("Maximum leverage for growth stage is 50x")
-            if config.margin_type != MarginType.CROSS:
-                raise ValueError("Growth stage only supports cross margin")
-        elif self.current_stage == AccountStage.ADVANCED:
-            if config.leverage > 75:
-                raise ValueError("Advanced stage max leverage is 75x")
-        elif self.current_stage == AccountStage.PROFESSIONAL:
-            if config.leverage > 100:
-                raise ValueError("Professional stage max leverage is 100x")
-        elif self.current_stage == AccountStage.EXPERT:
-            if config.leverage > 125:
-                raise ValueError("Expert stage max leverage is 125x")
-
-        # Common validations
-        if config.position_size <= 0:
-            raise ValueError("Position size must be positive")
-        if config.max_position_size <= 0:
-            raise ValueError("Max position size must be positive")
-        if config.risk_level < 0 or config.risk_level > 1:
-            raise ValueError("Risk level must be between 0 and 1")
-
-        return True
 
     def get_stage_progress(self) -> Tuple[Decimal, Decimal]:
         """Calculate progress within current stage and remaining amount to next stage."""
@@ -254,14 +227,21 @@ class AccountMonitor:
         return progress, remaining
 
     async def send_balance_update(self, websocket: WebSocket) -> None:
-        """Send balance update via WebSocket."""
-        stage_progress, remaining = self.get_stage_progress()
+        """Send balance update through WebSocket."""
+        if not websocket or websocket.client_state.DISCONNECTED:
+            return
+
+        progress, remaining = self.get_stage_progress()
         await websocket.send_json({
-            "balance": f"{self.current_balance:.9f}",
-            "stage": self.current_stage.value.upper(),
-            "previous_stage": self.previous_stage.value.upper() if self.previous_stage else None,
-            "stage_transition": self.stage_transition.value,
-            "stage_progress": f"{stage_progress:.2f}"
+            "type": "account_status",
+            "data": {
+                "current_balance": str(self.current_balance),
+                "current_stage": self.current_stage.value,
+                "stage_progress": float(progress),
+                "remaining_to_next_stage": str(remaining) if remaining > 0 else None,
+                "max_leverage": self.get_max_leverage(),
+                "stage_transition": self.stage_transition.value
+            }
         })
 
     async def monitor_balance_changes(self, websocket_or_callback: Union[WebSocket, Callable[[Dict[str, Any]], None]]) -> None:
@@ -280,14 +260,18 @@ class AccountMonitor:
             finally:
                 self.websocket = None
         else:
-            # Handle callback function
+            # Handle callback function with standardized message format
             progress, remaining = self.get_stage_progress()
             await websocket_or_callback({
-                "balance": f"{self.current_balance:.9f}",
-                "stage": self.current_stage.value.upper(),
-                "previous_stage": self.previous_stage.value.upper() if self.previous_stage else None,
-                "stage_transition": self.stage_transition.value,
-                "stage_progress": f"{progress:.2f}"
+                "type": "account_status",
+                "data": {
+                    "current_balance": str(self.current_balance),
+                    "current_stage": self.current_stage.value,
+                    "stage_progress": float(progress),
+                    "remaining_to_next_stage": str(remaining) if remaining > 0 else None,
+                    "max_leverage": self.get_max_leverage(),
+                    "stage_transition": self.stage_transition.value
+                }
             })
 
     def get_account_status(self) -> Dict[str, Any]:
