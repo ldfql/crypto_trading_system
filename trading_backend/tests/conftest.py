@@ -7,6 +7,7 @@ from sqlalchemy.pool import StaticPool
 from unittest.mock import AsyncMock, MagicMock
 from fastapi import WebSocket
 
+from app.database import Base
 from app.models.signals import TradingSignal
 from app.models.enums import MarginType, TradingDirection, AccountStage
 from app.services.monitoring.account_monitor import AccountMonitor
@@ -15,7 +16,7 @@ from app.services.market_analysis.market_data_service import MarketDataService
 # Use SQLite for testing with async support
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 async def db_engine():
     """Create test database engine."""
     engine = create_async_engine(
@@ -26,16 +27,16 @@ async def db_engine():
     )
 
     async with engine.begin() as conn:
-        await conn.run_sync(TradingSignal.metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
 
     try:
         yield engine
     finally:
         async with engine.begin() as conn:
-            await conn.run_sync(TradingSignal.metadata.drop_all)
+            await conn.run_sync(Base.metadata.drop_all)
         await engine.dispose()
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 async def db_session(db_engine) -> AsyncSession:
     """Create database session for testing."""
     async_session = sessionmaker(

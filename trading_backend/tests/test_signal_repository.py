@@ -10,12 +10,12 @@ from app.models.enums import TradingDirection, MarginType
 @pytest.fixture
 async def signal_repository(db_session: AsyncSession) -> SignalRepository:
     """Create a signal repository instance."""
-    repo = SignalRepository(db_session)
-    return repo
+    return SignalRepository(db_session)
 
 @pytest.mark.asyncio
-async def test_create_signal(signal_repository):
+async def test_create_signal(signal_repository: SignalRepository):
     """Test creating a new trading signal."""
+    repo = await signal_repository
     signal = TradingSignal(
         symbol="BTCUSDT",
         entry_price=Decimal("50000.00"),
@@ -29,14 +29,15 @@ async def test_create_signal(signal_repository):
         timestamp=datetime.now(timezone.utc)
     )
 
-    created_signal = await signal_repository.create_signal(signal)
+    created_signal = await repo.create_signal(signal)
     assert created_signal.id is not None
     assert created_signal.symbol == "BTCUSDT"
     assert created_signal.entry_price == Decimal("50000.00")
 
 @pytest.mark.asyncio
-async def test_create_signal_default_timestamp(signal_repository):
+async def test_create_signal_default_timestamp(signal_repository: SignalRepository):
     """Test creating a signal with default timestamp."""
+    repo = await signal_repository
     signal = TradingSignal(
         symbol="BTCUSDT",
         entry_price=Decimal("50000.00"),
@@ -49,13 +50,14 @@ async def test_create_signal_default_timestamp(signal_repository):
         confidence=Decimal("0.85")
     )
 
-    created = await signal_repository.create_signal(signal)
+    created = await repo.create_signal(signal)
     assert created.timestamp is not None
     assert created.timestamp.tzinfo == timezone.utc
 
 @pytest.mark.asyncio
-async def test_get_signal_by_id(signal_repository):
+async def test_get_signal_by_id(signal_repository: SignalRepository):
     """Test retrieving a signal by ID."""
+    repo = await signal_repository
     signal = TradingSignal(
         symbol="ETHUSDT",
         entry_price=Decimal("3000.00"),
@@ -69,16 +71,17 @@ async def test_get_signal_by_id(signal_repository):
         timestamp=datetime.now(timezone.utc)
     )
 
-    created = await signal_repository.create_signal(signal)
-    retrieved = await signal_repository.get_signal_by_id(created.id)
+    created = await repo.create_signal(signal)
+    retrieved = await repo.get_signal_by_id(created.id)
 
     assert retrieved is not None
     assert retrieved.symbol == "ETHUSDT"
     assert retrieved.leverage == 5
 
 @pytest.mark.asyncio
-async def test_get_recent_signals(signal_repository):
+async def test_get_recent_signals(signal_repository: SignalRepository):
     """Test retrieving recent trading signals."""
+    repo = await signal_repository
     signals = [
         TradingSignal(
             symbol=f"BTCUSDT",
@@ -95,15 +98,16 @@ async def test_get_recent_signals(signal_repository):
     ]
 
     for signal in signals:
-        await signal_repository.create_signal(signal)
+        await repo.create_signal(signal)
 
-    recent = await signal_repository.get_recent_signals(limit=3)
+    recent = await repo.get_recent_signals(limit=3)
     assert len(recent) == 3
     assert all(isinstance(s, TradingSignal) for s in recent)
 
 @pytest.mark.asyncio
-async def test_get_recent_signals_with_filters(signal_repository):
+async def test_get_recent_signals_with_filters(signal_repository: SignalRepository):
     """Test retrieving signals with various filters."""
+    repo = await signal_repository
     signals = [
         TradingSignal(
             symbol="BTCUSDT",
@@ -132,26 +136,27 @@ async def test_get_recent_signals_with_filters(signal_repository):
     ]
 
     for signal in signals:
-        await signal_repository.create_signal(signal)
+        await repo.create_signal(signal)
 
     # Test symbol filter
-    btc_signals = await signal_repository.get_recent_signals(symbol="BTCUSDT")
+    btc_signals = await repo.get_recent_signals(symbol="BTCUSDT")
     assert len(btc_signals) == 1
     assert btc_signals[0].symbol == "BTCUSDT"
 
     # Test direction filter
-    long_signals = await signal_repository.get_recent_signals(direction=TradingDirection.LONG)
+    long_signals = await repo.get_recent_signals(direction=TradingDirection.LONG)
     assert len(long_signals) == 1
     assert long_signals[0].direction == TradingDirection.LONG
 
     # Test confidence filter
-    high_conf_signals = await signal_repository.get_recent_signals(min_confidence=Decimal("0.88"))
+    high_conf_signals = await repo.get_recent_signals(min_confidence=Decimal("0.88"))
     assert len(high_conf_signals) == 1
     assert high_conf_signals[0].confidence >= Decimal("0.88")
 
 @pytest.mark.asyncio
-async def test_update_signal(signal_repository):
+async def test_update_signal(signal_repository: SignalRepository):
     """Test updating an existing signal."""
+    repo = await signal_repository
     signal = TradingSignal(
         symbol="BTCUSDT",
         entry_price=Decimal("50000.00"),
@@ -165,16 +170,17 @@ async def test_update_signal(signal_repository):
         timestamp=datetime.now(timezone.utc)
     )
 
-    created = await signal_repository.create_signal(signal)
+    created = await repo.create_signal(signal)
     created.take_profit = Decimal("56000.00")
-    updated = await signal_repository.update_signal(created)
+    updated = await repo.update_signal(created)
 
     assert updated is not None
     assert updated.take_profit == Decimal("56000.00")
 
 @pytest.mark.asyncio
-async def test_update_signal_edge_cases(signal_repository):
+async def test_update_signal_edge_cases(signal_repository: SignalRepository):
     """Test edge cases for updating signals."""
+    repo = await signal_repository
     # Test updating non-existent signal
     non_existent = TradingSignal(
         id=999,
@@ -189,7 +195,7 @@ async def test_update_signal_edge_cases(signal_repository):
         confidence=Decimal("0.85"),
         timestamp=datetime.now(timezone.utc)
     )
-    updated = await signal_repository.update_signal(non_existent)
+    updated = await repo.update_signal(non_existent)
     assert updated is None
 
     # Test updating signal without ID
@@ -205,12 +211,13 @@ async def test_update_signal_edge_cases(signal_repository):
         confidence=Decimal("0.85"),
         timestamp=datetime.now(timezone.utc)
     )
-    updated = await signal_repository.update_signal(no_id)
+    updated = await repo.update_signal(no_id)
     assert updated is None
 
 @pytest.mark.asyncio
-async def test_delete_signal(signal_repository):
+async def test_delete_signal(signal_repository: SignalRepository):
     """Test deleting a trading signal."""
+    repo = await signal_repository
     signal = TradingSignal(
         symbol="BTCUSDT",
         entry_price=Decimal("50000.00"),
@@ -224,20 +231,21 @@ async def test_delete_signal(signal_repository):
         timestamp=datetime.now(timezone.utc)
     )
 
-    created = await signal_repository.create_signal(signal)
+    created = await repo.create_signal(signal)
     assert created.id is not None
 
-    success = await signal_repository.delete_signal(created.id)
+    success = await repo.delete_signal(created.id)
     assert success is True
 
-    deleted = await signal_repository.get_signal_by_id(created.id)
+    deleted = await repo.get_signal_by_id(created.id)
     assert deleted is None
 
 @pytest.mark.asyncio
-async def test_delete_signal_edge_cases(signal_repository):
+async def test_delete_signal_edge_cases(signal_repository: SignalRepository):
     """Test edge cases for deleting signals."""
+    repo = await signal_repository
     # Test deleting non-existent signal
-    success = await signal_repository.delete_signal(999)
+    success = await repo.delete_signal(999)
     assert success is False
 
     # Test deleting already deleted signal
@@ -254,7 +262,7 @@ async def test_delete_signal_edge_cases(signal_repository):
         timestamp=datetime.now(timezone.utc)
     )
 
-    created = await signal_repository.create_signal(signal)
-    await signal_repository.delete_signal(created.id)
-    success = await signal_repository.delete_signal(created.id)
+    created = await repo.create_signal(signal)
+    await repo.delete_signal(created.id)
+    success = await repo.delete_signal(created.id)
     assert success is False
