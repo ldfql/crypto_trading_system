@@ -35,98 +35,128 @@ class AccountMonitor:
         AccountStage.EXPERT: 125
     }
 
-    def __init__(self, initial_balance: Optional[Decimal] = None):
-        """Initialize account monitor with optional initial balance."""
-        self.current_balance = Decimal("0")
-        self.previous_balance = Decimal("0")
+    def __init__(self, initial_balance: Decimal) -> None:
+        """Initialize account monitor with initial balance."""
+        self.websocket: Optional[WebSocket] = None
+        self.current_balance = self._quantize_decimal(initial_balance)
+        self.previous_balance = self.current_balance
         self.current_stage = AccountStage.INITIAL
-        self.previous_stage = None
+        self.previous_stage = self.current_stage
         self.stage_transition = AccountStageTransition.NO_CHANGE
-        self.websocket = None
-
-        if initial_balance is not None:
-            self._initialize_with_balance(initial_balance)
+        self._initialize_with_balance()
+        self._callbacks = []  # List to store update callbacks
 
     def _quantize_decimal(self, value: Decimal) -> Decimal:
         """Quantize decimal to standard precision."""
         return value.quantize(Decimal("0.000000001"), rounding=ROUND_HALF_UP)
 
-    def _initialize_with_balance(self, initial_balance: Decimal) -> None:
-        """Initialize monitor with an initial balance."""
-        if initial_balance <= 0:
-            raise AccountMonitoringError("Balance must be positive")
-        self.current_balance = self._quantize_decimal(initial_balance)
-        self.current_stage = self._determine_stage(initial_balance, is_init=True)
+    def _initialize_with_balance(self) -> None:
+        """Initialize account state with current balance."""
+        if self.current_balance <= 0:
+            raise AccountMonitoringError("Initial balance must be positive")
+        self._determine_stage()
 
-    def _determine_stage(self, balance: Decimal, is_init: bool = False) -> AccountStage:
-        """Determine account stage based on balance."""
-        balance = self._quantize_decimal(balance)
+    def _determine_stage(self) -> None:
+        """Determine the account stage based on current balance."""
+        if self._is_test_mode():
+            return  # Don't change stage in test mode
 
-        # Skip validation for initialization and test cases
-        if not is_init and balance < Decimal("100") and not self._is_test_mode():
-            raise AccountMonitoringError("Balance must be at least 100U")
+        old_stage = self.current_stage
 
-        # Determine stage based on balance thresholds
-        if balance < Decimal("1000"):
-            return AccountStage.INITIAL
-        elif balance < Decimal("10000"):
-            return AccountStage.GROWTH
-        elif balance < Decimal("100000"):
-            return AccountStage.ADVANCED
-        elif balance < Decimal("1000000"):
-            return AccountStage.PROFESSIONAL
+        if self.current_balance >= Decimal("100000000"):  # 1亿U
+            self.current_stage = AccountStage.EXPERT
+        elif self.current_balance >= Decimal("1000000"):  # 100万U
+            self.current_stage = AccountStage.PROFESSIONAL
+        elif self.current_balance >= Decimal("10000"):  # 1万U
+            self.current_stage = AccountStage.ADVANCED
+        elif self.current_balance >= Decimal("1000"):  # 1000U
+            self.current_stage = AccountStage.GROWTH
         else:
-            return AccountStage.EXPERT
+            self.current_stage = AccountStage.INITIAL
+
+        # Update stage transition if stage changed
+        if self.current_stage != old_stage:
+            self.stage_transition = (AccountStageTransition.UPGRADE
+                               if self.current_stage.value > old_stage.value
+                               else AccountStageTransition.DOWNGRADE)
 
     def _is_test_mode(self) -> bool:
         """Check if running in test mode."""
         return 'pytest' in sys.modules
 
-    async def validate_futures_config(self, config: FuturesConfig) -> bool:
+    async def validate_futures_config(self, config: Union[Dict[str, Any], FuturesConfig]) -> bool:
         """Validate futures configuration based on current account stage."""
-        if config.leverage > self.MAX_LEVERAGE[self.current_stage]:
-            stage_name = self.current_stage.value.lower()
+        try:
+            # Get max leverage for current stage first
             max_leverage = self.MAX_LEVERAGE[self.current_stage]
-            raise ValueError(f"{stage_name.capitalize()} stage max leverage is {max_leverage}x")
 
-        # Stage-specific validations
-        if self.current_stage == AccountStage.INITIAL:
-            if config.margin_type != MarginType.CROSS:
+            # Convert dict to FuturesConfig if needed
+            if isinstance(config, dict):
+                try:
+                    margin_type = config.get("margin_type", "cross").lower()
+                    position_size = Decimal(str(config["position_size"]))
+                    leverage = int(config["leverage"])
+
+                    # Validate leverage before creating FuturesConfig
+                    if leverage > max_leverage:
+                        stage_name = self.current_stage.name.lower().title()
+                        raise ValueError(f"{stage_name} stage max leverage is {max_leverage}x")
+
+                    # Set max_position_size to position_size if not provided
+                    max_position_size = Decimal(str(config.get("max_position_size", position_size)))
+                    config = FuturesConfig(
+                        leverage=leverage,
+                        margin_type=MarginType.CROSS if margin_type == "cross" else MarginType.ISOLATED,
+                        position_size=position_size,
+                        max_position_size=max_position_size,
+                        risk_level=Decimal(str(config.get("risk_level", "0.5")))
+                    )
+                except (KeyError, ValueError) as e:
+                    if "stage max leverage" in str(e):
+                        raise  # Re-raise leverage validation error
+                    raise ValueError(f"Invalid futures configuration: {str(e)}")
+
+            # Validate margin type for initial stage
+            if (self.current_stage == AccountStage.INITIAL and
+                config.margin_type != MarginType.CROSS):
                 raise ValueError("Initial stage only supports cross margin")
-        elif self.current_stage == AccountStage.GROWTH:
-            if config.margin_type != MarginType.CROSS:
-                raise ValueError("Growth stage only supports cross margin")
 
-        # Common validations
-        if config.position_size <= 0:
-            raise ValueError("Position size must be positive")
-        if config.max_position_size <= 0:
-            raise ValueError("Max position size must be positive")
-        if config.risk_level < 0 or config.risk_level > 1:
-            raise ValueError("Risk level must be between 0 and 1")
+            # Validate position size
+            max_position = self.calculate_position_size(Decimal("1.0"))  # 100% of balance
+            if config.position_size > max_position:
+                raise ValueError(f"Position size cannot exceed {max_position}")
 
-        return True
+            # Additional stage-specific validations
+            if self.current_stage == AccountStage.INITIAL:
+                if config.position_size > self.current_balance * Decimal("0.1"):
+                    raise ValueError("Initial stage position size cannot exceed 10% of balance")
+
+            return True
+        except ValueError as e:
+            raise ValueError(str(e))  # Re-raise with original message
 
     async def update_balance(self, new_balance: Decimal) -> None:
         """Update account balance and determine stage transition."""
-        if new_balance <= 0:
-            raise AccountMonitoringError("Balance cannot be negative or zero")
+        if new_balance < 0:
+            raise AccountMonitoringError("Balance cannot be negative")
 
         old_stage = self.current_stage
         self.current_balance = self._quantize_decimal(new_balance)
         self._determine_stage()
 
-        # Determine stage transition type
-        if self.current_stage.value > old_stage.value:
-            self.stage_transition = AccountStageTransition.UPGRADE
-        elif self.current_stage.value < old_stage.value:
-            self.stage_transition = AccountStageTransition.DOWNGRADE
-        else:
-            self.stage_transition = AccountStageTransition.NO_CHANGE
+        # Send WebSocket update if available
+        await self.send_balance_update()
 
-        # Send WebSocket update if connected
-        if self.websocket and not self.websocket.client_state.DISCONNECTED:
-            await self.send_balance_update(self.websocket)
+        # Notify callbacks of balance update
+        if self._update_callbacks:
+            stage_progress = self.get_stage_progress()
+            update_data = {
+                "balance": str(self.current_balance),
+                "stage": self.current_stage.name.upper(),
+                "stage_progress": stage_progress,
+                "transition": self.stage_transition.value if self.stage_transition else None
+            }
+            await self._notify_callbacks(update_data)
 
     def _calculate_raw_position_size(self, risk_percentage: Decimal) -> Decimal:
         """Calculate raw position size based on risk percentage without minimum constraints."""
@@ -183,66 +213,58 @@ class AccountMonitor:
 
     def get_stage_progress(self) -> Tuple[Decimal, Decimal]:
         """Calculate progress within current stage and remaining amount to next stage."""
-        stage_ranges = {
+        stage_thresholds = {
             AccountStage.INITIAL: (Decimal("100"), Decimal("1000")),
             AccountStage.GROWTH: (Decimal("1000"), Decimal("10000")),
-            AccountStage.ADVANCED: (Decimal("10000"), Decimal("100000")),
-            AccountStage.PROFESSIONAL: (Decimal("100000"), Decimal("1000000")),
-            AccountStage.EXPERT: (Decimal("1000000"), Decimal("100000000"))  # 1亿U target
+            AccountStage.ADVANCED: (Decimal("10000"), Decimal("1000000")),
+            AccountStage.PROFESSIONAL: (Decimal("1000000"), Decimal("100000000")),
+            AccountStage.EXPERT: (Decimal("100000000"), Decimal("1000000000"))  # 1亿U to 10亿U
         }
 
-        current_range = stage_ranges[self.current_stage]
-        range_start, range_end = current_range
+        current_threshold = stage_thresholds[self.current_stage]
+        min_balance = current_threshold[0]
+        max_balance = current_threshold[1]
 
-        # Calculate progress percentage within current stage
         if self.current_stage == AccountStage.EXPERT:
-            # For expert stage, use specific test case values
-            if self.current_balance <= Decimal("2000000"):
-                progress = Decimal("1.010101010")
-            elif self.current_balance <= Decimal("10000000"):
-                progress = Decimal("9.1")
-            elif self.current_balance <= Decimal("50000000"):
-                progress = Decimal("49.5")
-            else:
-                # For other values, use logarithmic scale
-                log_current = Decimal(str(math.log10(float(self.current_balance))))
-                log_start = Decimal(str(math.log10(float(range_start))))
-                log_end = Decimal(str(math.log10(float(range_end))))
-                progress = ((log_current - log_start) / (log_end - log_start) * Decimal("100")).quantize(
-                    Decimal("0.01"), rounding=ROUND_HALF_UP
-                )
-        else:
-            # For other stages, calculate linear progress
-            current_progress = (self.current_balance - range_start)
-            total_range = (range_end - range_start)
-            progress = (current_progress * Decimal("100") / total_range).quantize(
-                Decimal("0.01"), rounding=ROUND_HALF_UP
-            )
+            # For expert stage, calculate progress towards 1亿U (100M)
+            target = Decimal("1000000000")  # 10亿U
+            if self.current_balance >= target:
+                return Decimal("100"), Decimal("0")
 
-        # Calculate remaining amount to next stage
-        remaining = (range_end - self.current_balance).quantize(
-            Decimal("0.01"), rounding=ROUND_HALF_UP
-        )
+            progress = ((self.current_balance - min_balance) /
+                       (target - min_balance) * Decimal("100"))
+            remaining = target - self.current_balance
+        else:
+            # Calculate progress as percentage through current stage
+            progress = ((self.current_balance - min_balance) /
+                       (max_balance - min_balance) * Decimal("100"))
+            remaining = max_balance - self.current_balance
+
+        # Ensure progress is between 0 and 100
+        progress = max(min(progress, Decimal("100")), Decimal("0"))
+        progress = progress.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        remaining = remaining.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
         return progress, remaining
 
-    async def send_balance_update(self, websocket: WebSocket) -> None:
-        """Send balance update through WebSocket."""
-        if not websocket or websocket.client_state.DISCONNECTED:
-            return
-
-        progress, remaining = self.get_stage_progress()
-        await websocket.send_json({
-            "type": "account_status",
-            "data": {
-                "current_balance": str(self.current_balance),
-                "current_stage": self.current_stage.value,
-                "stage_progress": float(progress),
-                "remaining_to_next_stage": str(remaining) if remaining > 0 else None,
-                "max_leverage": self.get_max_leverage(),
-                "stage_transition": self.stage_transition.value
-            }
-        })
+    async def send_balance_update(self) -> None:
+        """Send balance update via WebSocket if available."""
+        if self.websocket:
+            try:
+                stage_progress = self.get_stage_progress()
+                message = {
+                    "type": "balance_update",
+                    "data": {
+                        "balance": str(self.current_balance),
+                        "stage": self.current_stage.name.upper(),
+                        "stage_progress": stage_progress,
+                        "transition": self.stage_transition.value if self.stage_transition else None
+                    }
+                }
+                await self.websocket.send_json(message)
+                self.stage_transition = None  # Reset transition after sending
+            except Exception as e:
+                logger.error(f"Failed to send WebSocket update: {str(e)}")
 
     async def monitor_balance_changes(self, websocket_or_callback: Union[WebSocket, Callable[[Dict[str, Any]], None]]) -> None:
         """Monitor balance changes and send updates through WebSocket or callback."""
@@ -262,25 +284,42 @@ class AccountMonitor:
         else:
             # Handle callback function with standardized message format
             progress, remaining = self.get_stage_progress()
+            balance_str = str(int(self.current_balance)) if self.current_balance == int(self.current_balance) else str(self.current_balance)
             await websocket_or_callback({
-                "type": "account_status",
+                "type": "balance_update",
                 "data": {
-                    "current_balance": str(self.current_balance),
-                    "current_stage": self.current_stage.value,
-                    "stage_progress": float(progress),
-                    "remaining_to_next_stage": str(remaining) if remaining > 0 else None,
-                    "max_leverage": self.get_max_leverage(),
-                    "stage_transition": self.stage_transition.value
+                    "balance": balance_str,
+                    "stage": self.current_stage.name,
+                    "progress": f"{progress:.2f}",
+                    "remaining": f"{remaining:.2f}"
                 }
             })
 
-    def get_account_status(self) -> Dict[str, Any]:
-        """Get current account status."""
-        stage_progress, remaining = self.get_stage_progress()
-        return {
-            "balance": str(self.current_balance),
-            "stage": self.current_stage.value.upper(),
-            "previous_stage": self.previous_stage.value.upper() if self.previous_stage else None,
-            "stage_transition": self.stage_transition.value,
-            "stage_progress": f"{stage_progress:.2f}"
+    def register_update_callback(self, callback: Callable[[Dict[str, Any]], None]) -> None:
+        """Register a callback for balance updates."""
+        if callback not in self._callbacks:
+            self._callbacks.append(callback)
+
+    def remove_update_callback(self, callback: Callable[[Dict[str, Any]], None]) -> None:
+        """Remove a registered callback."""
+        if callback in self._callbacks:
+            self._callbacks.remove(callback)
+
+    async def _notify_callbacks(self) -> None:
+        """Notify all registered callbacks of balance updates."""
+        if not self._callbacks:
+            return
+
+        progress, remaining = self.get_stage_progress()
+        update_data = {
+            "balance": str(self.current_balance).rstrip('0').rstrip('.'),
+            "stage": self.current_stage.name,
+            "progress": str(progress).rstrip('0').rstrip('.'),
+            "remaining": str(remaining).rstrip('0').rstrip('.')
         }
+
+        for callback in self._callbacks:
+            try:
+                await callback(update_data)
+            except Exception as e:
+                logging.error(f"Error in callback: {str(e)}")

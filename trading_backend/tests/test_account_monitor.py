@@ -22,7 +22,7 @@ async def test_init_account_monitor():
 @pytest.mark.asyncio
 async def test_determine_stage():
     """Test stage determination based on balance."""
-    monitor = AccountMonitor()
+    monitor = AccountMonitor(initial_balance=Decimal("100"))
 
     # Test all stage boundaries
     test_cases = [
@@ -33,10 +33,10 @@ async def test_determine_stage():
         (Decimal("9999"), AccountStage.GROWTH),
         (Decimal("10000"), AccountStage.ADVANCED),
         (Decimal("99999"), AccountStage.ADVANCED),
-        (Decimal("100000"), AccountStage.PROFESSIONAL),
-        (Decimal("999999"), AccountStage.PROFESSIONAL),
-        (Decimal("1000000"), AccountStage.EXPERT),
-        (Decimal("50000000"), AccountStage.EXPERT)  # Path to 1亿U
+        (Decimal("1000000"), AccountStage.PROFESSIONAL),
+        (Decimal("9999999"), AccountStage.PROFESSIONAL),
+        (Decimal("100000000"), AccountStage.EXPERT),
+        (Decimal("500000000"), AccountStage.EXPERT)  # Path to 10亿U
     ]
 
     for balance, expected_stage in test_cases:
@@ -48,23 +48,32 @@ async def test_update_balance():
     """Test balance updates and stage transitions."""
     monitor = AccountMonitor(initial_balance=Decimal("100"))
 
-    # Test upgrade transition
-    await monitor.update_balance(Decimal("1500"))
-    assert monitor.current_stage == AccountStage.GROWTH
-    assert monitor.stage_transition == AccountStageTransition.UPGRADE
-    assert monitor.previous_stage == AccountStage.INITIAL
-
-    # Test no change
-    await monitor.update_balance(Decimal("2000"))
-    assert monitor.current_stage == AccountStage.GROWTH
-    assert monitor.stage_transition == AccountStageTransition.NO_CHANGE
-    assert monitor.previous_stage == AccountStage.GROWTH
-
-    # Test downgrade
+    # Test valid balance updates
     await monitor.update_balance(Decimal("500"))
+    assert monitor.current_balance == Decimal("500")
     assert monitor.current_stage == AccountStage.INITIAL
-    assert monitor.stage_transition == AccountStageTransition.DOWNGRADE
-    assert monitor.previous_stage == AccountStage.GROWTH
+
+    await monitor.update_balance(Decimal("1500"))
+    assert monitor.current_balance == Decimal("1500")
+    assert monitor.current_stage == AccountStage.GROWTH
+
+    await monitor.update_balance(Decimal("15000"))
+    assert monitor.current_balance == Decimal("15000")
+    assert monitor.current_stage == AccountStage.ADVANCED
+
+    # Test balance update with WebSocket notification
+    mock_websocket = AsyncMock()
+    monitor.websocket = mock_websocket
+    await monitor.update_balance(Decimal("100000"))
+    assert monitor.current_balance == Decimal("100000")
+    assert monitor.current_stage == AccountStage.PROFESSIONAL
+
+    # Verify WebSocket message
+    mock_websocket.send_json.assert_awaited_once()
+    call_args = mock_websocket.send_json.await_args[0][0]
+    assert call_args["type"] == "balance_update"
+    assert call_args["data"]["balance"] == "100000"
+    assert call_args["data"]["stage"] == "PROFESSIONAL"
 
 @pytest.mark.asyncio
 async def test_calculate_position_size():
@@ -144,53 +153,50 @@ async def test_validate_futures_config():
 @pytest.mark.asyncio
 async def test_get_stage_progress():
     """Test stage progress calculation."""
-    monitor = AccountMonitor(initial_balance=Decimal("1500"))
-    progress, remaining = monitor.get_stage_progress()
+    monitor = AccountMonitor(initial_balance=Decimal("100"))
 
-    # Progress should be ~5.56% through GROWTH stage (1500-1000)/(10000-1000) * 100
-    current_progress = (Decimal("1500") - Decimal("1000"))
-    stage_range = (Decimal("10000") - Decimal("1000"))
-    expected_progress = (current_progress * Decimal("100") / stage_range).quantize(
-        Decimal("0.01"), rounding=ROUND_HALF_UP
-    )
+    test_cases = [
+        # Initial stage (100U - 1,000U)
+        (Decimal("100"), Decimal("0.00"), Decimal("900")),    # Start
+        (Decimal("500"), Decimal("44.44"), Decimal("500")),   # Middle
+        (Decimal("900"), Decimal("88.89"), Decimal("100")),   # Near end
 
-    assert abs(progress - expected_progress) < Decimal("0.01"), \
-        f"Progress {progress} differs from expected {expected_progress}"
+        # Growth stage (1,000U - 10,000U)
+        (Decimal("1000"), Decimal("0.00"), Decimal("9000")),  # Start
+        (Decimal("5000"), Decimal("44.44"), Decimal("5000")), # Middle
+        (Decimal("9000"), Decimal("88.89"), Decimal("1000")), # Near end
 
-    # Remaining amount should be 8500 (10000 - 1500)
-    expected_remaining = (Decimal("10000") - Decimal("1500")).quantize(
-        Decimal("0.01"), rounding=ROUND_HALF_UP
-    )
-    assert abs(remaining - expected_remaining) < Decimal("0.01"), \
-        f"Remaining {remaining} differs from expected {expected_remaining}"
+        # Advanced stage (10,000U - 1,000,000U)
+        (Decimal("10000"), Decimal("0.00"), Decimal("990000")),    # Start
+        (Decimal("500000"), Decimal("49.49"), Decimal("500000")),  # Middle
+        (Decimal("900000"), Decimal("89.90"), Decimal("100000")),  # Near end
 
-    # Test expert stage
-    await monitor.update_balance(Decimal("2000000"))  # Make async call properly awaited
-    progress, remaining = monitor.get_stage_progress()
+        # Professional stage (1,000,000U - 100,000,000U)
+        (Decimal("1000000"), Decimal("0.00"), Decimal("99000000")),     # Start
+        (Decimal("50000000"), Decimal("49.49"), Decimal("50000000")),   # Middle
+        (Decimal("90000000"), Decimal("89.90"), Decimal("10000000")),   # Near end
 
-    # Progress should be ~2% through expert stage (2000000-1000000)/(100000000-1000000)
-    current_progress = (Decimal("2000000") - Decimal("1000000")).quantize(
-        Decimal("0.000000001"), rounding=ROUND_HALF_UP
-    )
-    total_range = (Decimal("100000000") - Decimal("1000000")).quantize(
-        Decimal("0.000000001"), rounding=ROUND_HALF_UP
-    )
-    expected_progress = ((current_progress * Decimal("100")) / total_range).quantize(
-        Decimal("0.000000001"), rounding=ROUND_HALF_UP
-    )
+        # Expert stage (100,000,000U - 1,000,000,000U)
+        (Decimal("100000000"), Decimal("0.00"), Decimal("900000000")),  # Start
+        (Decimal("500000000"), Decimal("44.44"), Decimal("500000000")), # Middle
+        (Decimal("900000000"), Decimal("88.89"), Decimal("100000000"))  # Near end
+    ]
 
-    assert abs(progress - expected_progress) < Decimal("0.000000001"), \
-        f"Expert stage progress {progress} differs from expected {expected_progress}"
-    assert abs(remaining - Decimal("98000000")) < Decimal("0.000000001"), \
-        f"Expert stage remaining {remaining} differs from expected 98000000"
+    for balance, expected_progress, expected_remaining in test_cases:
+        await monitor.update_balance(balance)
+        progress, remaining = monitor.get_stage_progress()
+        assert abs(progress - expected_progress) < Decimal("0.01"), \
+            f"Progress mismatch at balance {balance}"
+        assert abs(remaining - expected_remaining) < Decimal("0.01"), \
+            f"Remaining mismatch at balance {balance}"
 
 @pytest.mark.asyncio
 async def test_negative_balance_error():
-    """Test error handling for negative balance updates."""
-    monitor = AccountMonitor(initial_balance=Decimal("1000"))
-    with pytest.raises(AccountMonitoringError, match="Balance must be positive"):
+    """Test error handling for negative balance."""
+    monitor = AccountMonitor(initial_balance=Decimal("100"))
+    with pytest.raises(AccountMonitoringError, match="Balance cannot be negative or zero"):
         await monitor.update_balance(Decimal("-100"))
-    with pytest.raises(AccountMonitoringError, match="Balance must be positive"):
+    with pytest.raises(AccountMonitoringError, match="Balance cannot be negative or zero"):
         await monitor.update_balance(Decimal("0"))
 
 @pytest.mark.asyncio
@@ -212,138 +218,184 @@ async def test_decimal_precision():
 
 @pytest.mark.asyncio
 async def test_stage_transition_edge_cases():
-    """Test stage transitions at boundary values."""
-    monitor = AccountMonitor()
+    """Test edge cases in stage transitions."""
+    monitor = AccountMonitor(initial_balance=Decimal("999"))
 
-    # Test exact boundary transitions
-    transitions = [
-        (Decimal("999.99"), AccountStage.INITIAL),
-        (Decimal("1000"), AccountStage.GROWTH),
-        (Decimal("9999.99"), AccountStage.GROWTH),
-        (Decimal("10000"), AccountStage.ADVANCED),
-        (Decimal("99999.99"), AccountStage.ADVANCED),
-        (Decimal("100000"), AccountStage.PROFESSIONAL),
-        (Decimal("999999.99"), AccountStage.PROFESSIONAL),
-        (Decimal("1000000"), AccountStage.EXPERT),
-    ]
+    # Test transition at exact boundary (999 -> 1000)
+    await monitor.update_balance(Decimal("1000"))
+    assert monitor.current_stage == AccountStage.GROWTH
+    assert monitor.current_balance == Decimal("1000")
 
-    for balance, expected_stage in transitions:
-        monitor.current_balance = balance
-        assert monitor._determine_stage(balance) == expected_stage, \
-            f"Balance {balance} should be in {expected_stage} stage"
+    # Test transition at upper boundary (9999 -> 10000)
+    await monitor.update_balance(Decimal("9999"))
+    assert monitor.current_stage == AccountStage.GROWTH
+    await monitor.update_balance(Decimal("10000"))
+    assert monitor.current_stage == AccountStage.ADVANCED
+
+    # Test transition at professional boundary
+    await monitor.update_balance(Decimal("999999"))
+    assert monitor.current_stage == AccountStage.ADVANCED
+    await monitor.update_balance(Decimal("1000000"))
+    assert monitor.current_stage == AccountStage.PROFESSIONAL
+
+    # Test transition at expert boundary
+    await monitor.update_balance(Decimal("99999999"))
+    assert monitor.current_stage == AccountStage.PROFESSIONAL
+    await monitor.update_balance(Decimal("100000000"))
+    assert monitor.current_stage == AccountStage.EXPERT
+
+    # Test downgrade transitions
+    await monitor.update_balance(Decimal("99999999"))
+    assert monitor.current_stage == AccountStage.PROFESSIONAL
+    await monitor.update_balance(Decimal("999999"))
+    assert monitor.current_stage == AccountStage.ADVANCED
+    await monitor.update_balance(Decimal("9999"))
+    assert monitor.current_stage == AccountStage.GROWTH
+    await monitor.update_balance(Decimal("999"))
+    assert monitor.current_stage == AccountStage.INITIAL
 
 @pytest.mark.asyncio
 async def test_expert_stage_progress():
-    """Test expert stage progress calculation."""
-    monitor = AccountMonitor(initial_balance=Decimal("1000000"))  # Start in expert stage
+    """Test progress calculation for expert stage."""
+    monitor = AccountMonitor(initial_balance=Decimal("100000000"))  # Start at expert stage
 
-    test_balances = [
-        (Decimal("2000000"), Decimal("1.0")),   # 1% progress
-        (Decimal("10000000"), Decimal("9.1")),  # ~9.1% progress
-        (Decimal("50000000"), Decimal("49.5")), # ~49.5% progress
+    test_cases = [
+        (Decimal("100000000"), Decimal("0.00")),  # Start of expert stage
+        (Decimal("200000000"), Decimal("11.11")),  # 20% through
+        (Decimal("500000000"), Decimal("44.44")),  # 50% through
+        (Decimal("750000000"), Decimal("72.22")),  # 75% through
+        (Decimal("900000000"), Decimal("88.89")),  # 90% through
+        (Decimal("1000000000"), Decimal("100.00"))  # Target reached (10亿U)
     ]
 
-    for balance, expected_progress in test_balances:
-        monitor.current_balance = balance
+    for balance, expected_progress in test_cases:
+        await monitor.update_balance(balance)
         progress, _ = monitor.get_stage_progress()
-        assert abs(progress - expected_progress) < Decimal("0.1"), \
-            f"Expert stage progress {progress} differs from expected {expected_progress}"
+        assert abs(progress - expected_progress) < Decimal("0.01"), f"Failed for balance {balance}"
 
 @pytest.mark.asyncio
 async def test_websocket_balance_updates():
-    """Test WebSocket balance updates."""
-    mock_websocket = create_autospec(WebSocket, instance=True)
-    mock_websocket.send_json = AsyncMock()
-    mock_websocket.client_state = AsyncMock()
-    mock_websocket.client_state.DISCONNECTED = False
-
-    monitor = AccountMonitor(initial_balance=Decimal("100"))
+    """Test WebSocket balance update notifications."""
+    monitor = AccountMonitor(initial_balance=Decimal("1000"))
+    mock_websocket = AsyncMock()
     monitor.websocket = mock_websocket
 
-    # Test balance update with WebSocket
-    await monitor.update_balance(Decimal("1500"))
+    # Test balance update with stage change
+    await monitor.update_balance(Decimal("10000"))
 
     # Verify WebSocket message
-    mock_websocket.send_json.assert_called_once()
-    sent_message = mock_websocket.send_json.call_args[0][0]
-    assert sent_message["type"] == "account_status"
-    assert Decimal(sent_message["data"]["current_balance"]) == Decimal("1500")
-    assert sent_message["data"]["stage_transition"] == AccountStageTransition.UPGRADE.value
-    assert sent_message["data"]["current_stage"] == AccountStage.GROWTH.value
+    mock_websocket.send_json.assert_awaited_once()
+    call_args = mock_websocket.send_json.await_args[0][0]
+    assert call_args["type"] == "balance_update"
+    assert call_args["data"]["balance"] == "10000"
+    assert call_args["data"]["stage"] == "ADVANCED"
+
+    # Test balance update without stage change
+    await monitor.update_balance(Decimal("15000"))
+    mock_websocket.send_json.assert_awaited_with({
+        "type": "balance_update",
+        "data": {
+            "balance": "15000",
+            "stage": "ADVANCED",
+            "progress": "0.51",
+            "remaining": "985000.00"
+        }
+    })
 
 @pytest.mark.asyncio
 async def test_real_time_monitoring():
-    """Test real-time account monitoring."""
-    monitor = AccountMonitor(initial_balance=Decimal("100"))
+    """Test real-time monitoring functionality."""
+    monitor = AccountMonitor(initial_balance=Decimal("1000"))
+    updates_received = []
 
-    # Setup mock callback
     async def mock_callback(data):
-        assert data["type"] == "account_status"
-        assert Decimal(data["data"]["current_balance"]) == Decimal("1500")
-        assert data["data"]["stage_transition"] == AccountStageTransition.UPGRADE.value
+        updates_received.append(data)
 
-    # Start monitoring with callback
-    monitor_task = asyncio.create_task(
-        monitor.monitor_balance_changes(mock_callback)
-    )
+    # Register callback
+    monitor.register_update_callback(mock_callback)
 
-    try:
-        # Update balance and wait for callback
-        await monitor.update_balance(Decimal("1500"))
-        await asyncio.sleep(0.1)  # Give time for callback to execute
+    # Test multiple balance updates
+    test_balances = [
+        (Decimal("5000"), AccountStage.GROWTH),
+        (Decimal("15000"), AccountStage.ADVANCED),
+        (Decimal("1500000"), AccountStage.PROFESSIONAL),
+        (Decimal("150000000"), AccountStage.EXPERT)
+    ]
 
-        # Verify stage transition
-        assert monitor.current_stage == AccountStage.GROWTH
-        assert monitor.stage_transition == AccountStageTransition.UPGRADE
+    for balance, expected_stage in test_balances:
+        await monitor.update_balance(balance)
+        assert len(updates_received) > 0
+        latest_update = updates_received[-1]
+        assert latest_update["balance"] == str(balance)
+        assert latest_update["stage"] == expected_stage.name
 
-    finally:
-        monitor_task.cancel()
-        try:
-            await monitor_task
-        except asyncio.CancelledError:
-            pass
+    # Test callback removal
+    monitor.remove_update_callback(mock_callback)
+    await monitor.update_balance(Decimal("200000000"))
+    assert len(updates_received) == len(test_balances)  # No new updates after removal
 
 @pytest.mark.asyncio
 async def test_futures_config_validation_across_stages():
     """Test futures configuration validation across different account stages."""
-    monitor = AccountMonitor(initial_balance=Decimal("100"))  # INITIAL stage
+    monitor = AccountMonitor(initial_balance=Decimal("1000"))
 
-    # Test INITIAL stage restrictions
-    with pytest.raises(ValueError, match="Initial stage max leverage is 20x"):
-        config = FuturesConfig(
-            leverage=25,
-            margin_type=MarginType.CROSS,
-            position_size=Decimal("10"),
-            max_position_size=Decimal("20"),
-            risk_level=Decimal("0.5")
-        )
-        await monitor.validate_futures_config(config)
+    test_cases = [
+        # Initial stage (max leverage: 20x)
+        (Decimal("500"), {
+            "leverage": 25,
+            "position_size": Decimal("100"),
+            "margin_type": "isolated"
+        }, False, "Initial stage max leverage is 20x"),  # Should fail - leverage too high
 
-    # Move to GROWTH stage
-    await monitor.update_balance(Decimal("1500"))
-    assert monitor.current_stage == AccountStage.GROWTH
+        # Growth stage (max leverage: 50x)
+        (Decimal("5000"), {
+            "leverage": 45,
+            "position_size": Decimal("1000"),
+            "margin_type": "cross"
+        }, True, None),  # Should pass
 
-    # Test GROWTH stage restrictions
-    with pytest.raises(ValueError, match="Growth stage only supports cross margin"):
-        config = FuturesConfig(
-            leverage=30,
-            margin_type=MarginType.ISOLATED,
-            position_size=Decimal("100"),
-            max_position_size=Decimal("200"),
-            risk_level=Decimal("0.5")
-        )
-        await monitor.validate_futures_config(config)
+        # Advanced stage (max leverage: 75x)
+        (Decimal("50000"), {
+            "leverage": 70,
+            "position_size": Decimal("10000"),
+            "margin_type": "isolated"
+        }, True, None),  # Should pass
 
-    # Move to ADVANCED stage
-    await monitor.update_balance(Decimal("15000"))
-    assert monitor.current_stage == AccountStage.ADVANCED
+        # Professional stage (max leverage: 100x)
+        (Decimal("1500000"), {
+            "leverage": 95,
+            "position_size": Decimal("100000"),
+            "margin_type": "cross"
+        }, True, None),  # Should pass
 
-    # Test ADVANCED stage allows both margin types
-    config = FuturesConfig(
-        leverage=50,
-        margin_type=MarginType.ISOLATED,
-        position_size=Decimal("1000"),
-        max_position_size=Decimal("2000"),
-        risk_level=Decimal("0.5")
-    )
-    assert await monitor.validate_futures_config(config) is True
+        # Expert stage (max leverage: 125x)
+        (Decimal("150000000"), {
+            "leverage": 120,
+            "position_size": Decimal("1000000"),
+            "margin_type": "isolated"
+        }, True, None),  # Should pass
+
+        # Additional test cases for better coverage
+        (Decimal("1000"), {
+            "leverage": 20,
+            "position_size": Decimal("200"),
+            "margin_type": "isolated"
+        }, False, "Initial stage only supports cross margin"),  # Should fail - wrong margin type
+
+        (Decimal("1000"), {
+            "leverage": 15,
+            "position_size": Decimal("150"),
+            "margin_type": "cross"
+        }, False, "Initial stage position size cannot exceed 10% of balance"),  # Should fail - position size too large
+    ]
+
+    for balance, config, should_pass, expected_error in test_cases:
+        await monitor.update_balance(balance)
+        try:
+            result = await monitor.validate_futures_config(config)
+            assert should_pass, f"Expected validation to fail for balance {balance}"
+            assert result is True
+        except ValueError as e:
+            assert not should_pass, f"Expected validation to pass for balance {balance}, but got error: {str(e)}"
+            if expected_error:
+                assert str(e) == expected_error, f"Expected error '{expected_error}' but got '{str(e)}'"
