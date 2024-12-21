@@ -50,7 +50,7 @@ class AccountMonitor:
         # Initialize with quantized balance
         self.current_balance = self._quantize_decimal(initial_balance)
         self.previous_balance = self.current_balance
-        self.update_callbacks = []
+        self._update_callbacks = []  # Private attribute for callbacks
 
         # Set initial stage based on balance
         self.current_stage = self._determine_stage(self.current_balance)
@@ -62,62 +62,59 @@ class AccountMonitor:
         # Quantize balance for consistent comparisons
         balance = self._quantize_decimal(balance)
 
-        # Define stage thresholds
-        thresholds = {
-            AccountStage.EXPERT: Decimal("1000000"),      # 1M USDT
-            AccountStage.PROFESSIONAL: Decimal("100000"),  # 100K USDT
-            AccountStage.ADVANCED: Decimal("10000"),       # 10K USDT
-            AccountStage.GROWTH: Decimal("1000"),         # 1K USDT
-            AccountStage.INITIAL: Decimal("100")          # 100 USDT
-        }
+        # Define stage thresholds with exact decimal values
+        thresholds = [
+            (AccountStage.EXPERT, Decimal("1000000")),       # 1M USDT
+            (AccountStage.PROFESSIONAL, Decimal("100000")),  # 100K USDT
+            (AccountStage.ADVANCED, Decimal("10000")),       # 10K USDT
+            (AccountStage.GROWTH, Decimal("1000")),          # 1K USDT
+            (AccountStage.INITIAL, Decimal("100"))           # 100 USDT
+        ]
 
-        # Determine stage based on balance thresholds
-        for stage, threshold in thresholds.items():
+        # Find appropriate stage based on balance
+        for stage, threshold in thresholds:
             if balance >= threshold:
                 return stage
 
         # Default to INITIAL stage if balance is below all thresholds
         return AccountStage.INITIAL
 
-    async def validate_futures_config(self, config: Union[Dict[str, Any], FuturesConfig]) -> bool:
+    async def validate_futures_config(self, config: FuturesConfig) -> bool:
         """Validate futures configuration based on current account stage."""
         try:
-            # Convert dict to FuturesConfig if needed
-            if isinstance(config, dict):
-                margin_type = config.get("margin_type", "cross").lower()
-                position_size = Decimal(str(config["position_size"]))
-                leverage = int(config["leverage"])
+            # Get stage-specific leverage limits
+            max_leverage = self.get_max_leverage()
 
-                # Create FuturesConfig object with account stage first
-                futures_config = FuturesConfig(
-                    leverage=leverage,
-                    margin_type=MarginType.CROSS if margin_type == "cross" else MarginType.ISOLATED,
-                    position_size=position_size,
-                    max_position_size=Decimal(str(config.get("max_position_size", position_size))),
-                    risk_level=Decimal(str(config.get("risk_level", "0.5"))),
-                    account_stage=self.current_stage
-                )
-            else:
-                futures_config = config
-                futures_config.account_stage = self.current_stage
+            # Validate leverage
+            if config.leverage > max_leverage:
+                raise ValueError(f"{self.current_stage.value.lower().capitalize()} stage max leverage is {max_leverage}x")
 
-            # Validate leverage first
-            max_leverage = futures_config.MAX_LEVERAGE[self.current_stage]
-            if futures_config.leverage > max_leverage:
-                raise ValueError(f"{self.current_stage.name.title()} stage max leverage is {max_leverage}x")
-
-            # Then validate margin type for initial stage
-            if self.current_stage == AccountStage.INITIAL and futures_config.margin_type != MarginType.CROSS:
+            # Validate margin type for INITIAL stage
+            if self.current_stage == AccountStage.INITIAL and config.margin_type != MarginType.CROSS:
                 raise ValueError("Initial stage only supports cross margin")
 
-            # Finally validate position size for initial stage
+            # Validate position size
+            max_position = self.calculate_position_size(config.risk_level)
+            if config.position_size > max_position:
+                raise ValueError("Position size cannot exceed max position size")
+
+            # Additional stage-specific validations
             if self.current_stage == AccountStage.INITIAL:
-                max_allowed = self.current_balance * Decimal("0.1")
-                if futures_config.position_size > max_allowed:
-                    raise ValueError("Initial stage position size cannot exceed 10% of balance")
+                # Initial stage restrictions
+                if config.risk_level > Decimal("0.5"):
+                    raise ValueError("Initial stage risk level cannot exceed 50%")
+            elif self.current_stage == AccountStage.GROWTH:
+                # Growth stage restrictions
+                if config.risk_level > Decimal("0.75"):
+                    raise ValueError("Growth stage risk level cannot exceed 75%")
+            elif self.current_stage == AccountStage.ADVANCED:
+                # Advanced stage allows all risk levels but validates position size
+                if config.position_size > self.current_balance * Decimal("0.8"):
+                    raise ValueError("Advanced stage position size cannot exceed 80% of balance")
 
             return True
-        except (KeyError, ValueError) as e:
+
+        except (ValueError, TypeError) as e:
             raise ValueError(str(e))
 
     async def update_balance(self, new_balance: Union[Decimal, str, float]) -> Dict[str, Any]:
@@ -256,25 +253,30 @@ class AccountMonitor:
 
         return progress, remaining
 
-    async def send_balance_update(self) -> None:
-        """Send balance update via WebSocket if available."""
-        if self.websocket:
-            stage_progress, remaining = self.get_stage_progress()
-            update_data = {
-                "type": "balance_update",
-                "data": {
-                    "balance": str(int(self.current_balance)) if self.current_balance == self.current_balance.to_integral()
-                            else f"{float(self.current_balance):.2f}",
-                    "stage": self.current_stage.name.upper(),
-                    "progress": f"{float(stage_progress):.2f}",
-                    "remaining": f"{float(remaining):.2f}"
-                }
+    async def send_balance_update(self, websocket: Optional[WebSocket] = None) -> Dict[str, Any]:
+        """Send balance update through WebSocket."""
+        progress, remaining = self.get_stage_progress()
+
+        update_data = {
+            "type": "account_status",
+            "data": {
+                "current_balance": str(self.current_balance),
+                "previous_balance": str(self.previous_balance),
+                "current_stage": self.current_stage.value,
+                "stage_transition": self.stage_transition.value,
+                "progress": str(progress),
+                "remaining": str(remaining),
+                "max_leverage": self.get_max_leverage()
             }
+        }
+
+        if websocket:
             try:
-                await self.websocket.send_json(update_data)
+                await websocket.send_json(update_data)
             except Exception as e:
-                logger.error(f"Failed to send WebSocket update: {e}")
-                # Don't re-raise as this is not critical
+                logger.error(f"Error sending WebSocket update: {e}")
+
+        return update_data
 
     async def monitor_balance_changes(self, websocket_or_callback: Union[WebSocket, Callable[[Dict[str, Any]], None]]) -> None:
         """Monitor balance changes and send updates through WebSocket or callback."""
@@ -283,7 +285,7 @@ class AccountMonitor:
             self.websocket = websocket_or_callback
             try:
                 # Send initial update
-                await self.send_balance_update()
+                await self.send_balance_update(self.websocket)
                 # Keep connection alive and monitor for changes
                 while True:
                     await asyncio.sleep(1)  # Prevent CPU overload
@@ -300,22 +302,14 @@ class AccountMonitor:
             self.register_update_callback(websocket_or_callback)
             try:
                 # Send initial update through callback
-                stage_progress, remaining = self.get_stage_progress()
-                update_data = {
-                    "balance": str(self.current_balance),
-                    "stage": self.current_stage.name.upper(),
-                    "progress": f"{stage_progress:.2f}",
-                    "remaining": f"{float(remaining):.2f}"
-                }
-                await self._notify_callbacks(update_data)
+                await self._notify_callbacks(await self.send_balance_update())
             except Exception as e:
                 logger.error(f"Callback error: {e}")
                 self.remove_update_callback(websocket_or_callback)
 
     def register_update_callback(self, callback: Callable[[Dict[str, Any]], Awaitable[None]]) -> None:
         """Register a callback for balance updates."""
-        if callback not in self._update_callbacks:
-            self._update_callbacks.append(callback)
+        self._update_callbacks.append(callback)
 
     def remove_update_callback(self, callback: Callable[[Dict[str, Any]], Awaitable[None]]) -> None:
         """Remove a registered callback."""
@@ -328,4 +322,4 @@ class AccountMonitor:
             try:
                 await callback(update_data)
             except Exception as e:
-                logger.error(f"Error in callback: {str(e)}")
+                logger.error(f"Error in callback: {e}")

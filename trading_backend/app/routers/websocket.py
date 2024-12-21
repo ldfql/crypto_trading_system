@@ -23,10 +23,10 @@ async def handle_account_monitoring(
     try:
         if "data" in data and "balance" in data["data"]:
             new_balance = Decimal(str(data["data"]["balance"]))
-            # Update balance first, now properly awaited
-            await account_monitor.update_balance(new_balance)
-            # Then send the update through WebSocket
-            await account_monitor.send_balance_update(websocket)
+            # Update balance and get status
+            update_data = await account_monitor.update_balance(new_balance)
+            # Send update through WebSocket
+            await websocket.send_json(update_data)
         else:
             # Send initial account status
             status = await account_monitor.get_account_status()
