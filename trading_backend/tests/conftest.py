@@ -1,8 +1,7 @@
 """Test fixtures and configuration."""
 import pytest
 from decimal import Decimal
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.pool import StaticPool
 from unittest.mock import AsyncMock, MagicMock
 from fastapi import WebSocket
@@ -39,10 +38,14 @@ async def db_engine():
 @pytest.fixture(scope="function")
 async def db_session(db_engine) -> AsyncSession:
     """Create database session for testing."""
-    async_session = sessionmaker(
-        db_engine, class_=AsyncSession, expire_on_commit=False
+    session_factory = async_sessionmaker(
+        bind=db_engine,
+        class_=AsyncSession,
+        expire_on_commit=False,
+        autocommit=False,
+        autoflush=False
     )
-    async with async_session() as session:
+    async with session_factory() as session:
         yield session
 
 @pytest.fixture

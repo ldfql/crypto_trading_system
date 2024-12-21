@@ -4,6 +4,7 @@ from decimal import Decimal
 from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import desc, select
+from sqlalchemy.future import select as future_select
 from ..models.signals import TradingSignal
 from ..models.futures import FuturesConfig
 from ..models.enums import MarginType, TradingDirection
@@ -21,16 +22,16 @@ class SignalRepository:
         if not signal.timestamp:
             signal.timestamp = datetime.now(timezone.utc)
 
-        self.session.add(signal)
-        await self.session.commit()
-        await self.session.refresh(signal)
-        return signal
+        async with self.session.begin():
+            self.session.add(signal)
+            await self.session.flush()
+            await self.session.refresh(signal)
+            return signal
 
     async def get_signal_by_id(self, signal_id: int) -> Optional[TradingSignal]:
         """Get trading signal by ID."""
-        result = await self.session.execute(
-            select(TradingSignal).filter(TradingSignal.id == signal_id)
-        )
+        stmt = future_select(TradingSignal).filter(TradingSignal.id == signal_id)
+        result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
     async def get_recent_signals(
@@ -41,17 +42,17 @@ class SignalRepository:
         min_confidence: Optional[Decimal] = None
     ) -> List[TradingSignal]:
         """Get recent trading signals with optional filters."""
-        query = select(TradingSignal)
+        stmt = future_select(TradingSignal)
 
         if symbol:
-            query = query.filter(TradingSignal.symbol == symbol)
+            stmt = stmt.filter(TradingSignal.symbol == symbol)
         if direction:
-            query = query.filter(TradingSignal.direction == direction)
+            stmt = stmt.filter(TradingSignal.direction == direction)
         if min_confidence is not None:
-            query = query.filter(TradingSignal.confidence >= min_confidence)
+            stmt = stmt.filter(TradingSignal.confidence >= min_confidence)
 
-        query = query.order_by(desc(TradingSignal.timestamp)).limit(limit)
-        result = await self.session.execute(query)
+        stmt = stmt.order_by(desc(TradingSignal.timestamp)).limit(limit)
+        result = await self.session.execute(stmt)
         return list(result.scalars().all())
 
     async def update_signal(self, signal: TradingSignal) -> Optional[TradingSignal]:
@@ -61,20 +62,21 @@ class SignalRepository:
 
         existing = await self.get_signal_by_id(signal.id)
         if existing:
-            for key, value in signal.__dict__.items():
-                if not key.startswith('_') and hasattr(existing, key):
-                    setattr(existing, key, value)
-
-            await self.session.commit()
-            await self.session.refresh(existing)
-            return existing
+            async with self.session.begin():
+                for key, value in signal.__dict__.items():
+                    if not key.startswith('_') and hasattr(existing, key):
+                        setattr(existing, key, value)
+                await self.session.flush()
+                await self.session.refresh(existing)
+                return existing
         return None
 
     async def delete_signal(self, signal_id: int) -> bool:
         """Delete trading signal by ID."""
         signal = await self.get_signal_by_id(signal_id)
         if signal:
-            await self.session.delete(signal)
-            await self.session.commit()
-            return True
+            async with self.session.begin():
+                await self.session.delete(signal)
+                await self.session.flush()
+                return True
         return False
