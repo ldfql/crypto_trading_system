@@ -1,44 +1,12 @@
 """Trading signal models."""
 from datetime import datetime
 from decimal import Decimal
-from enum import Enum
 from typing import Optional, Dict, Any
 from sqlalchemy import Column, Integer, String, DateTime, Numeric, JSON
 from sqlalchemy.orm import relationship
 from ..database import Base
 from .futures import FuturesConfig
-
-class AccountStage(str, Enum):
-    INITIAL = "initial"        # 100U - 1000U
-    GROWTH = "growth"         # 1000U - 10000U
-    ADVANCED = "advanced"     # 10000U - 100000U
-    PROFESSIONAL = "professional"  # 100000U - 1000000U
-    EXPERT = "expert"         # 1000000U+ (1亿U target)
-
-    def __lt__(self, other):
-        stages = [
-            AccountStage.INITIAL,
-            AccountStage.GROWTH,
-            AccountStage.ADVANCED,
-            AccountStage.PROFESSIONAL,
-            AccountStage.EXPERT
-        ]
-        return stages.index(self) < stages.index(other)
-
-    def __gt__(self, other):
-        stages = [
-            AccountStage.INITIAL,
-            AccountStage.GROWTH,
-            AccountStage.ADVANCED,
-            AccountStage.PROFESSIONAL,
-            AccountStage.EXPERT
-        ]
-        return stages.index(self) > stages.index(other)
-
-class AccountStageTransition(str, Enum):
-    UPGRADE = "UPGRADE"
-    DOWNGRADE = "DOWNGRADE"
-    NO_CHANGE = "NO_CHANGE"
+from .enums import AccountStage, AccountStageTransition
 
 class TradingSignal(Base):
     """Trading signal model."""

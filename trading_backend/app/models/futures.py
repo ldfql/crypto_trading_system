@@ -1,7 +1,8 @@
 from enum import Enum
 from pydantic import BaseModel, Field, field_validator, model_validator
 from decimal import Decimal, ROUND_HALF_UP
-from typing import Optional
+from typing import Optional, Dict
+from .enums import AccountStage
 
 class MarginType(str, Enum):
     CROSS = "cross"
@@ -13,6 +14,16 @@ class FuturesConfig(BaseModel):
     position_size: Decimal = Field(..., gt=Decimal('0'))
     max_position_size: Decimal = Field(..., gt=Decimal('0'))
     risk_level: Decimal = Field(..., ge=Decimal('0.1'), le=Decimal('1.0'))
+    account_stage: Optional[AccountStage] = None
+
+    # Stage-specific leverage limits
+    MAX_LEVERAGE: Dict[AccountStage, int] = {
+        AccountStage.INITIAL: 20,
+        AccountStage.GROWTH: 50,
+        AccountStage.ADVANCED: 75,
+        AccountStage.PROFESSIONAL: 100,
+        AccountStage.EXPERT: 125
+    }
 
     def _quantize_decimal(self, value: Decimal) -> Decimal:
         return value.quantize(Decimal("0.000000001"), rounding=ROUND_HALF_UP)
@@ -26,9 +37,12 @@ class FuturesConfig(BaseModel):
         if position_size > max_position_size:
             raise ValueError(f"Position size ({position_size}) cannot exceed max position size ({max_position_size})")
 
-        # Validate leverage based on position size
-        if self.leverage > 20 and position_size > Decimal('1000'):
-            raise ValueError("High leverage (>20x) not allowed for position sizes over 1000U")
+        # Validate leverage based on account stage
+        if self.account_stage:
+            max_leverage = self.MAX_LEVERAGE[self.account_stage]
+            if self.leverage > max_leverage:
+                stage_name = self.account_stage.name.lower().title()
+                raise ValueError(f"{stage_name} stage max leverage is {max_leverage}x")
 
         self.position_size = position_size
         self.max_position_size = max_position_size
