@@ -1,6 +1,14 @@
 """Enums used throughout the application."""
 from enum import Enum
 
+class TradingDirection(str, Enum):
+    LONG = "long"
+    SHORT = "short"
+
+class MarginType(str, Enum):
+    ISOLATED = "isolated"
+    CROSS = "cross"
+
 class AccountStage(str, Enum):
     INITIAL = "INITIAL"        # 100U - 1000U
     GROWTH = "GROWTH"         # 1000U - 10000U

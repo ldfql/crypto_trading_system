@@ -1,29 +1,28 @@
 """Trading signal models."""
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Optional, Dict, Any
-from sqlalchemy import Column, Integer, String, DateTime, Numeric, JSON
-from sqlalchemy.orm import relationship
-from ..database import Base
-from .futures import FuturesConfig
-from .enums import AccountStage, AccountStageTransition
+from typing import Optional
+from sqlalchemy import Column, Integer, String, DateTime, Numeric, Enum
+from sqlalchemy.orm import declarative_base
+from .enums import MarginType, TradingDirection
+
+Base = declarative_base()
 
 class TradingSignal(Base):
     """Trading signal model."""
     __tablename__ = "trading_signals"
 
-    id = Column(Integer, primary_key=True, index=True)
-    symbol = Column(String, index=True)
-    entry_price = Column(Numeric(precision=20, scale=8))
-    take_profit = Column(Numeric(precision=20, scale=8))
-    stop_loss = Column(Numeric(precision=20, scale=8))
-    position_size = Column(Numeric(precision=20, scale=8))
-    leverage = Column(Integer)
-    margin_type = Column(String)  # 'isolated' or 'cross'
-    direction = Column(String)  # 'long' or 'short'
-    confidence = Column(Numeric(precision=5, scale=4))
-    timestamp = Column(DateTime, index=True)
-    futures_config = Column(JSON, nullable=True)
+    id = Column(Integer, primary_key=True)
+    symbol = Column(String, nullable=False)
+    entry_price = Column(Numeric(precision=20, scale=8), nullable=False)
+    take_profit = Column(Numeric(precision=20, scale=8), nullable=False)
+    stop_loss = Column(Numeric(precision=20, scale=8), nullable=False)
+    position_size = Column(Numeric(precision=20, scale=8), nullable=False)
+    leverage = Column(Integer, nullable=False)
+    margin_type = Column(Enum(MarginType), nullable=False)
+    direction = Column(Enum(TradingDirection), nullable=False)
+    confidence = Column(Numeric(precision=5, scale=4), nullable=False)
+    timestamp = Column(DateTime(timezone=True), nullable=False)
 
     def __init__(
         self,
@@ -33,13 +32,15 @@ class TradingSignal(Base):
         stop_loss: Decimal,
         position_size: Decimal,
         leverage: int,
-        margin_type: str,
-        direction: str,
+        margin_type: MarginType,
+        direction: TradingDirection,
         confidence: Decimal,
         timestamp: Optional[datetime] = None,
-        futures_config: Optional[Dict[str, Any]] = None
+        id: Optional[int] = None
     ):
         """Initialize trading signal."""
+        if id is not None:
+            self.id = id
         self.symbol = symbol
         self.entry_price = entry_price
         self.take_profit = take_profit
@@ -49,12 +50,4 @@ class TradingSignal(Base):
         self.margin_type = margin_type
         self.direction = direction
         self.confidence = confidence
-        self.timestamp = timestamp or datetime.utcnow()
-        self.futures_config = futures_config
-
-    @property
-    def futures_configuration(self) -> Optional[FuturesConfig]:
-        """Get futures configuration as FuturesConfig object."""
-        if self.futures_config:
-            return FuturesConfig(**self.futures_config)
-        return None
+        self.timestamp = timestamp or datetime.now(timezone.utc)
