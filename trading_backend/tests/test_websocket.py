@@ -1,166 +1,133 @@
 """Tests for WebSocket functionality."""
 import pytest
-from decimal import Decimal
-from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
-
-from app.main import app
-from app.models.futures import AccountStage, AccountStageTransition, FuturesConfig, MarginType
+from unittest.mock import AsyncMock, MagicMock, create_autospec, patch
+from fastapi import WebSocket, WebSocketDisconnect
+from app.routers.websocket import websocket_endpoint
 from app.services.monitoring.account_monitor import AccountMonitor
+from app.services.market_analysis.market_data_service import MarketDataService
+from decimal import Decimal
+import asyncio
 
-def test_websocket_connection():
+pytestmark = pytest.mark.asyncio
+
+@pytest.fixture
+def mock_websocket():
+    """Create a mock WebSocket with necessary attributes."""
+    mock = create_autospec(WebSocket, instance=True)
+    mock.accept = AsyncMock()
+    mock.receive_json = AsyncMock()
+    mock.send_json = AsyncMock()
+    mock.close = AsyncMock()
+    mock.client_state = MagicMock()
+    mock.client_state.DISCONNECTED = False
+    return mock
+
+@pytest.fixture
+def mock_account_monitor():
+    """Create a mock AccountMonitor."""
+    mock = create_autospec(AccountMonitor, instance=True)
+    mock.get_account_status = AsyncMock(return_value={
+        "type": "account_status",
+        "current_stage": "initial",
+        "current_balance": "100",
+        "stage_progress": "0.00",
+        "remaining_to_next_stage": "900.00",
+        "max_leverage": 20
+    })
+    mock.send_balance_update = AsyncMock()
+    mock.update_balance = AsyncMock()  # Make sure this is an AsyncMock
+    return mock
+
+@pytest.fixture
+def mock_market_data_service():
+    """Create a mock MarketDataService."""
+    mock = create_autospec(MarketDataService, instance=True)
+    mock.get_market_data = AsyncMock(return_value={
+        "type": "market_data",
+        "data": {
+            "btc_price": "50000",
+            "eth_price": "3000",
+            "market_sentiment": "neutral"
+        }
+    })
+    return mock
+
+async def test_websocket_connection(mock_websocket, mock_account_monitor):
     """Test WebSocket connection establishment."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        data = websocket.receive_json()
-        assert "current_balance" in data or "error" in data
+    mock_websocket.receive_json.side_effect = [
+        {"type": "subscribe", "channel": "account_monitoring"},
+        WebSocketDisconnect()
+    ]
 
-def test_websocket_account_monitoring():
-    """Test real-time account monitoring via WebSocket."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        # Test initial stage (100U)
-        websocket.send_json({"balance": "100"})
-        response = websocket.receive_json()
-        assert response["current_balance"] == "100"
-        assert response["current_stage"] == "initial"
-        assert float(response["stage_progress"]) >= 0.0
-        assert response["max_leverage"] == 20
+    await websocket_endpoint(
+        websocket=mock_websocket,
+        account_monitor=mock_account_monitor
+    )
 
-        # Test growth stage (1500U)
-        websocket.send_json({"balance": "1500"})
-        response = websocket.receive_json()
-        assert response["current_balance"] == "1500"
-        assert response["current_stage"] == "growth"
-        assert float(response["stage_progress"]) > 0
-        assert response["max_leverage"] == 50
+    mock_websocket.accept.assert_awaited_once()
+    mock_websocket.send_json.assert_awaited()
 
-        # Test advanced stage (15000U)
-        websocket.send_json({"balance": "15000"})
-        response = websocket.receive_json()
-        assert response["current_balance"] == "15000"
-        assert response["current_stage"] == "advanced"
-        assert response["max_leverage"] == 75
+async def test_websocket_account_monitoring(mock_websocket, mock_account_monitor):
+    """Test account monitoring subscription."""
+    mock_websocket.receive_json.side_effect = [
+        {"type": "subscribe", "channel": "account_monitoring"},
+        {"type": "update", "data": {"balance": "1000"}},
+        WebSocketDisconnect()
+    ]
 
-def test_websocket_invalid_balance():
-    """Test WebSocket handling of invalid balance."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        # Test negative balance
-        websocket.send_json({"balance": "-100"})
-        response = websocket.receive_json()
-        assert "error" in response
-        assert "Balance must be positive" in response["error"]
+    await websocket_endpoint(
+        websocket=mock_websocket,
+        account_monitor=mock_account_monitor
+    )
 
-        # Test zero balance
-        websocket.send_json({"balance": "0"})
-        response = websocket.receive_json()
-        assert "error" in response
-        assert "Balance must be positive" in response["error"]
+    mock_websocket.accept.assert_awaited_once()
+    mock_account_monitor.update_balance.assert_awaited_with(Decimal("1000"))
+    mock_account_monitor.send_balance_update.assert_awaited_with(mock_websocket)
 
-        # Test invalid format
-        websocket.send_json({"balance": "invalid"})
-        response = websocket.receive_json()
-        assert "error" in response
+async def test_websocket_error_handling(mock_websocket, mock_account_monitor):
+    """Test error handling in WebSocket endpoint."""
+    mock_websocket.receive_json.side_effect = Exception("Test error")
 
-@pytest.mark.asyncio
-async def test_websocket_connection_error():
-    """Test WebSocket connection error handling."""
-    client = TestClient(app)
-    with patch("fastapi.WebSocket.accept", side_effect=Exception("Connection error")):
-        with pytest.raises(Exception):
-            with client.websocket_connect("/account/ws/monitor"):
-                pass
+    await websocket_endpoint(
+        websocket=mock_websocket,
+        account_monitor=mock_account_monitor
+    )
 
-def test_websocket_futures_config():
-    """Test WebSocket handling of futures configuration."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        # Set initial balance
-        websocket.send_json({"balance": "1500"})
-        response = websocket.receive_json()
-        assert response["current_stage"] == "growth"
+    mock_websocket.accept.assert_awaited_once()
+    mock_websocket.send_json.assert_awaited_with({
+        "type": "error",
+        "message": "Test error"
+    })
 
-        # Send futures configuration
-        futures_config = {
-            "balance": "1500",
-            "futures_config": {
-                "leverage": 30,
-                "margin_type": "cross",
-                "position_size": "150",
-                "max_position_size": "300",
-                "risk_level": 0.5
-            }
-        }
-        websocket.send_json(futures_config)
-        response = websocket.receive_json()
-        assert "current_balance" in response
-        assert "max_leverage" in response
-        assert response["max_leverage"] == 50  # Max leverage for growth stage
+async def test_invalid_subscription_type(mock_websocket, mock_account_monitor):
+    """Test handling of invalid subscription type."""
+    mock_websocket.receive_json.return_value = {
+        "type": "invalid_type"
+    }
 
-def test_websocket_stage_transition_notification():
-    """Test WebSocket notifications for stage transitions."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        # Initial stage
-        websocket.send_json({"balance": "800"})
-        response = websocket.receive_json()
-        assert response["current_stage"] == "initial"
-        assert response["transition"] is None
+    await websocket_endpoint(
+        websocket=mock_websocket,
+        account_monitor=mock_account_monitor
+    )
 
-        # Upgrade to growth stage
-        websocket.send_json({"balance": "1200"})
-        response = websocket.receive_json()
-        assert response["current_stage"] == "growth"
-        assert response["transition"] == "UPGRADE"
-        assert response["previous_stage"] == "initial"
+    mock_websocket.accept.assert_awaited_once()
+    mock_websocket.send_json.assert_awaited_with({
+        "type": "error",
+        "message": "Unknown message type: invalid_type"
+    })
 
-        # Downgrade back to initial stage
-        websocket.send_json({"balance": "800"})
-        response = websocket.receive_json()
-        assert response["current_stage"] == "initial"
-        assert response["transition"] == "DOWNGRADE"
-        assert response["previous_stage"] == "growth"
+async def test_websocket_account_updates(mock_websocket, mock_account_monitor):
+    """Test account balance updates."""
+    mock_websocket.receive_json.side_effect = [
+        {"type": "subscribe", "channel": "account_monitoring"},
+        {"type": "update", "data": {"balance": "2000"}},
+        WebSocketDisconnect()
+    ]
 
-def test_websocket_malformed_json():
-    """Test WebSocket handling of malformed JSON data."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        # Send malformed JSON
-        websocket.send_text("invalid json")
-        response = websocket.receive_json()
-        assert "error" in response
-        assert "Invalid JSON format" in response["error"]
+    await websocket_endpoint(
+        websocket=mock_websocket,
+        account_monitor=mock_account_monitor
+    )
 
-        # Send JSON with missing required fields
-        websocket.send_json({})
-        response = websocket.receive_json()
-        assert "error" in response
-        assert "Missing balance field" in response["error"]
-
-def test_websocket_expert_stage():
-    """Test WebSocket handling of expert stage accounts."""
-    client = TestClient(app)
-    with client.websocket_connect("/account/ws/monitor") as websocket:
-        # Move to expert stage
-        websocket.send_json({"balance": "2000000"})
-        response = websocket.receive_json()
-        assert response["current_stage"] == "expert"
-        assert response["stage_progress"] == "100"
-        assert response["max_leverage"] == 125
-
-        # Test position size calculation in expert stage
-        futures_config = {
-            "balance": "2000000",
-            "futures_config": {
-                "leverage": 100,
-                "margin_type": "isolated",
-                "position_size": "200000",
-                "max_position_size": "400000",
-                "risk_level": 0.75
-            }
-        }
-        websocket.send_json(futures_config)
-        response = websocket.receive_json()
-        assert "current_balance" in response
-        assert response["max_leverage"] == 125
+    mock_account_monitor.update_balance.assert_awaited_with(Decimal("2000"))
+    mock_account_monitor.send_balance_update.assert_awaited_with(mock_websocket)

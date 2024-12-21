@@ -1,43 +1,38 @@
 from enum import Enum
 from pydantic import BaseModel, Field, field_validator, model_validator
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 
 class MarginType(str, Enum):
     CROSS = "cross"
     ISOLATED = "isolated"
 
-class AccountStage(str, Enum):
-    INITIAL = "initial"        # 100U - 1000U
-    GROWTH = "growth"         # 1000U - 10000U
-    ADVANCED = "advanced"       # 10000U - 100000U
-    PROFESSIONAL = "professional"   # 100000U - 1000000U
-    EXPERT = "expert"         # 1000000U+ (1亿U target)
-
-class AccountStageTransition(str, Enum):
-    UPGRADE = "upgrade"
-    DOWNGRADE = "downgrade"
-    NO_CHANGE = "no_change"
-
 class FuturesConfig(BaseModel):
     leverage: int = Field(..., ge=1, le=125)
     margin_type: MarginType = Field(default=MarginType.CROSS)
-    position_size: Decimal = Field(..., gt=0)
-    max_position_size: Decimal = Field(..., gt=0)
-    risk_level: float = Field(..., ge=0.01, le=1.0)
+    position_size: Decimal = Field(..., gt=Decimal('0'))
+    max_position_size: Decimal = Field(..., gt=Decimal('0'))
+    risk_level: Decimal = Field(..., ge=Decimal('0.1'), le=Decimal('1.0'))
+
+    def _quantize_decimal(self, value: Decimal) -> Decimal:
+        return value.quantize(Decimal("0.000000001"), rounding=ROUND_HALF_UP)
 
     @model_validator(mode='after')
     def validate_all(self) -> 'FuturesConfig':
-        position_size = self.position_size
-        max_position_size = self.max_position_size
+        position_size = self._quantize_decimal(self.position_size)
+        max_position_size = self._quantize_decimal(self.max_position_size)
+        risk_level = self._quantize_decimal(Decimal(str(self.risk_level)))
 
-        # Validate position size against max position size
         if position_size > max_position_size:
-            raise ValueError("Position size cannot exceed max position size")
+            raise ValueError(f"Position size ({position_size}) cannot exceed max position size ({max_position_size})")
 
-        # Validate minimum position size
-        if position_size < Decimal('10'):
-            raise ValueError("Position size must be at least 10U")
+        # Validate leverage based on position size
+        if self.leverage > 20 and position_size > Decimal('1000'):
+            raise ValueError("High leverage (>20x) not allowed for position sizes over 1000U")
+
+        self.position_size = position_size
+        self.max_position_size = max_position_size
+        self.risk_level = risk_level
 
         return self
 

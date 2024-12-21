@@ -1,18 +1,17 @@
 """Database configuration and session management."""
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.orm import declarative_base
 
-DATABASE_URL = "sqlite:///./trading.db"
+DATABASE_URL = "sqlite+aiosqlite:///./trading.db"
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_async_engine(DATABASE_URL, echo=True)
+async_session_factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 Base = declarative_base()
 
-def get_session() -> Session:
+async def get_session() -> AsyncSession:
     """Get database session."""
-    session = SessionLocal()
-    try:
-        yield session
-    finally:
-        session.close()
+    async with async_session_factory() as session:
+        try:
+            yield session
+        finally:
+            await session.close()

@@ -1,20 +1,22 @@
 from typing import AsyncGenerator
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from .database import get_session
-from .services.market_analysis.market_data_service import MarketDataService
-from .services.trading.pair_selector import PairSelector
-from .services.trading.fee_calculator import FeeCalculator
-from .repositories.signal_repository import SignalRepository
+from decimal import Decimal
+
+from app.database import async_session_factory
+from app.services.market_analysis.market_data_service import MarketDataService
+from app.services.trading.pair_selector import PairSelector
+from app.services.trading.fee_calculator import FeeCalculator
+from app.repositories.signal_repository import SignalRepository
+from app.services.monitoring.account_monitor import AccountMonitor
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
     """Get database session."""
-    async_session = get_session()
-    try:
-        async with async_session.begin() as session:
+    async with async_session_factory() as session:
+        try:
             yield session
-    finally:
-        await async_session.close()
+        finally:
+            await session.close()
 
 async def get_market_data_service() -> MarketDataService:
     """Dependency for market data service."""
@@ -35,3 +37,7 @@ async def get_signal_repository(
 ) -> SignalRepository:
     """Dependency for signal repository."""
     return SignalRepository(db)
+
+async def get_account_monitor() -> AccountMonitor:
+    """Dependency for account monitor service."""
+    return AccountMonitor(initial_balance=Decimal("100"))

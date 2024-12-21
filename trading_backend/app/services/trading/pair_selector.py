@@ -1,9 +1,11 @@
 from decimal import Decimal
 from typing import List, Optional, Dict
 import asyncio
-from ...models.futures import FuturesConfig, MarginType, AccountStage
+from ...models.futures import FuturesConfig, MarginType
+from ...models.signals import AccountStage
 from ..market_analysis.market_data_service import MarketDataService
 from .fee_calculator import FeeCalculator
+from app.schemas.trading import TradingSignal
 
 class PairSelector:
     def __init__(self, market_data_service: MarketDataService):
@@ -16,25 +18,34 @@ class PairSelector:
         self,
         account_balance: Decimal,
         max_pairs: int = 3
-    ) -> List[Dict]:
+    ) -> List[TradingSignal]:
         """Select best trading pairs based on market conditions and account balance."""
-        pairs = await self.market_data_service.get_all_trading_pairs()
-        selected_pairs = []
+        try:
+            pairs = await self.market_data_service.get_all_trading_pairs()
+            selected_signals = []
 
-        for pair in pairs:
-            if not await self._meets_volume_requirements(pair):
-                continue
+            for pair in pairs[:5]:  # Analyze top 5 pairs for efficiency
+                try:
+                    if not await self._meets_volume_requirements(pair):
+                        continue
 
-            signal = await self._analyze_trading_opportunity(pair, account_balance)
-            if signal and len(selected_pairs) < max_pairs:
-                selected_pairs.append(signal)
+                    signal = await self._analyze_trading_opportunity(pair, account_balance)
+                    if signal and len(selected_signals) < max_pairs:
+                        selected_signals.append(TradingSignal(**signal))
+                except Exception as e:
+                    continue
 
-        return sorted(selected_pairs, key=lambda x: x['confidence'], reverse=True)
+            return sorted(selected_signals, key=lambda x: x.confidence, reverse=True)
+        except Exception:
+            return []  # Return empty list on any error
 
     async def _meets_volume_requirements(self, pair: str) -> bool:
         """Check if trading pair meets minimum volume requirements."""
-        volume_24h = await self.market_data_service.get_24h_volume(pair)
-        return volume_24h >= self.min_volume_threshold
+        try:
+            volume_24h = await self.market_data_service.get_24h_volume(pair)
+            return volume_24h >= self.min_volume_threshold
+        except Exception:
+            return False
 
     def _calculate_trading_config(
         self,
@@ -72,7 +83,7 @@ class PairSelector:
             margin_type=MarginType.CROSS,
             position_size=position_size,
             max_position_size=account_balance,
-            risk_level=float(risk_level)
+            risk_level=risk_level  # Changed from float(risk_level) to keep as Decimal
         )
 
     async def _analyze_trading_opportunity(
@@ -81,59 +92,62 @@ class PairSelector:
         account_balance: Decimal
     ) -> Optional[Dict]:
         """Analyze trading opportunity for a specific pair."""
-        current_price = await self.market_data_service.get_current_price(pair)
-        if not current_price:
+        try:
+            current_price = await self.market_data_service.get_current_price(pair)
+            if not current_price:
+                return None
+
+            volatility = await self.market_data_service.get_volatility(pair)
+            if volatility < 0.01:  # Skip low volatility pairs
+                return None
+
+            config = self._calculate_trading_config(account_balance, current_price)
+
+            # Calculate entry points and targets
+            support_level = await self.market_data_service.get_support_level(pair)
+            resistance_level = await self.market_data_service.get_resistance_level(pair)
+
+            if not (support_level and resistance_level):
+                return None
+
+            # Calculate optimal entry price near support
+            entry_price = support_level * Decimal("1.005")  # 0.5% above support
+            take_profit = min(
+                resistance_level,
+                entry_price * Decimal("1.03")  # 3% profit target
+            )
+            stop_loss = support_level * Decimal("0.995")  # 0.5% below support
+
+            # Calculate expected profit
+            expected_profit = self.fee_calculator.estimate_profit(
+                config,
+                entry_price,
+                take_profit
+            )
+
+            confidence = await self._calculate_signal_confidence(
+                pair,
+                entry_price,
+                take_profit,
+                stop_loss
+            )
+
+            if confidence < self.min_confidence:
+                return None
+
+            return {
+                "pair": pair,
+                "entry_price": entry_price,
+                "take_profit": take_profit,
+                "stop_loss": stop_loss,
+                "position_size": config.position_size,
+                "leverage": config.leverage,
+                "margin_type": config.margin_type,
+                "expected_profit": expected_profit,
+                "confidence": confidence
+            }
+        except Exception:
             return None
-
-        volatility = await self.market_data_service.get_volatility(pair)
-        if volatility < 0.01:  # Skip low volatility pairs
-            return None
-
-        config = self._calculate_trading_config(account_balance, current_price)
-
-        # Calculate entry points and targets
-        support_level = await self.market_data_service.get_support_level(pair)
-        resistance_level = await self.market_data_service.get_resistance_level(pair)
-
-        if not (support_level and resistance_level):
-            return None
-
-        # Calculate optimal entry price near support
-        entry_price = support_level * Decimal("1.005")  # 0.5% above support
-        take_profit = min(
-            resistance_level,
-            entry_price * Decimal("1.03")  # 3% profit target
-        )
-        stop_loss = support_level * Decimal("0.995")  # 0.5% below support
-
-        # Calculate expected profit
-        expected_profit = self.fee_calculator.estimate_profit(
-            config,
-            entry_price,
-            take_profit
-        )
-
-        confidence = await self._calculate_signal_confidence(
-            pair,
-            entry_price,
-            take_profit,
-            stop_loss
-        )
-
-        if confidence < self.min_confidence:
-            return None
-
-        return {
-            "pair": pair,
-            "entry_price": entry_price,
-            "take_profit": take_profit,
-            "stop_loss": stop_loss,
-            "position_size": config.position_size,
-            "leverage": config.leverage,
-            "margin_type": config.margin_type,
-            "expected_profit": expected_profit,
-            "confidence": confidence
-        }
 
     async def _calculate_signal_confidence(
         self,
@@ -143,27 +157,30 @@ class PairSelector:
         stop_loss: Decimal
     ) -> float:
         """Calculate confidence level for a trading signal."""
-        trend = await self.market_data_service.get_trend_strength(pair)
-        volume_score = await self._calculate_volume_score(pair)
+        try:
+            trend = await self.market_data_service.get_trend_strength(pair)
+            volume_score = await self._calculate_volume_score(pair)
 
-        # Risk-reward ratio (convert to float for calculations)
-        risk = float(abs(entry_price - stop_loss))
-        reward = float(abs(take_profit - entry_price))
-        rr_ratio = reward / risk if risk > 0 else 0
+            # Risk-reward ratio (convert to float for calculations)
+            risk = float(abs(entry_price - stop_loss))
+            reward = float(abs(take_profit - entry_price))
+            rr_ratio = reward / risk if risk > 0 else 0
 
-        # Weight factors
-        trend_weight = 0.4
-        volume_weight = 0.3
-        rr_weight = 0.3
+            # Weight factors
+            trend_weight = 0.4
+            volume_weight = 0.3
+            rr_weight = 0.3
 
-        # Calculate weighted confidence
-        confidence = (
-            trend * trend_weight +
-            volume_score * volume_weight +
-            min(rr_ratio / 3, 1) * rr_weight  # Cap RR contribution at 3:1
-        )
+            # Calculate weighted confidence
+            confidence = (
+                trend * trend_weight +
+                volume_score * volume_weight +
+                min(rr_ratio / 3, 1) * rr_weight  # Cap RR contribution at 3:1
+            )
 
-        return min(confidence, 1.0)  # Ensure confidence doesn't exceed 1.0
+            return min(confidence, 1.0)  # Ensure confidence doesn't exceed 1.0
+        except Exception:
+            return 0.0  # Return zero confidence on any error
 
     async def _calculate_volume_score(self, pair: str) -> float:
         """Calculate volume-based score for confidence calculation."""

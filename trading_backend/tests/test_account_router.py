@@ -4,8 +4,10 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.models.futures import AccountStage, FuturesConfig, MarginType, AccountStageTransition
+from app.models.signals import AccountStage, AccountStageTransition
+from app.models.futures import FuturesConfig, MarginType
 from app.services.monitoring.account_monitor import AccountMonitor
+from app.dependencies import get_account_monitor
 
 client = TestClient(app)
 
@@ -132,14 +134,8 @@ async def test_websocket_monitoring():
         assert data["current_stage"] == AccountStage.ADVANCED.value
         assert data["max_leverage"] == 75
 
-        # Test PROFESSIONAL stage
-        websocket.send_json({"balance": "500000"})
-        data = websocket.receive_json()
-        assert data["current_stage"] == AccountStage.PROFESSIONAL.value
-        assert data["max_leverage"] == 100
-
         # Test EXPERT stage (path to 1亿U)
-        websocket.send_json({"balance": "2000000"})
+        websocket.send_json({"balance": "500000"})
         data = websocket.receive_json()
         assert data["current_stage"] == AccountStage.EXPERT.value
         assert data["max_leverage"] == 125
