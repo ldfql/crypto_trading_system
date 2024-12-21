@@ -35,6 +35,10 @@ class AccountMonitor:
         AccountStage.EXPERT: 125
     }
 
+    def _quantize_decimal(self, value: Decimal) -> Decimal:
+        """Quantize decimal to 8 decimal places."""
+        return Decimal(str(value)).quantize(Decimal("0.00000001"), rounding=ROUND_HALF_UP)
+
     def __init__(self, initial_balance: Union[Decimal, str, float] = Decimal("100")):
         """Initialize account monitor with initial balance."""
         if isinstance(initial_balance, (str, float)):
