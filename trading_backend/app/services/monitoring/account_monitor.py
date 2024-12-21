@@ -35,48 +35,45 @@ class AccountMonitor:
         AccountStage.EXPERT: 125
     }
 
-    def __init__(self, initial_balance: Decimal) -> None:
+    def __init__(self, initial_balance: Union[Decimal, str, float] = Decimal("100")):
         """Initialize account monitor with initial balance."""
-        self.current_balance = Decimal("0")
-        self.previous_balance = Decimal("0")
-        self.current_stage = AccountStage.INITIAL
-        self.stage_transition = AccountStageTransition.NO_CHANGE
-        self.websocket = None  # Public attribute for WebSocket connection
-        self._update_callbacks = []  # Private attribute for update callbacks
-        self._initialize_with_balance(initial_balance)
+        if isinstance(initial_balance, (str, float)):
+            initial_balance = Decimal(str(initial_balance))
 
-    def _quantize_decimal(self, value: Decimal) -> Decimal:
-        """Quantize decimal to 8 decimal places."""
-        return Decimal(str(value)).quantize(Decimal("0.00000001"), rounding=ROUND_HALF_UP)
+        if initial_balance <= 0:
+            raise AccountMonitoringError("Initial balance must be positive")
 
-    def _initialize_with_balance(self, initial_balance: Decimal) -> None:
-        """Initialize account with balance."""
+        # Initialize with quantized balance
         self.current_balance = self._quantize_decimal(initial_balance)
         self.previous_balance = self.current_balance
+        self.update_callbacks = []
+
+        # Set initial stage based on balance
+        self.current_stage = self._determine_stage(self.current_balance)
+        self.previous_stage = self.current_stage
         self.stage_transition = AccountStageTransition.NO_CHANGE
 
     def _determine_stage(self, balance: Decimal) -> AccountStage:
-        """Determine account stage based on balance thresholds."""
-        if balance <= 0:
-            raise AccountMonitoringError("Balance must be positive")
+        """Determine account stage based on balance."""
+        # Quantize balance for consistent comparisons
+        balance = self._quantize_decimal(balance)
 
+        # Define stage thresholds
         thresholds = {
-            AccountStage.INITIAL: Decimal("0"),
-            AccountStage.GROWTH: Decimal("1000"),
-            AccountStage.ADVANCED: Decimal("10000"),
-            AccountStage.PROFESSIONAL: Decimal("1000000"),
-            AccountStage.EXPERT: Decimal("100000000")
+            AccountStage.EXPERT: Decimal("1000000"),      # 1M USDT
+            AccountStage.PROFESSIONAL: Decimal("100000"),  # 100K USDT
+            AccountStage.ADVANCED: Decimal("10000"),       # 10K USDT
+            AccountStage.GROWTH: Decimal("1000"),         # 1K USDT
+            AccountStage.INITIAL: Decimal("100")          # 100 USDT
         }
 
-        # Find the highest threshold that is less than or equal to the balance
-        current_stage = AccountStage.INITIAL
+        # Determine stage based on balance thresholds
         for stage, threshold in thresholds.items():
             if balance >= threshold:
-                current_stage = stage
-            else:
-                break
+                return stage
 
-        return current_stage
+        # Default to INITIAL stage if balance is below all thresholds
+        return AccountStage.INITIAL
 
     async def validate_futures_config(self, config: Union[Dict[str, Any], FuturesConfig]) -> bool:
         """Validate futures configuration based on current account stage."""
@@ -119,40 +116,49 @@ class AccountMonitor:
         except (KeyError, ValueError) as e:
             raise ValueError(str(e))
 
-    async def update_balance(self, new_balance: Decimal) -> None:
+    async def update_balance(self, new_balance: Union[Decimal, str, float]) -> Dict[str, Any]:
         """Update account balance and determine stage transition."""
+        if isinstance(new_balance, (str, float)):
+            new_balance = Decimal(str(new_balance))
+
         if new_balance <= 0:
             raise AccountMonitoringError("Balance must be positive")
 
+        # Update balances with quantized values
         self.previous_balance = self.current_balance
         self.current_balance = self._quantize_decimal(new_balance)
-        previous_stage = self.current_stage
 
-        # Determine new stage
+        # Update stages
+        self.previous_stage = self.current_stage
         self.current_stage = self._determine_stage(self.current_balance)
 
-        # Determine stage transition type
-        if self.current_stage != previous_stage:
-            stages = list(AccountStage)
-            prev_idx = stages.index(previous_stage)
-            curr_idx = stages.index(self.current_stage)
-
-            if curr_idx > prev_idx:
-                self.stage_transition = AccountStageTransition.UPGRADE
-            else:
-                self.stage_transition = AccountStageTransition.DOWNGRADE
+        # Determine stage transition
+        if self.current_stage > self.previous_stage:
+            self.stage_transition = AccountStageTransition.UPGRADE
+        elif self.current_stage < self.previous_stage:
+            self.stage_transition = AccountStageTransition.DOWNGRADE
         else:
             self.stage_transition = AccountStageTransition.NO_CHANGE
 
-        # Send WebSocket update
-        await self.send_balance_update()
+        # Calculate stage progress
+        progress, remaining = self.get_stage_progress()
 
-        # Notify callbacks
-        await self._notify_callbacks({
-            "balance": str(self.current_balance),
-            "stage": self.current_stage.name,
-            "transition": self.stage_transition.value
-        })
+        # Prepare update data
+        update_data = {
+            "type": "account_status",
+            "data": {
+                "current_balance": str(self.current_balance),
+                "previous_balance": str(self.previous_balance),
+                "current_stage": self.current_stage.value,
+                "stage_transition": self.stage_transition.value,
+                "progress": str(progress),
+                "remaining": str(remaining)
+            }
+        }
+
+        # Notify callbacks of update
+        await self._notify_callbacks(update_data)
+        return update_data
 
     def _calculate_raw_position_size(self, risk_percentage: Decimal) -> Decimal:
         """Calculate raw position size based on risk percentage without minimum constraints."""
@@ -208,44 +214,41 @@ class AccountMonitor:
 
     def get_stage_progress(self) -> Tuple[Decimal, Decimal]:
         """Calculate progress within current stage and remaining amount to next stage."""
+        # Define stage thresholds
         thresholds = {
-            AccountStage.INITIAL: Decimal("0"),
-            AccountStage.GROWTH: Decimal("1000"),
-            AccountStage.ADVANCED: Decimal("10000"),
-            AccountStage.PROFESSIONAL: Decimal("1000000"),
-            AccountStage.EXPERT: Decimal("100000000")
+            AccountStage.INITIAL: (Decimal("100"), Decimal("1000")),      # 100U - 1K
+            AccountStage.GROWTH: (Decimal("1000"), Decimal("10000")),     # 1K - 10K
+            AccountStage.ADVANCED: (Decimal("10000"), Decimal("100000")), # 10K - 100K
+            AccountStage.PROFESSIONAL: (Decimal("100000"), Decimal("1000000")), # 100K - 1M
+            AccountStage.EXPERT: (Decimal("1000000"), Decimal("100000000"))  # 1M - 100M (1亿)
         }
 
-        # Get current stage threshold and next stage threshold
-        current_threshold = thresholds[self.current_stage]
-        next_threshold = None
+        current_balance = self._quantize_decimal(self.current_balance)
+        current_stage = self.current_stage
 
-        stages = list(AccountStage)
-        current_index = stages.index(self.current_stage)
-        if current_index < len(stages) - 1:
-            next_stage = stages[current_index + 1]
-            next_threshold = thresholds[next_stage]
+        # Get current stage thresholds
+        start_threshold, end_threshold = thresholds[current_stage]
 
         # Calculate progress percentage
-        if self.current_stage == AccountStage.EXPERT:
-            # For expert stage, use a different calculation
-            target = Decimal("1000000000")  # 10亿U
-            progress_ratio = min(
-                (self.current_balance - current_threshold) / (target - current_threshold),
-                Decimal("1.0")
-            )
-            progress = (progress_ratio * Decimal("100")).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-            remaining = max(target - self.current_balance, Decimal("0"))
+        if current_stage == AccountStage.EXPERT:
+            # For expert stage, calculate progress towards 1亿U (100M)
+            total_range = end_threshold - start_threshold
+            current_progress = current_balance - start_threshold
+            progress = (current_progress / total_range) * Decimal("100")
+            remaining = end_threshold - current_balance
         else:
-            # For other stages
-            stage_range = next_threshold - current_threshold if next_threshold else Decimal("0")
-            progress_amount = self.current_balance - current_threshold
-            if stage_range > 0:
-                progress_ratio = min(progress_amount / stage_range, Decimal("1.0"))
-                progress = (progress_ratio * Decimal("100")).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-            else:
-                progress = Decimal("0")
-            remaining = max(next_threshold - self.current_balance, Decimal("0")) if next_threshold else Decimal("0")
+            # For other stages, calculate progress towards next stage
+            stage_range = end_threshold - start_threshold
+            current_progress = current_balance - start_threshold
+            progress = (current_progress / stage_range) * Decimal("100")
+            remaining = end_threshold - current_balance
+
+        # Ensure progress is between 0 and 100
+        progress = max(Decimal("0"), min(Decimal("100"), progress))
+
+        # Round progress to 2 decimal places
+        progress = self._quantize_decimal(progress)
+        remaining = self._quantize_decimal(remaining)
 
         return progress, remaining
 
